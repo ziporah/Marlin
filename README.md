@@ -19,6 +19,7 @@ Anyone can contribute to completing this project, even Anet! ;).
   - PowerLoss: Needs board pin identification.
   - Filament runout detector: Needs LCD or EMERGENCY_PARSER define (USB build problem, maybe easy to fix)
   - PC/SD firmware load/update: There is no bootloader currently.
+ 
  To take a look:
   - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
 
@@ -36,6 +37,8 @@ Before flashing this firmware, I highly recommend making a backup of your firmwa
 
 --- HARDWARE ---
 
+MCU: STM32F407VGT6 ARM CORTEX M4 => https://www.st.com/resource/en/datasheet/dm00037051.pdf</br>
+DRIVERS: TMC2208 (silent) / A4988 (noisy)</br>
 USB TO SERIAL CONVERTER: CH340G => https://www.mpja.com/download/35227cpdata.pdf</br>
 MOSFETS (BED/HOTEND): G90N04</br>
 CLK: JF8.000 (MCU EXT CLK)</br>
@@ -127,7 +130,9 @@ P2_10_LCD_31_DB14 => PE9</br>
 
 # Resources
 
-![ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)
+[ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)</br>
+[ET4 Board and specs](https://es.aliexpress.com/item/4000571722465.html?spm=a2g0o.productlist.0.0.5c647634dDFWSV&algo_pvid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7&algo_expid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7-2&btsid=0ab6f83115911132482433653e39a1&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_)
+
 
 # Marlin 3D Printer Firmware
 

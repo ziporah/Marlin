@@ -1,4 +1,4 @@
-# ET4 for Marlin
+# Marlin for ET4
 
 This project is an effort to try to adapt the Anet ET4 motherboard and display for use with Marlin. It is based on the configuration of the BTT002.
 Pin mapping is below.

@@ -1,3 +1,132 @@
+# ET4 for Marlin
+
+This project is an effort to try to adapt the Anet ET4 motherboard and display for use with Marlin. It is based on the configuration of the BTT002. 
+Pin mapping is below.
+Anyone can contribute to completing this project, even Anet! ;).
+
+-- Current status --
+
+ Working: 
+  - XYZ Steppers
+  - Extruder
+  - SD Card
+  - USB comunication / pronterface
+ Not working:
+  - EEPROM
+  - LCD
+  - TouchPad: Config maybe ok, but useless without LCD
+  - PowerLoss: Needs board pin identification.
+  - Filament runout detector: Needs LCD or EMERGENCY_PARSER define (USB build problem, maybe easy to fix)
+  - PC/SD firmware load/update: There is no bootloader currently. 
+ To take a look:
+  - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
+
+--- BUILD/INSTALLATION ---
+
+  DISCLAIMER: Since it is an unfinished project and under development, I am not responsible for what may happen to the motherboard or printer. Use at your own risk.
+
+Currently you can only flash this firmware using a flasher (stlink, jlink, bmp etc).
+Before flashing this firmware, I highly recommend making a backup of your firmware, or at least your bootlaoder addresses from 0x08000000 to 0x08010000. In this way we can always recover the stock firmware, flashing the bootloader (0x0800 - 0x801) and any of the available Anet firmware (0x0801 - ...).
+  
+  - Download or clone this repo.
+  - Build with platform io.
+  - Burn .elf with your flasher or .bin from 0x08000000 address.
+
+--- HARDWARE ---
+
+USB TO SERIAL CONVERTER: CH340G => https://www.mpja.com/download/35227cpdata.pdf
+MOSFETS (BED/HOTEND): G90N04 => 
+CLK: JF8.000 (MCU EXT CLK)
+CLK: JF12.000 (USB-UART CLK)
+FLASH: WINBOND W25Q128JVSQ (128M-bit) Serial Flash memory => https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf
+??: 293 ST69834
+SS56: SCHOTTKY DIODE
+AMS1117 3.3 DN811: REGULATOR
+030N06: MOSFETs
+A19T: TRANSISTOR
+XL2596S -5.0E1 83296: STEP DOWN DC CONVERTER 3A/150KHZ
+LCD: ST7789V | STP320240_0280E2T (40P/1,5): ST7789 (YT280S008)  => https://a.aliexpress.com/_dV4Bghv | https://www.crystalfontz.com/controllers/Sitronix/ST7789V/470/
+TOUCH: XPT2046 => https://ldm-systems.ru/f/doc/catalog/HY-TFT-2,8/XPT2046.pdf
+
+--- PIN MAPPING ---
+
+E-STEP => PB9
+E-DIR => PB8
+E-ENABLE => PE0
+
+X-STEP => PB6
+X-DIR => PB5
+X-ENABLE => PB7
+
+Y-STEP => PB3
+Y-DIR => PD6
+Y-ENABLE => PB4
+
+Z-STEP => PA12
+Z-DIR => PA11
+Z-ENABLE => PA15
+
+Y-LIMIT => PE12 
+X-LIMIT => PC13
+Z-LIMIT => PE11
+
+TEMP_BED => PA4
+TEMP_EXB1 => PA1
+
+END_FAN => PE1
+LAY_FAN => PE3
+
+END_CONTROL => PA0
+BED_CONTROL => PE2
+
+LV_DET => PC2
+MAT_DET1 => PA2
+
+SDIO_D2 => PC10
+SDIO_D3 => PC11
+SDIO_CMD => PD2
+SDIO_CLK => PC12
+SDIO_D0 => PC8
+SDIO_D1 => PC9
+TF_DET => PD3
+
+USB_USART1_TX => PA9
+USB_USART1_RX => PA10
+
+RESET_BTN => NRST (14)
+LED_D2 => PD12
+
+WINBOND_CS => PB12
+WINBOND_DO => PB14
+WINBOND_DI => PB15
+WINBOND_CLK => PB13
+
+P1_1_LCD_9_CSX => PD7
+P1_2_LCD_11_WRX => PD5
+P1_3_TOUCH_15_/CS => PB2
+P1_4_TOUCH_14_DIN => PE5
+P1_5_TOUCH_12_DOUT => PE4
+P1_6_TOUCH_16_DCLK => PB0
+P1_7_TOUCH_11_/PENIRQ => PB1
+P1_8_LCD_12_RDX => PD4
+P1_9 => GND
+P1_10 => 3.3V
+
+P2_1_LCD_15_RESX => PE6
+P2_2_LCD_10_DCX => PD13
+P2_3_LCD_26_DB9 => PD15
+P2_4_LCD_25_DB8 => PD14
+P2_5_LCD_28_DB11 => PD1
+P2_6_LCD_27_DB10 => PD0
+P2_7_LCD_30_DB13 => PE8
+P2_8_LCD_29_DB12 => PE7
+P2_9_LCD_32_DB15 => PE10
+P2_10_LCD_31_DB14 => PE9
+
+# Resources
+
+![ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)
+
 # Marlin 3D Printer Firmware
 
 ![GitHub](https://img.shields.io/github/license/marlinfirmware/marlin.svg)

@@ -421,6 +421,8 @@
   #error "SPINDLE_STOP_ON_DIR_CHANGE is now SPINDLE_CHANGE_DIR_STOP. Please update your Configuration_adv.h."
 #elif defined(SPINDLE_LASER_ENABLE_INVERT)
   #error "SPINDLE_LASER_ENABLE_INVERT is now SPINDLE_LASER_ACTIVE_HIGH. Please update your Configuration_adv.h."
+#elif defined(CUTTER_POWER_DISPLAY)
+  #error "CUTTER_POWER_DISPLAY is now CUTTER_POWER_UNIT. Please update your Configuration_adv.h."
 #elif defined(CHAMBER_HEATER_PIN)
   #error "CHAMBER_HEATER_PIN is now HEATER_CHAMBER_PIN. Please update your configuration and/or pins."
 #elif defined(TMC_Z_CALIBRATION)
@@ -672,8 +674,8 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
   #elif PROGRESS_MSG_EXPIRE < 0
     #error "PROGRESS_MSG_EXPIRE must be greater than or equal to 0."
   #endif
-#elif ENABLED(LCD_SET_PROGRESS_MANUALLY) && NONE(HAS_GRAPHICAL_LCD, EXTENSIBLE_UI)
-  #error "LCD_SET_PROGRESS_MANUALLY requires LCD_PROGRESS_BAR, Graphical LCD, or EXTENSIBLE_UI."
+#elif ENABLED(LCD_SET_PROGRESS_MANUALLY) && NONE(HAS_GRAPHICAL_LCD, HAS_GRAPHICAL_TFT, EXTENSIBLE_UI)
+  #error "LCD_SET_PROGRESS_MANUALLY requires LCD_PROGRESS_BAR, Graphical LCD, TFT, or EXTENSIBLE_UI."
 #endif
 
 #if !HAS_LCD_MENU && ENABLED(SD_REPRINT_LAST_SELECTED_FILE)
@@ -1163,7 +1165,8 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
   + ENABLED(FIX_MOUNTED_PROBE) \
   + ENABLED(NOZZLE_AS_PROBE) \
   + (HAS_Z_SERVO_PROBE && DISABLED(BLTOUCH)) \
-  + ENABLED(BLTOUCH) \
+  + ENABLED(BLTOUCH) && DISABLED(CREALITY_TOUCH) \
+  + ENABLED(CREALITY_TOUCH) \
   + ENABLED(TOUCH_MI_PROBE) \
   + ENABLED(SOLENOID_PROBE) \
   + ENABLED(Z_PROBE_ALLEN_KEY) \
@@ -1401,12 +1404,16 @@ static_assert(Y_MAX_LENGTH >= Y_BED_SIZE, "Movement bounds (Y_MIN_POS, Y_MAX_POS
 
 #endif
 
-#if HAS_MESH
-  #if HAS_CLASSIC_JERK
-    static_assert(DEFAULT_ZJERK > 0.1, "Low DEFAULT_ZJERK values are incompatible with mesh-based leveling.");
+#if HAS_MESH && HAS_CLASSIC_JERK
+  static_assert(DEFAULT_ZJERK > 0.1, "Low DEFAULT_ZJERK values are incompatible with mesh-based leveling.");
+#endif
+
+#if ENABLED(G26_MESH_VALIDATION)
+  #if !EXTRUDERS
+    #error "G26_MESH_VALIDATION requires at least one extruder."
+  #elif !HAS_MESH
+    #error "G26_MESH_VALIDATION requires MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, or AUTO_BED_LEVELING_UBL."
   #endif
-#elif ENABLED(G26_MESH_VALIDATION)
-  #error "G26_MESH_VALIDATION requires MESH_BED_LEVELING, AUTO_BED_LEVELING_BILINEAR, or AUTO_BED_LEVELING_UBL."
 #endif
 
 #if ENABLED(MESH_EDIT_GFX_OVERLAY) && !BOTH(AUTO_BED_LEVELING_UBL, HAS_GRAPHICAL_LCD)
@@ -1474,6 +1481,28 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
     #error "FILAMENT_WIDTH_SENSOR requires a FILWIDTH_PIN to be defined."
   #elif ENABLED(NO_VOLUMETRICS)
     #error "FILAMENT_WIDTH_SENSOR requires NO_VOLUMETRICS to be disabled."
+  #endif
+#endif
+
+/**
+ * System Power Sensor
+ */
+#if ENABLED(POWER_MONITOR_CURRENT) && !PIN_EXISTS(POWER_MONITOR_CURRENT)
+  #error "POWER_MONITOR_CURRENT requires a valid POWER_MONITOR_CURRENT_PIN."
+#elif ENABLED(POWER_MONITOR_VOLTAGE) && !PIN_EXISTS(POWER_MONITOR_VOLTAGE)
+  #error "POWER_MONITOR_VOLTAGE requires POWER_MONITOR_VOLTAGE_PIN to be defined."
+#elif BOTH(POWER_MONITOR_CURRENT, POWER_MONITOR_VOLTAGE) && POWER_MONITOR_CURRENT_PIN == POWER_MONITOR_VOLTAGE_PIN
+  #error "POWER_MONITOR_CURRENT_PIN and POWER_MONITOR_VOLTAGE_PIN must be different."
+#endif
+
+/**
+ * Volumetric Extruder Limit
+ */
+#if ENABLED(VOLUMETRIC_EXTRUDER_LIMIT)
+  #if ENABLED(NO_VOLUMETRICS)
+    #error "VOLUMETRIC_EXTRUDER_LIMIT requires NO_VOLUMETRICS to be disabled."
+  #elif MIN_STEPS_PER_SEGMENT > 1
+    #error "VOLUMETRIC_EXTRUDER_LIMIT is not compatible with MIN_STEPS_PER_SEGMENT greater than 1."
   #endif
 #endif
 
@@ -1600,28 +1629,8 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
 #endif
 
 /**
- * Test Heater, Temp Sensor, and Extruder Pins; Sensor Type must also be set.
+ * A Sensor ID has to be set for each heater
  */
-#if !HAS_HEATER_0
-  #error "HEATER_0_PIN not defined for this board."
-#elif !ANY_PIN(TEMP_0, MAX6675_SS)
-  #error "TEMP_0_PIN not defined for this board."
-#elif ((defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)) && !PINS_EXIST(E0_STEP, E0_DIR))
-  #error "E0_STEP_PIN or E0_DIR_PIN not defined for this board."
-#elif ( !(defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)) && (!PINS_EXIST(E0_STEP, E0_DIR) || !HAS_E0_ENABLE))
-  #error "E0_STEP_PIN, E0_DIR_PIN, or E0_ENABLE_PIN not defined for this board."
-#elif EXTRUDERS && TEMP_SENSOR_0 == 0
-  #error "TEMP_SENSOR_0 is required with any extruders."
-#endif
-
-// Pins are required for heaters
-#if ENABLED(HEATER_0_USES_MAX6675) && !PIN_EXISTS(MAX6675_SS)
-  #error "MAX6675_SS_PIN (required for TEMP_SENSOR_0) not defined for this board."
-#elif HOTENDS && !HAS_TEMP_HOTEND
-  #error "TEMP_0_PIN (required for TEMP_SENSOR_0) not defined for this board."
-#elif EITHER(HAS_MULTI_HOTEND, HEATERS_PARALLEL) && !HAS_HEATER_1
-  #error "HEATER_1_PIN not defined for this board."
-#endif
 
 #if HAS_MULTI_HOTEND
   #if ENABLED(HEATER_1_USES_MAX6675) && !PIN_EXISTS(MAX6675_SS2)
@@ -1745,9 +1754,13 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
   #error "TEMP_SENSOR_7 shouldn't be set with only 1 HOTEND."
 #endif
 
+#if TEMP_SENSOR_CHAMBER && !PIN_EXISTS(TEMP_CHAMBER)
+  #error "TEMP_SENSOR_CHAMBER requires TEMP_CHAMBER_PIN. Please add it to your configuration."
+#endif
+
 #if TEMP_SENSOR_PROBE
   #if !PIN_EXISTS(TEMP_PROBE)
-    #error "TEMP_SENSOR_PROBE requires TEMP_PROBE_PIN."
+    #error "TEMP_SENSOR_PROBE requires TEMP_PROBE_PIN. Please add it to your configuration."
   #elif !HAS_TEMP_ADC_PROBE
     #error "TEMP_PROBE_PIN must be an ADC pin."
   #elif !ENABLED(FIX_MOUNTED_PROBE)
@@ -1757,6 +1770,30 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
 
 #if ENABLED(TEMP_SENSOR_1_AS_REDUNDANT) && TEMP_SENSOR_1 == 0
   #error "TEMP_SENSOR_1 is required with TEMP_SENSOR_1_AS_REDUNDANT."
+#endif
+
+/**
+ * Test Heater, Temp Sensor, and Extruder Pins
+ */
+#if !HAS_HEATER_0
+  #error "HEATER_0_PIN not defined for this board."
+#elif !ANY_PIN(TEMP_0, MAX6675_SS)
+  #error "TEMP_0_PIN not defined for this board."
+#elif ((defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)) && !PINS_EXIST(E0_STEP, E0_DIR))
+  #error "E0_STEP_PIN or E0_DIR_PIN not defined for this board."
+#elif ( !(defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)) && (!PINS_EXIST(E0_STEP, E0_DIR) || !HAS_E0_ENABLE))
+  #error "E0_STEP_PIN, E0_DIR_PIN, or E0_ENABLE_PIN not defined for this board."
+#elif EXTRUDERS && TEMP_SENSOR_0 == 0
+  #error "TEMP_SENSOR_0 is required if there are any extruders."
+#endif
+
+// Pins are required for heaters
+#if ENABLED(HEATER_0_USES_MAX6675) && !PIN_EXISTS(MAX6675_SS)
+  #error "MAX6675_SS_PIN (required for TEMP_SENSOR_0) not defined for this board."
+#elif HAS_HOTEND && !HAS_TEMP_HOTEND
+  #error "TEMP_0_PIN (required for TEMP_SENSOR_0) not defined for this board."
+#elif EITHER(HAS_MULTI_HOTEND, HEATERS_PARALLEL) && !HAS_HEATER_1
+  #error "HEATER_1_PIN is not defined. TEMP_SENSOR_1 might not be set, or the board (not EEB / EEF?) doesn't define a pin."
 #endif
 
 /**
@@ -2103,6 +2140,7 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
   + (ENABLED(ULTRA_LCD) && DISABLED(IS_ULTRA_LCD)) \
   + (ENABLED(U8GLIB_SSD1306) && DISABLED(IS_U8GLIB_SSD1306)) \
   + (ENABLED(MINIPANEL) && DISABLED(MKS_MINI_12864, ENDER2_STOCKDISPLAY)) \
+  + (ENABLED(MKS_MINI_12864) && DISABLED(MKS_LCD12864)) \
   + (ENABLED(EXTENSIBLE_UI) && DISABLED(IS_EXTUI)) \
   + (ENABLED(ULTIPANEL) && DISABLED(IS_ULTIPANEL)) \
   + ENABLED(RADDS_DISPLAY) \
@@ -2129,7 +2167,7 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
   + ENABLED(CARTESIO_UI) \
   + ENABLED(LCD_FOR_MELZI) \
   + ENABLED(ULTI_CONTROLLER) \
-  + ENABLED(MKS_MINI_12864) \
+  + ENABLED(MKS_LCD12864) \
   + ENABLED(ENDER2_STOCKDISPLAY) \
   + ENABLED(FYSETC_MINI_12864_X_X) \
   + ENABLED(FYSETC_MINI_12864_1_2) \
@@ -2137,6 +2175,7 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
   + ENABLED(FYSETC_MINI_12864_2_1) \
   + ENABLED(FYSETC_GENERIC_12864_1_1) \
   + ENABLED(CR10_STOCKDISPLAY) \
+  + ENABLED(DWIN_CREALITY_LCD) \
   + ENABLED(ANET_FULL_GRAPHICS_LCD) \
   + ENABLED(AZSMZ_12864) \
   + ENABLED(SILVER_GATE_GLCD_CONTROLLER) \
@@ -2151,6 +2190,8 @@ static_assert(hbm[Z_AXIS] >= 0, "HOMING_BUMP_MM.Z must be greater than or equal 
   + ENABLED(DGUS_LCD_UI_HIPRECY) \
   + ENABLED(MALYAN_LCD) \
   + ENABLED(TOUCH_UI_FTDI_EVE) \
+  + ENABLED(TFT_320x240) \
+  + ENABLED(TFT_320x240_SPI) \
   + ENABLED(FSMC_GRAPHICAL_TFT)
   #error "Please select no more than one LCD controller option."
 #endif
@@ -2825,10 +2866,10 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
 #endif
 
 #if HAS_CUTTER
-  #ifndef CUTTER_POWER_DISPLAY
-    #error "CUTTER_POWER_DISPLAY is required with a spindle or laser. Please update your Configuration_adv.h."
-  #elif !CUTTER_DISPLAY_IS(PWM255) && !CUTTER_DISPLAY_IS(PERCENT) && !CUTTER_DISPLAY_IS(RPM)
-    #error "CUTTER_POWER_DISPLAY must be PWM255, PERCENT, or RPM. Please update your Configuration_adv.h."
+  #ifndef CUTTER_POWER_UNIT
+    #error "CUTTER_POWER_UNIT is required with a spindle or laser. Please update your Configuration_adv.h."
+  #elif !CUTTER_UNIT_IS(PWM255) && !CUTTER_UNIT_IS(PERCENT) && !CUTTER_UNIT_IS(RPM)
+    #error "CUTTER_POWER_UNIT must be PWM255, PERCENT, or RPM. Please update your Configuration_adv.h."
   #endif
 
   #if ENABLED(LASER_POWER_INLINE)
@@ -2878,7 +2919,7 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
       #error "SPINDLE_LASER_PWM_PIN not assigned to a PWM pin."
     #elif !defined(SPINDLE_LASER_PWM_INVERT)
       #error "SPINDLE_LASER_PWM_INVERT is required for (SPINDLE|LASER)_FEATURE."
-    #elif !defined(SPEED_POWER_SLOPE) || !defined(SPEED_POWER_INTERCEPT) || !defined(SPEED_POWER_MIN) || !defined(SPEED_POWER_MAX) || !defined(SPEED_POWER_STARTUP)
+    #elif !(defined(SPEED_POWER_INTERCEPT) && defined(SPEED_POWER_MIN) && defined(SPEED_POWER_MAX) && defined(SPEED_POWER_STARTUP))
       #error "SPINDLE_LASER_PWM equation constant(s) missing."
     #elif _PIN_CONFLICT(X_MIN)
       #error "SPINDLE_LASER_PWM pin conflicts with X_MIN_PIN."
@@ -2941,8 +2982,8 @@ static_assert(   _ARR_TEST(3,0) && _ARR_TEST(3,1) && _ARR_TEST(3,2)
   #endif
 #endif
 
-#if HAS_ADC_BUTTONS && defined(ADC_BUTTON_DEBOUNCE_DELAY) && !WITHIN(ADC_BUTTON_DEBOUNCE_DELAY, 16, 255)
-  #error "ADC_BUTTON_DEBOUNCE_DELAY must be an integer from 16 to 255."
+#if HAS_ADC_BUTTONS && defined(ADC_BUTTON_DEBOUNCE_DELAY) && ADC_BUTTON_DEBOUNCE_DELAY < 16
+  #error "ADC_BUTTON_DEBOUNCE_DELAY must be greater than 16."
 #endif
 
 /**

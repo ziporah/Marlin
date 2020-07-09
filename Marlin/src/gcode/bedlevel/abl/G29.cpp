@@ -60,6 +60,10 @@
   #include "../../../lcd/extui/ui_api.h"
 #endif
 
+#if ENABLED(DWIN_CREALITY_LCD)
+  #include "../../../lcd/dwin/dwin.h"
+#endif
+
 #if HAS_MULTI_HOTEND
   #include "../../../module/tool_change.h"
 #endif
@@ -159,6 +163,8 @@
  *
  */
 G29_TYPE GcodeSuite::G29() {
+
+  reset_stepper_timeout();
 
   const bool seenQ = EITHER(DEBUG_LEVELING_FEATURE, PROBE_MANUALLY) && parser.seen('Q');
 
@@ -671,7 +677,7 @@ G29_TYPE GcodeSuite::G29() {
           #endif
 
           abl_should_enable = false;
-          idle();
+          idle_no_sleep();
 
         } // inner
       } // outer
@@ -886,6 +892,10 @@ G29_TYPE GcodeSuite::G29() {
     if (DEBUGGING(LEVELING)) DEBUG_ECHOLNPAIR("Z Probe End Script: ", Z_PROBE_END_SCRIPT);
     planner.synchronize();
     process_subcommands_now_P(PSTR(Z_PROBE_END_SCRIPT));
+  #endif
+
+  #if ENABLED(DWIN_CREALITY_LCD)
+    DWIN_CompletedLeveling();
   #endif
 
   report_current_position();

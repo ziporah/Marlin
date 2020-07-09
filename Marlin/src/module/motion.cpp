@@ -1316,16 +1316,18 @@ void do_homing_move(const AxisEnum axis, const float distance, const feedRate_t 
     current_position[axis] = distance;
     line_to_current_position(real_fr_mm_s);
   #else
+    // Get the ABC or XYZ positions in mm
     abce_pos_t target = planner.get_axis_positions_mm();
-    target[axis] = 0;
-    planner.set_machine_position_mm(target);
-    target[axis] = distance;
+
+    target[axis] = 0;                         // Set the single homing axis to 0
+    planner.set_machine_position_mm(target);  // Update the machine position
 
     #if HAS_DIST_MM_ARG
       const xyze_float_t cart_dist_mm{0};
     #endif
 
     // Set delta/cartesian axes directly
+    target[axis] = distance;                  // The move will be towards the endstop
     planner.buffer_segment(target
       #if HAS_DIST_MM_ARG
         , cart_dist_mm
@@ -1537,8 +1539,8 @@ void homeaxis(const AxisEnum axis) {
     #define _CAN_HOME(A) (axis == _AXIS(A) && ( \
          ENABLED(A##_SPI_SENSORLESS) \
       || (_AXIS(A) == Z_AXIS && ENABLED(HOMING_Z_WITH_PROBE)) \
-      || (A##_MIN_PIN > 0 && A##_HOME_DIR < 0) \
-      || (A##_MAX_PIN > 0 && A##_HOME_DIR > 0) \
+      || (A##_MIN_PIN > -1 && A##_HOME_DIR < 0) \
+      || (A##_MAX_PIN > -1 && A##_HOME_DIR > 0) \
     ))
     if (!_CAN_HOME(X) && !_CAN_HOME(Y) && !_CAN_HOME(Z)) return;
   #endif

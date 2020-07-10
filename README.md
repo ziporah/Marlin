@@ -13,8 +13,9 @@ Anyone can contribute to completing this project, even Anet! ;).
   - USB comunication / pronterface
   - TFT
   - Filament runout detector: Needs testing.
+  - EEPROM SDCARD emulation: Needs testenig.
 
-### Not working:
+### Not working / on progress:
   - EEPROM using onboard WINBOND memory chip.
   - PowerLoss: Needed board pin identification.
   - PC/SD firmware load/update: There is no bootloader currently. Best option would be use stocl ET4 bootloader.
@@ -40,7 +41,7 @@ This firmware lacks of bootloader, so you have to flash it from address 0x800000
      Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), bed size, ...
   3. Build project with platform io on VS code is recommended.
   4. Burn firmware with your flasher (.elf or .bin starting from 0x08000000 address).
-  
+
 You can connect with pronterface to corresponding com port @115200bps.
 
 ## HARDWARE

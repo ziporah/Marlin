@@ -61,11 +61,13 @@
 //
 // LED PIN
 //
+
 #define LED_PIN                             PD12
 
 //
 // Steppers
 //
+
 #define X_STEP_PIN                          PB6
 #define X_DIR_PIN                           PB5
 #define X_ENABLE_PIN                        PB7
@@ -85,16 +87,18 @@
 //
 // Temperature Sensors
 //
+
 #define TEMP_0_PIN                          PA1
 #define TEMP_BED_PIN                        PA4
 
 //
 // Heaters / Fans
 //
+
 #define HEATER_0_PIN                        PA0
 #define HEATER_BED_PIN                      PE2
-#define FAN_PIN                             PE1
-#define FAN1_PIN                            PE3
+#define FAN_PIN                             PE3
+#define FAN1_PIN                            PE1
 
 //
 // Persistent Storage
@@ -103,85 +107,85 @@
 
 /**
  *  Status: Not Working/Testing
+ *  Hardware: WINBOND W25Q128JVSQ (128M-bit) => https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf
  *  Notes: 
  *    - Copied config from another board. 
  *    - Throws Read/Write errors so far.
  */
 
-/*
 //#define SPI_EEPROM
 //#define CUSTOM_SPI_PINS
 //#define FLASH_EEPROM_EMULATION
-
 //#define SPI_MODULE 2
 
-#undef E2END
 #if ENABLED(SPI_EEPROM)
   // WINBOND W25Q128JVSQ (128M-bit)
-  #define SPI_CHAN_EEPROM1      2
+  #define SPI_CHAN_EEPROM1      1
   #define SPI_EEPROM1_CS        PB12   
-  // #define EEPROM_SCK         PB13
-  // #define EEPROM_MISO        PB15
-  // #define EEPROM_MOSI        PB14
+  #define EEPROM_SCK            PB13
+  #define EEPROM_MISO           PB14
+  #define EEPROM_MOSI           PB15
   #define EEPROM_PAGE_SIZE      0x1000U                     // 4KB (from datasheet)
-  #define E2END                 ((16 * EEPROM_PAGE_SIZE)-1) // Limit to 64KB for now...
+  //#undef E2END
+  //#define E2END                 16UL * (EEPROM_PAGE_SIZE)   // Limit to 64KB for now...
+  # define MARLIN_EEPROM_SIZE   16UL * (EEPROM_PAGE_SIZE)   // Limit to 64KB for now...
 #elif ENABLED(FLASH_EEPROM_EMULATION)
   // SoC Flash (framework-arduinoststm32-maple/STM32F1/libraries/EEPROM/EEPROM.h)
   #define EEPROM_START_ADDRESS (0x8000000UL + (512 * 1024) - 2 * EEPROM_PAGE_SIZE)
   #define EEPROM_PAGE_SIZE     (0x800U)     // 2KB, but will use 2x more (4KB)
   #define E2END (EEPROM_PAGE_SIZE - 1)
 #else
-  #define E2END (0x7FFU) // On SD, Limit to 2KB, require this amount of RAM
+  #define MARLIN_EEPROM_SIZE 0x800U 
+  //#define E2END (0x7FFU) // On SD, Limit to 2KB, require this amount of RAM
 #endif
-
-*/
 
 //
 // LCD
 //
 
 /**
- * Status: To be implemented
+ * Status: Working. Merged FSMC/DMA implementation for stm32f4 from jmz52 fork.
  * Hardware: IC ST7789V | STP320240_0280E2T (40P/1,5): ST7789 (YT280S008)  => https://a.aliexpress.com/_dV4Bghv
  * Notes: 
- *  - Seems to use 8080/8 bits MCU interface. Maybe could work using MCUFRIEND_kvb library?
  *  - Defined PINS: CSX, DCX, WRX, RESX, RDX, DB[8:15]
- *  - FSMC/DMA and 8080-8 inteface?
+ *  - FSMC/DMA and 8080-8 inteface
  */
 
-#define LCD_RESET_PIN                       -1
-//#define LCD_BACKLIGHT_PIN                 ??
-#define FSMC_CS_PIN                         PD7
-#define FSMC_RS_PIN                         PE6
-
-#define LCD_USE_DMA_FSMC                            // Use DMA transfers to send data to the TFT
-#define FSMC_DMA_DEV                        DMA2
-#define FSMC_DMA_CHANNEL                    DMA_CH5
+#define TFT_DRIVER                         ST7789
+#define TFT_RESET_PIN                      PE6
+#define TFT_CS_PIN                         PD7
+#define TFT_RS_PIN                         PD13
 
 //
 // Touch Screen
 //
 
 /**
- * Status: Untested (Useless without LCD working)
+ * Status: Working. Merged implementation from jmz52 fork.
  * Hardware: TOUCH: XPT2046 => https://ldm-systems.ru/f/doc/catalog/HY-TFT-2,8/XPT2046.pdf
  */
 
-#if ENABLED(TOUCH_BUTTONS)
+#if ENABLED(TOUCH_SCREEN)
   #define TOUCH_CS_PIN                      PB2
   #define TOUCH_SCK_PIN                     PB0
-  #define TOUCH_MOSI_PIN                    PE4
-  #define TOUCH_MISO_PIN                    PE5
+  #define TOUCH_MOSI_PIN                    PE5
+  #define TOUCH_MISO_PIN                    PE4
   #define TOUCH_INT_PIN                     PB1
 #endif
 
 //
 // Onboard SD support
 //
+
+/**
+ * Status: Working.
+ */
+
 #define SDIO_SUPPORT
+#define SDSUPPORT
 
 #ifndef SDCARD_CONNECTION
-  #define SDCARD_CONNECTION              ONBOARD
+  #define SDCARD_CONNECTION                  ONBOARD
 #endif
 
 #if ENABLED(SDSUPPORT)

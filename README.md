@@ -9,31 +9,39 @@ Anyone can contribute to completing this project, even Anet! ;).
  Working:
   - XYZ Steppers
   - Extruder
-  - SD Card
+  - SD Card: Maybe problems with SD insertion detection.
   - USB comunication / pronterface
+  - TFT
+  - Filament runout detector: Needs testing.
 
  Not working:
-  - EEPROM
-  - LCD
-  - TouchPad: Config maybe ok, but useless without LCD
-  - PowerLoss: Needs board pin identification.
-  - Filament runout detector: Needs LCD or EMERGENCY_PARSER define (USB build problem, maybe easy to fix)
-  - PC/SD firmware load/update: There is no bootloader currently.
+  - EEPROM using onboard WINBOND memory chip.
+  - PowerLoss: Needed board pin identification.
+  - PC/SD firmware load/update: There is no bootloader currently. Best option would be use stocl ET4 bootloader.
  
  To take a look:
   - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
 
 --- BUILD/INSTALLATION ---
 
-  DISCLAIMER: Since it is an unfinished project and under development, I am not responsible for what may happen to the motherboard or printer. Use at your own risk.
+  DISCLAIMER: Not for production use. This is an unfinished project and under development. I am not responsible for what may happen to the motherboard or printer. Use only at your own risk.
 
 Currently you can only flash this firmware using a flasher (stlink, jlink, bmp etc).
-Before flashing this firmware, I highly recommend making a backup of your firmware, or at least your bootlaoder addresses from 0x08000000 to 0x08010000. In this way we can always recover the stock firmware, flashing the bootloader (0x0800 - 0x801) and any of the available Anet firmware (0x0801 - ...).
+
+Before flashing this firmware:</br>
+I highly recommend making a backup of your firmware. At least your bootlaoder (addresses from 0x08000000 to 0x08010000). This way, you can always recover the stock firmware by:</br>
+  1. flashing the bootloader backup on the same addresses (0x08000000 - 0x8010000)</br>
+  2. flashing any of the available Anet firmwares from address 0x08010000.</br>
  
-  - Download or clone this repo.
-  - Build with platform io.
-  - Burn .elf with your flasher or .bin from 0x08000000 address.
-  - Connect with pronterface to corresponding com port @115200bps.
+Flashing this firmware:</br>
+This firmware lacks of bootloader, so you have to flash it from address 0x8000000.
+  1. Download or clone this repo.
+  2. Make sure to modify your config.h and config_adv.h according to your ET4 model (ET4, ET4 PRO, ET4+, ...)
+     Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), bed size, ...
+  3. Build project with platform io on VS code is recommended.
+  4. Burn firmware with your flasher (.elf or .bin starting from 0x08000000 address).
+  
+You can connect with pronterface to corresponding com port @115200bps.
 
 --- HARDWARE ---
 

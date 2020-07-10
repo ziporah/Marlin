@@ -32,7 +32,7 @@
 #include "ili9341.h"
 #include "ili9488.h"
 
-//#define DEBUG_GRAPHICAL_TFT
+#define DEBUG_GRAPHICAL_TFT
 #define DEBUG_OUT ENABLED(DEBUG_GRAPHICAL_TFT)
 #include "../../core/debug_out.h"
 
@@ -121,16 +121,16 @@ void TFT::set_window(uint16_t Xmin, uint16_t Ymin, uint16_t Xmax, uint16_t Ymax)
 
       // CASET: Column Address Set
       io.WriteReg(ILI9341_CASET);
-      io.WriteData((Xmin >> 8) & 0xFF);
+      io.WriteData(Xmin >> 8);
       io.WriteData(Xmin & 0xFF);
-      io.WriteData((Xmax >> 8) & 0xFF);
+      io.WriteData(Xmax >> 8);
       io.WriteData(Xmax & 0xFF);
 
       // RASET: Row Address Set
       io.WriteReg(ILI9341_PASET);
-      io.WriteData((Ymin >> 8) & 0xFF);
+      io.WriteData(Ymin >> 8);
       io.WriteData(Ymin & 0xFF);
-      io.WriteData((Ymax >> 8) & 0xFF);
+      io.WriteData(Ymax >> 8);
       io.WriteData(Ymax & 0xFF);
 
       // RAMWR: Memory Write

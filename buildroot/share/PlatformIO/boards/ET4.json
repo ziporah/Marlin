@@ -23,12 +23,13 @@
     "svd_path": "STM32F40x.svd"
   },
   "frameworks": [
-    "arduino"
+    "arduino",
+    "stm32cube"
   ],
   "name": "STM32F407VG (192k RAM. 1024k Flash)",
   "upload": {
     "disable_flushing": false,
-    "maximum_ram_size": 131072,
+    "maximum_ram_size": 196608,
     "maximum_size": 1048576,
     "protocol": "stlink",
     "protocols": [
@@ -36,7 +37,6 @@
       "dfu",
       "jlink"
     ],
-    "offset_address": "0x8000000",
     "require_upload_port": true,
     "use_1200bps_touch": false,
     "wait_for_upload_port": false

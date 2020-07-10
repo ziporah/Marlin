@@ -29,10 +29,10 @@
 
 SRAM_HandleTypeDef TFT_FSMC::SRAMx;
 DMA_HandleTypeDef TFT_FSMC::DMAtx;
-LCD_CONTROLLER_TypeDef *TFT_FSMC::LCD;
+//LCD_CONTROLLER_TypeDef *TFT_FSMC::LCD;
 
 void TFT_FSMC::Init() {
-  uint32_t controllerAddress;
+  //uint32_t controllerAddress;
 
   #if PIN_EXISTS(TFT_RESET)
     OUT_WRITE(TFT_RESET_PIN, HIGH);
@@ -45,22 +45,24 @@ void TFT_FSMC::Init() {
 
   FSMC_NORSRAM_TimingTypeDef Timing, ExtTiming;
 
-  uint32_t NSBank = (uint32_t)pinmap_peripheral(digitalPinToPinName(TFT_CS_PIN), PinMap_FSMC_CS);
+  //uint32_t NSBank = (uint32_t)pinmap_peripheral(digitalPinToPinName(TFT_CS_PIN), PinMap_FSMC_CS);
 
+  /** Perform the SRAM1 memory initialization sequence
+  */
   SRAMx.Instance = FSMC_NORSRAM_DEVICE;
   SRAMx.Extended = FSMC_NORSRAM_EXTENDED_DEVICE;
   /* SRAMx.Init */
-  SRAMx.Init.NSBank = NSBank;
+  SRAMx.Init.NSBank = FSMC_NORSRAM_BANK1;//NSBank;
   SRAMx.Init.DataAddressMux = FSMC_DATA_ADDRESS_MUX_DISABLE;
   SRAMx.Init.MemoryType = FSMC_MEMORY_TYPE_SRAM;
-  SRAMx.Init.MemoryDataWidth = FSMC_NORSRAM_MEM_BUS_WIDTH_16;
+  SRAMx.Init.MemoryDataWidth = FSMC_NORSRAM_MEM_BUS_WIDTH_8;
   SRAMx.Init.BurstAccessMode = FSMC_BURST_ACCESS_MODE_DISABLE;
   SRAMx.Init.WaitSignalPolarity = FSMC_WAIT_SIGNAL_POLARITY_LOW;
   SRAMx.Init.WrapMode = FSMC_WRAP_MODE_DISABLE;
   SRAMx.Init.WaitSignalActive = FSMC_WAIT_TIMING_BEFORE_WS;
   SRAMx.Init.WriteOperation = FSMC_WRITE_OPERATION_ENABLE;
   SRAMx.Init.WaitSignal = FSMC_WAIT_SIGNAL_DISABLE;
-  SRAMx.Init.ExtendedMode = FSMC_EXTENDED_MODE_ENABLE;
+  SRAMx.Init.ExtendedMode = FSMC_EXTENDED_MODE_DISABLE;
   SRAMx.Init.AsynchronousWait = FSMC_ASYNCHRONOUS_WAIT_DISABLE;
   SRAMx.Init.WriteBurst = FSMC_WRITE_BURST_DISABLE;
   #ifdef STM32F4xx
@@ -72,8 +74,8 @@ void TFT_FSMC::Init() {
   Timing.AddressHoldTime = 15;
   Timing.DataSetupTime = 24;
   Timing.BusTurnAroundDuration = 0;
-  Timing.CLKDivision = 16;
-  Timing.DataLatency = 17;
+  Timing.CLKDivision = 0;
+  Timing.DataLatency = 0;
   Timing.AccessMode = FSMC_ACCESS_MODE_A;
   /* Write Timing */
   /* Can be decreases from 8-15-8 to 0-0-1 with risk of stability loss */
@@ -92,7 +94,7 @@ void TFT_FSMC::Init() {
   pinmap_pinout(digitalPinToPinName(TFT_CS_PIN), PinMap_FSMC_CS);
   pinmap_pinout(digitalPinToPinName(TFT_RS_PIN), PinMap_FSMC_RS);
 
-  controllerAddress = FSMC_BANK1_1;
+  //controllerAddress = FSMC_BANK1_1;
   #ifdef PF0
     switch (NSBank) {
       case FSMC_NORSRAM_BANK2: controllerAddress = FSMC_BANK1_2 ; break;
@@ -101,7 +103,7 @@ void TFT_FSMC::Init() {
     }
   #endif
 
-  controllerAddress |= (uint32_t)pinmap_peripheral(digitalPinToPinName(TFT_RS_PIN), PinMap_FSMC_RS);
+  //controllerAddress |= (uint32_t)pinmap_peripheral(digitalPinToPinName(TFT_RS_PIN), PinMap_FSMC_RS);
 
   HAL_SRAM_Init(&SRAMx, &Timing, &ExtTiming);
 
@@ -125,31 +127,47 @@ void TFT_FSMC::Init() {
   DMAtx.Init.Mode = DMA_NORMAL;
   DMAtx.Init.Priority = DMA_PRIORITY_HIGH;
 
-  LCD = (LCD_CONTROLLER_TypeDef *)controllerAddress;
+ //controllerAddress =  (unit32_t)0x60000000U;
+  //LCD = (LCD_CONTROLLER_TypeDef *)controllerAddress;
+  //LCD = (LCD_CONTROLLER_TypeDef *)controllerAddress;
+  //LCD->RAM = (uint16_t *)0x60040000U;
+ 
 }
 
 uint32_t TFT_FSMC::GetID() {
-  uint32_t id;
-  WriteReg(0x0000);
-  id = LCD->RAM;
+  // uint32_t id;
+  // WriteReg(0x0000);
+  // id = *(__IO uint8_t *)(0x60040000) ; //LCD->RAM;
 
-  if (id == 0)
-    id = ReadID(LCD_READ_ID);
-  if ((id & 0xFFFF) == 0 || (id & 0xFFFF) == 0xFFFF)
-    id = ReadID(LCD_READ_ID4);
-  return id;
+  // if (id == 0)
+  //   id = ReadID(LCD_READ_ID);
+  // if ((id & 0xFFFF) == 0 || (id & 0xFFFF) == 0xFFFF)
+  //   id = ReadID(LCD_READ_ID4);
+  // return id;
+  return 0x8552;
 }
 
- uint32_t TFT_FSMC::ReadID(uint16_t Reg) {
-   uint32_t id;
-   WriteReg(Reg);
-   id = LCD->RAM; // dummy read
-   id = Reg << 24;
-   id |= (LCD->RAM & 0x00FF) << 16;
-   id |= (LCD->RAM & 0x00FF) << 8;
-   id |= LCD->RAM & 0x00FF;
-   return id;
- }
+//  uint32_t TFT_FSMC::ReadID(uint8_t Reg) {
+//    uint32_t id;
+//    WriteReg(Reg);
+//    id = LCD->RAM; // dummy read
+//    id = Reg << 24;
+//    id |= (LCD->RAM & 0x00FF) << 16;
+//    id |= (LCD->RAM & 0x00FF) << 8;
+//    id |= LCD->RAM & 0x00FF;
+//    return id;
+//  }
+
+//   uint32_t TFT_FSMC::ReadID(uint16_t Reg) {
+//     uint32_t id;
+//     WriteReg(Reg);
+//     id = LCD->RAM; // dummy read
+//     id = Reg << 24;
+//     id |= (LCD->RAM & 0x00FF) << 16;
+//     id |= (LCD->RAM & 0x00FF) << 8;
+//     id |= LCD->RAM & 0x00FF;
+//     return id;
+// }
 
 bool TFT_FSMC::isBusy() {
   if (__IS_DMA_ENABLED(&DMAtx))
@@ -170,9 +188,10 @@ void TFT_FSMC::TransmitDMA(uint32_t MemoryIncrease, uint16_t *Data, uint16_t Cou
     DMAtx.Instance->CPAR = (uint32_t)Data;
     DMAtx.Instance->CMAR = (uint32_t)&(LCD->RAM);
   #elif defined(STM32F4xx)
+    //DMAtx.Instance->NDTR = (Count*2);
     DMAtx.Instance->NDTR = Count;
     DMAtx.Instance->PAR = (uint32_t)Data;
-    DMAtx.Instance->M0AR = (uint32_t)&(LCD->RAM);
+    DMAtx.Instance->M0AR = (uint32_t)(0x60040000);
   #endif
   __HAL_DMA_ENABLE(&DMAtx);
 }

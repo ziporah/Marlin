@@ -4,9 +4,9 @@ This project is an effort to try to adapt the Anet ET4 motherboard and display f
 Pin mapping is below.
 Anyone can contribute to completing this project, even Anet! ;).
 
--- Current status --
+## Current status
 
- Working:
+### Working:
   - XYZ Steppers
   - Extruder
   - SD Card: Maybe problems with SD insertion detection.
@@ -14,26 +14,26 @@ Anyone can contribute to completing this project, even Anet! ;).
   - TFT
   - Filament runout detector: Needs testing.
 
- Not working:
+### Not working:
   - EEPROM using onboard WINBOND memory chip.
   - PowerLoss: Needed board pin identification.
   - PC/SD firmware load/update: There is no bootloader currently. Best option would be use stocl ET4 bootloader.
  
- To take a look:
+### To take a look:
   - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
 
---- BUILD/INSTALLATION ---
+## BUILD/INSTALLATION
 
   DISCLAIMER: Not for production use. This is an unfinished project and under development. I am not responsible for what may happen to the motherboard or printer. Use only at your own risk.
 
 Currently you can only flash this firmware using a flasher (stlink, jlink, bmp etc).
 
-Before flashing this firmware:</br>
+### Before flashing this firmware:</br>
 I highly recommend making a backup of your firmware. At least your bootlaoder (addresses from 0x08000000 to 0x08010000). This way, you can always recover the stock firmware by:</br>
   1. flashing the bootloader backup on the same addresses (0x08000000 - 0x8010000)</br>
   2. flashing any of the available Anet firmwares from address 0x08010000.</br>
  
-Flashing this firmware:</br>
+### Flashing this firmware:</br>
 This firmware lacks of bootloader, so you have to flash it from address 0x8000000.
   1. Download or clone this repo.
   2. Make sure to modify your config.h and config_adv.h according to your ET4 model (ET4, ET4 PRO, ET4+, ...)
@@ -43,7 +43,7 @@ This firmware lacks of bootloader, so you have to flash it from address 0x800000
   
 You can connect with pronterface to corresponding com port @115200bps.
 
---- HARDWARE ---
+## HARDWARE
 
 MCU: STM32F407VGT6 ARM CORTEX M4 => https://www.st.com/resource/en/datasheet/dm00037051.pdf</br>
 DRIVERS: TMC2208 (silent) / A4988 (noisy)</br>
@@ -61,7 +61,7 @@ XL2596S -5.0E1 83296: STEP DOWN DC CONVERTER 3A/150KHZ</br>
 LCD: ST7789V | STP320240_0280E2T (40P/1,5): ST7789 (YT280S008)  => https://a.aliexpress.com/_dV4Bghv | https://www.crystalfontz.com/controllers/Sitronix/ST7789V/470/</br>
 TOUCH: XPT2046 => https://ldm-systems.ru/f/doc/catalog/HY-TFT-2,8/XPT2046.pdf</br>
 
---- PIN MAPPING ---
+## PIN MAPPING
 
 E-STEP => PB9</br>
 E-DIR => PB8</br>
@@ -136,7 +136,7 @@ P2_8_LCD_29_DB12 => PE7</br>
 P2_9_LCD_32_DB15 => PE10</br>
 P2_10_LCD_31_DB14 => PE9</br>
 
-# Resources
+## Resources
 
 [ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)</br>
 [ET4 Board and specs](https://es.aliexpress.com/item/4000571722465.html?spm=a2g0o.productlist.0.0.5c647634dDFWSV&algo_pvid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7&algo_expid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7-2&btsid=0ab6f83115911132482433653e39a1&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_)

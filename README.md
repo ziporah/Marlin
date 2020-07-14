@@ -9,14 +9,14 @@ Anyone can contribute to completing this project, even Anet! ;).
 ### Working:
   - XYZ Steppers
   - Extruder
-  - SD Card: Maybe problems with SD insertion detection.
+  - SD Card
   - USB comunication / pronterface
   - TFT
-  - Filament runout detector: Needs testing.
+  - Filament runout detector. Sensor works, but not tested on real case.
   - EEPROM
 
 ### On progress:
-  - PowerLoss detection: Needed board pin identification, if exists. Could work without this pin definition. Enable [POWER_LOSS_RECOVERY](https://marlinfw.org/docs/gcode/M413.html) on config.h
+  - PowerLoss detection: Needed board pin identification (if really exists). Could work without this pin definition. Enable [POWER_LOSS_RECOVERY](https://marlinfw.org/docs/gcode/M413.html) on config.h
   - PC/SD firmware load/update: There is no bootloader currently. Best option would be use stocl ET4 bootloader.
  
 ### To take a look:
@@ -28,11 +28,15 @@ Anyone can contribute to completing this project, even Anet! ;).
 
 Currently you can only flash this firmware using a flasher (stlink, jlink, bmp etc).
 
-### Before flashing this firmware:</br>
-I highly recommend making a backup of your firmware. At least your bootlaoder (addresses from 0x08000000 to 0x08010000). This way, you can always recover the stock firmware by:</br>
+### Before flashing this firmware (optional, but recommended):</br>
+
+I recommend making a backup of your firmware. At least your bootlaoder (addresses from 0x08000000 to 0x08010000). This way, you can always recover/return to stock firmware by:</br>
   1. flashing the bootloader backup on the same addresses (0x08000000 - 0x8010000)</br>
   2. flashing any of the available Anet firmwares from address 0x08010000.</br>
- 
+
+If you don't perform this step, and, just in case of brick, there are copies of stock firmware ET4 releases and bootloader below on resources section.
+
+
 ### Flashing this firmware:</br>
 
 There are several tutorials available for [stlink](https://www.cnx-software.com/2020/02/04/how-to-recover-from-a-bad-firmware-upgrade-on-anet-et4-3d-printer/)/[j-link](https://danielabalo.wordpress.com/flasear-anet-et4/) flashers. 
@@ -40,7 +44,8 @@ There are several tutorials available for [stlink](https://www.cnx-software.com/
 This firmware lacks of bootloader, so you have to flash it from address 0x8000000.
   1. Download or clone this repo.
   2. Make sure to modify your config.h and config_adv.h according to your ET4 model (ET4, ET4 PRO, ET4+, ...)
-     Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), bed size, ...
+     - Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), bed size, auto bed levelling sensor, etc, need to be defined.
+     - Provided config is for ET4/TM2208 model with attachable bed levelling sensor.
   3. Build project with platform io on VS code is recommended.
   4. Burn firmware with your flasher (.elf or .bin starting from 0x08000000 address).
 

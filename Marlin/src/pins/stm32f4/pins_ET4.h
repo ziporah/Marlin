@@ -36,12 +36,13 @@
 #define X_STOP_PIN                          PC13 
 #define Y_STOP_PIN                          PE12
 #define Z_STOP_PIN                          PE11
+#define Z_MIN_PIN                   PC3
 
 //
 // Z Probe
 //
  #ifndef Z_MIN_PROBE_PIN
-   #define Z_MIN_PROBE_PIN                   PC2
+   #define Z_MIN_PROBE_PIN                   PC3
  #endif
 
 //
@@ -52,8 +53,15 @@
 #endif
 
 //
-// Power Loss Detection (Pending PIN)
+// Power Loss Detection
 //
+
+/**
+ *  Status: Pending PIN identification of connected Power loss detection circuit (if exists).
+ *  Notes: 
+ *    - Could work without POWER_LOSS_PIN, but increases read/writes to SD. Take care of wear levelling.
+ */
+
 //#ifndef POWER_LOSS_PIN
 //  #define POWER_LOSS_PIN                    ??
 //#endif
@@ -106,38 +114,24 @@
 //
 
 /**
- *  Status: Not Working/Testing
- *  Hardware: WINBOND W25Q128JVSQ (128M-bit) => https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf
- *  Notes: 
- *    - Copied config from another board. 
- *    - Throws Read/Write errors so far.
+ *  Status: Working.
+ *  Hardware: AT24C04C (ATMLH744 04CM) 4 Kb
  */
 
-//#define SPI_EEPROM
-//#define CUSTOM_SPI_PINS
-//#define FLASH_EEPROM_EMULATION
-//#define SPI_MODULE 2
-
-#if ENABLED(SPI_EEPROM)
-  // WINBOND W25Q128JVSQ (128M-bit)
-  #define SPI_CHAN_EEPROM1      1
-  #define SPI_EEPROM1_CS        PB12   
-  #define EEPROM_SCK            PB13
-  #define EEPROM_MISO           PB14
-  #define EEPROM_MOSI           PB15
-  #define EEPROM_PAGE_SIZE      0x1000U                     // 4KB (from datasheet)
-  //#undef E2END
-  //#define E2END                 16UL * (EEPROM_PAGE_SIZE)   // Limit to 64KB for now...
-  # define MARLIN_EEPROM_SIZE   16UL * (EEPROM_PAGE_SIZE)   // Limit to 64KB for now...
-#elif ENABLED(FLASH_EEPROM_EMULATION)
-  // SoC Flash (framework-arduinoststm32-maple/STM32F1/libraries/EEPROM/EEPROM.h)
-  #define EEPROM_START_ADDRESS (0x8000000UL + (512 * 1024) - 2 * EEPROM_PAGE_SIZE)
-  #define EEPROM_PAGE_SIZE     (0x800U)     // 2KB, but will use 2x more (4KB)
-  #define E2END (EEPROM_PAGE_SIZE - 1)
-#else
-  #define MARLIN_EEPROM_SIZE 0x800U 
-  //#define E2END (0x7FFU) // On SD, Limit to 2KB, require this amount of RAM
+// Use one of these or SDCard-based Emulation will be used
+#if NO_EEPROM_SELECTED
+  //#define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
+  //#define FLASH_EEPROM_EMULATION                // Use Flash-based EEPROM emulation
+  #define I2C_EEPROM                              // Use I2C EEPROM onbiard IC (4KB)
 #endif
+
+#if ENABLED(FLASH_EEPROM_EMULATION)
+  // Decrease delays and flash wear by spreading writes across the
+  // 128 kB sector allocated for EEPROM emulation.
+  #define FLASH_EEPROM_LEVELING
+#elif ENABLED(I2C_EEPROM)
+  #define MARLIN_EEPROM_SIZE 0x1000                 // 4KB
+#endif  
 
 //
 // LCD
@@ -182,10 +176,9 @@
  */
 
 #define SDIO_SUPPORT
-#define SDSUPPORT
 
 #ifndef SDCARD_CONNECTION
-  #define SDCARD_CONNECTION                  ONBOARD
+  #define SDCARD_CONNECTION                 CUSTOM_CABLE
 #endif
 
 #if ENABLED(SDSUPPORT)
@@ -195,5 +188,8 @@
   #define SDIO_D3_PIN                         PC11
   #define SDIO_CK_PIN                         PC12
   #define SDIO_CMD_PIN                        PD2
-  #define SD_DETECT_PIN                       PD3
+
+  #ifndef SD_DETECT_PIN  
+    #define SD_DETECT_PIN                       PD3
+  #endif
 #endif

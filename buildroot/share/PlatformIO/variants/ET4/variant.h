@@ -274,14 +274,14 @@ extern "C" {
 // Below SPI and I2C definitions already done in the core
 // Could be redefined here if differs from the default one
 // SPI Definitions
-//#define PIN_SPI_SS              10 // Default for Arduino connector compatibility
-//#define PIN_SPI_MOSI            11 // Default for Arduino connector compatibility
-//#define PIN_SPI_MISO            12 // Default for Arduino connector compatibility
-//#define PIN_SPI_SCK             13 // Default for Arduino connector compatibility
+#define PIN_SPI_SS                 8
+#define PIN_SPI_MOSI              11
+#define PIN_SPI_MISO              10
+#define PIN_SPI_SCK                9
 
 // I2C Definitions
-//#define PIN_WIRE_SDA            14 // Default for Arduino connector compatibility
-//#define PIN_WIRE_SCL            15 // Default for Arduino connector compatibility
+#define PIN_WIRE_SDA               7
+#define PIN_WIRE_SCL               6
 
 // I2C timing definitions (optional), avoid time spent to compute if defined
 // * I2C_TIMING_SM for Standard Mode (100kHz)
@@ -325,7 +325,7 @@ extern "C" {
 
 // SD card slot Definitions
 // SD detect signal can be defined if required
-//#define SD_DETECT_PIN           x
+#define SD_DETECT_PIN           PD3
 // SD Read/Write timeout, default value defined in STM32SD library
 //#define SD_DATATIMEOUT          x
 

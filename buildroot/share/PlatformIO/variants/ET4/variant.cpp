@@ -193,9 +193,23 @@ const PinName digitalPin[] = {
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 /**
   * @brief  System Clock Configuration
+  *         The system Clock is configured as follow :
+  *            System Clock source            = PLL (HSE)
+  *            SYSCLK(Hz)                     = 168000000
+  *            HCLK(Hz)                       = 168000000
+  *            AHB Prescaler                  = 1
+  *            APB1 Prescaler                 = 4
+  *            APB2 Prescaler                 = 2
+  *            HSI Frequency(Hz)              = 16000000
+  *            PLL_M                          = 4
+  *            PLL_N                          = 168
+  *            PLL_P                          = 2
+  *            PLL_Q                          = 4
+  *            VDD(V)                         = 3.3
+  *            Main regulator output voltage  = Scale2 mode
+  *            Flash Latency(WS)              = 2
   * @param  None
   * @retval None
   */
@@ -216,10 +230,10 @@ WEAK void SystemClock_Config() {
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 8;
-  RCC_OscInitStruct.PLL.PLLN = 336;
+  RCC_OscInitStruct.PLL.PLLM = 4;
+  RCC_OscInitStruct.PLL.PLLN = 168;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 7;
+  RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
     _Error_Handler(__FILE__, __LINE__);
   }

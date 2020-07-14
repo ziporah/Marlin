@@ -13,11 +13,10 @@ Anyone can contribute to completing this project, even Anet! ;).
   - USB comunication / pronterface
   - TFT
   - Filament runout detector: Needs testing.
-  - EEPROM SDCARD emulation: Needs testenig.
+  - EEPROM
 
-### Not working / on progress:
-  - EEPROM using onboard WINBOND memory chip.
-  - PowerLoss: Needed board pin identification.
+### On progress:
+  - PowerLoss detection: Needed board pin identification, if exists. Could work without this pin definition. Enable [POWER_LOSS_RECOVERY](https://marlinfw.org/docs/gcode/M413.html) on config.h
   - PC/SD firmware load/update: There is no bootloader currently. Best option would be use stocl ET4 bootloader.
  
 ### To take a look:
@@ -35,6 +34,9 @@ I highly recommend making a backup of your firmware. At least your bootlaoder (a
   2. flashing any of the available Anet firmwares from address 0x08010000.</br>
  
 ### Flashing this firmware:</br>
+
+There are several tutorials available for [stlink](https://www.cnx-software.com/2020/02/04/how-to-recover-from-a-bad-firmware-upgrade-on-anet-et4-3d-printer/)/[j-link](https://danielabalo.wordpress.com/flasear-anet-et4/) flashers. 
+
 This firmware lacks of bootloader, so you have to flash it from address 0x8000000.
   1. Download or clone this repo.
   2. Make sure to modify your config.h and config_adv.h according to your ET4 model (ET4, ET4 PRO, ET4+, ...)
@@ -49,18 +51,19 @@ You can connect with pronterface to corresponding com port @115200bps.
 MCU: STM32F407VGT6 ARM CORTEX M4 => https://www.st.com/resource/en/datasheet/dm00037051.pdf</br>
 DRIVERS: TMC2208 (silent) / A4988 (noisy)</br>
 USB TO SERIAL CONVERTER: CH340G => https://www.mpja.com/download/35227cpdata.pdf</br>
-MOSFETS (BED/HOTEND): G90N04</br>
-CLK: JF8.000 (MCU EXT CLK)</br>
-CLK: JF12.000 (USB-UART CLK)</br>
 FLASH: WINBOND W25Q128JVSQ (128M-bit) Serial Flash memory => https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf</br>
-??: 293 ST69834</br>
+EEPROM: AT24C04C (ATMLH744 04CM) 4 Kb =>https://datasheet.lcsc.com/szlcsc/1809192313_Microchip-Tech-AT24C04C-SSHM-T_C6205.pdf</br>
+LCD: ST7789V | STP320240_0280E2T (40P/1,5): ST7789 (YT280S008)  => https://a.aliexpress.com/_dV4Bghv | https://www.crystalfontz.com/controllers/Sitronix/ST7789V/470/</br>
+TOUCH: XPT2046 => https://ldm-systems.ru/f/doc/catalog/HY-TFT-2,8/XPT2046.pdf</br>
+MOSFETS (BED/HOTEND): G90N04</br>
+CLK: JF8.000 (8MHZ MCU EXT CLK)</br>
+CLK: JF12.000 (12 MHZ USB-UART CLK)</br>
 SS56: SCHOTTKY DIODE</br>
 AMS1117 3.3 DN811: REGULATOR</br>
 030N06: MOSFETs</br>
 A19T: TRANSISTOR</br>
 XL2596S -5.0E1 83296: STEP DOWN DC CONVERTER 3A/150KHZ</br>
-LCD: ST7789V | STP320240_0280E2T (40P/1,5): ST7789 (YT280S008)  => https://a.aliexpress.com/_dV4Bghv | https://www.crystalfontz.com/controllers/Sitronix/ST7789V/470/</br>
-TOUCH: XPT2046 => https://ldm-systems.ru/f/doc/catalog/HY-TFT-2,8/XPT2046.pdf</br>
+??: 293 STG9834</br>
 
 ## PIN MAPPING
 
@@ -93,7 +96,7 @@ LAY_FAN => PE3</br>
 END_CONTROL => PA0</br>
 BED_CONTROL => PE2</br>
 </br>
-LV_DET => PC2</br>
+LV_DET => PC3</br>
 MAT_DET1 => PA2</br>
 </br>
 SDIO_D2 => PC10</br>
@@ -114,6 +117,11 @@ WINBOND_CS => PB12</br>
 WINBOND_DO => PB14</br>
 WINBOND_DI => PB15</br>
 WINBOND_CLK => PB13</br>
+</br>
+EEPROM_A1 => GND</br>
+EEPROM_A2 => GND</br>
+EEPROM_SDA => PB11</br>
+EEPROM_SCL => PB10</br>
 </br>
 P1_1_LCD_9_CSX => PD7</br>
 P1_2_LCD_11_WRX => PD5</br>

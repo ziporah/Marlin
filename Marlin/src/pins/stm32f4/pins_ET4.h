@@ -115,14 +115,14 @@
 
 /**
  *  Status: Working.
- *  Hardware: AT24C04C (ATMLH744 04CM) 4 Kb
+ *  Hardware: AT24C04C (ATMLH744 04CM) 4 Kb => http://ww1.microchip.com/downloads/en/DeviceDoc/AT24C04C-AT24C08C-I2C-Compatible-%20Two-Wire-Serial-EEPROM-4-Kbit-8-Kbit-20006127A.pdf
  */
 
 // Use one of these or SDCard-based Emulation will be used
 #if NO_EEPROM_SELECTED
   //#define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
   #define FLASH_EEPROM_EMULATION                // Use Flash-based EEPROM emulation
-  //#define I2C_EEPROM                              // Use I2C EEPROM onbiard IC (4KB)
+  //#define I2C_EEPROM                            // Use I2C EEPROM onboard IC (4KB)
 #endif
 
 #if ENABLED(FLASH_EEPROM_EMULATION)
@@ -130,7 +130,9 @@
   // 128 kB sector allocated for EEPROM emulation.
   #define FLASH_EEPROM_LEVELING
 #elif ENABLED(I2C_EEPROM)
-  #define MARLIN_EEPROM_SIZE 0x1000                 // 4KB
+  //#define EEPROM_DEVICE_ADDRESS             0xA0
+  #define MARLIN_EEPROM_SIZE                0x1000                // 4KB (From Datasheet)
+  //#define EEPROM_PAGE_SIZE                  0x10                  // 16B (From Datasheet)
 #endif  
 
 //

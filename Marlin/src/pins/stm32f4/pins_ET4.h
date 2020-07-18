@@ -100,13 +100,23 @@
 #define TEMP_BED_PIN                        PA4
 
 //
-// Heaters / Fans
+// Heaters
 //
 
 #define HEATER_0_PIN                        PA0
 #define HEATER_BED_PIN                      PE2
-#define FAN_PIN                             PE3
-#define FAN1_PIN                            PE1
+
+//
+// Fans
+//
+
+#define FAN_PIN                             PE3   // Layer fan
+#define FAN1_PIN                            PE1   // Hotend fan
+
+
+#ifndef E0_AUTO_FAN_PIN
+  #define E0_AUTO_FAN_PIN                   FAN1_PIN
+#endif
 
 //
 // Persistent Storage

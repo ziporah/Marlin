@@ -5,6 +5,8 @@ Anyone can contribute to completing this project. Feedback is also welcome.
 
 ## Current status
 
+It seems to be a bug related with menu items title. Will be fixed ASAP. 
+
 ### Working:
   - XYZ Steppers
   - Extruder

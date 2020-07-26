@@ -48,6 +48,7 @@
 //
 // Filament Runout Sensor
 //
+
 #ifndef FIL_RUNOUT_PIN
   #define FIL_RUNOUT_PIN                    PA2
 #endif
@@ -56,15 +57,9 @@
 // Power Loss Detection
 //
 
-/**
- *  Status: Pending PIN identification of connected Power loss detection circuit (if exists).
- *  Notes: 
- *    - Could work without POWER_LOSS_PIN, but increases read/writes to SD. Take care of wear levelling.
- */
-
-//#ifndef POWER_LOSS_PIN
-//  #define POWER_LOSS_PIN                    ??
-//#endif
+#ifndef POWER_LOSS_PIN
+  #define POWER_LOSS_PIN                    PA8
+#endif
 
 //
 // LED PIN
@@ -132,7 +127,7 @@
 #if NO_EEPROM_SELECTED
   //#define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
   #define FLASH_EEPROM_EMULATION                // Use Flash-based EEPROM emulation
-  //#define I2C_EEPROM                            // Use I2C EEPROM onboard IC (4KB)
+  //#define I2C_EEPROM                            // Use I2C EEPROM onboard IC (Size 4KB, PageSize 16B)
 #endif
 
 #if ENABLED(FLASH_EEPROM_EMULATION)
@@ -140,7 +135,12 @@
   // 128 kB sector allocated for EEPROM emulation.
   #define FLASH_EEPROM_LEVELING
 #elif ENABLED(I2C_EEPROM)
-  //#define EEPROM_DEVICE_ADDRESS             0xA0
+  #ifndef IIC_BL24CXX_EEPROM
+    #define IIC_BL24CXX_EEPROM
+  #endif
+  #define IIC_EEPROM_SDA                    PB11
+  #define IIC_EEPROM_SCL                    PB10
+  #define EEPROM_DEVICE_ADDRESS             0xA0
   #define MARLIN_EEPROM_SIZE                0x1000                // 4KB (From Datasheet)
   //#define EEPROM_PAGE_SIZE                  0x10                  // 16B (From Datasheet)
 #endif  
@@ -154,7 +154,7 @@
  * Hardware: IC ST7789V | STP320240_0280E2T (40P/1,5): ST7789 (YT280S008)  => https://a.aliexpress.com/_dV4Bghv
  * Notes: 
  *  - Defined PINS: CSX, DCX, WRX, RESX, RDX, DB[8:15]
- *  - FSMC/DMA and 8080-8 inteface
+ *  - FSMC/DMA and 8080-8 interface
  */
 
 #define TFT_DRIVER                         ST7789

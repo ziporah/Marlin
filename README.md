@@ -1,8 +1,7 @@
 # Marlin for ET4
 
-This project is an effort to try to adapt the Anet ET4 motherboard and display for use with Marlin. It is based on the configuration of the BTT002.
-Pin mapping is below.
-Anyone can contribute to completing this project, even Anet! ;).
+This project is an effort to try to adapt the Anet ET4 motherboard and display for use with Marlin.
+Anyone can contribute to completing this project. Feedback is also welcome.
 
 ## Current status
 
@@ -12,12 +11,12 @@ Anyone can contribute to completing this project, even Anet! ;).
   - SD Card
   - USB comunication / pronterface
   - TFT
-  - Filament runout detector. Sensor works, but not tested on real case.
+  - Filament runout detector. Not tested on real case. Needs testing / feedback.
   - EEPROM
-
+  - PowerLoss. Not tested on real case. Needs testing / feedback. Pin identification provided by Anet.
+  
 ### On progress:
-  - PowerLoss detection: Needed board pin identification (if really exists). Could work without this pin definition. Enable [POWER_LOSS_RECOVERY](https://marlinfw.org/docs/gcode/M413.html) on config.h
-  - PC/SD firmware load/update: There is no bootloader currently. Best option would be use stocl ET4 bootloader.
+  - PC/SD firmware load/update: There is no bootloader currently. Best option would be use stock ET4 bootloader.
  
 ### To take a look:
   - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
@@ -35,7 +34,6 @@ I recommend making a backup of your firmware. At least your bootlaoder (addresse
   2. flashing any of the available Anet firmwares from address 0x08010000.</br>
 
 If you don't perform this step, and, just in case of brick, there are copies of stock firmware ET4 releases and bootloader below on resources section.
-
 
 ### Flashing this firmware:</br>
 
@@ -68,7 +66,7 @@ AMS1117 3.3 DN811: REGULATOR</br>
 030N06: MOSFETs</br>
 A19T: TRANSISTOR</br>
 XL2596S -5.0E1 83296: STEP DOWN DC CONVERTER 3A/150KHZ</br>
-??: 293 STG9834</br>
+293 STG9834 / LM293DT: 2x Voltage comparators => https://www.st.com/resource/en/datasheet/lm193.pdf</br>
 
 ## PIN MAPPING
 
@@ -103,6 +101,7 @@ BED_CONTROL => PE2</br>
 </br>
 LV_DET => PC3</br>
 MAT_DET1 => PA2</br>
+POWER_LOSS_DET => PA8 (provided by ANET)</br>
 </br>
 SDIO_D2 => PC10</br>
 SDIO_D3 => PC11</br>
@@ -155,6 +154,11 @@ P2_10_LCD_31_DB14 => PE9</br>
 [ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)</br>
 [ET4 Board and specs](https://es.aliexpress.com/item/4000571722465.html?spm=a2g0o.productlist.0.0.5c647634dDFWSV&algo_pvid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7&algo_expid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7-2&btsid=0ab6f83115911132482433653e39a1&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_)
 
+## Acknowledgements
+
+- To the mates of the [Telegram Anet ET4 spanish group](https://t.me/anetet4esp), specially to @Solidnon, who lent his board for testing when the project was not even started.
+- To @uwe and @mubes from Black Magic Probe team, and to Ebiroll (BMP/ESP32).
+- To all contributors and testers of this branch and, specially, of Marlin master branch.
 
 # Marlin 3D Printer Firmware
 

@@ -127,22 +127,18 @@
 #if NO_EEPROM_SELECTED
   //#define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
   #define FLASH_EEPROM_EMULATION                // Use Flash-based EEPROM emulation
-  //#define I2C_EEPROM                            // Use I2C EEPROM onboard IC (Size 4KB, PageSize 16B)
+  //#define IIC_BL24CXX_EEPROM                    // Use I2C EEPROM onboard IC (Size 4KB, PageSize 16B)
 #endif
 
 #if ENABLED(FLASH_EEPROM_EMULATION)
   // Decrease delays and flash wear by spreading writes across the
   // 128 kB sector allocated for EEPROM emulation.
   #define FLASH_EEPROM_LEVELING
-#elif ENABLED(I2C_EEPROM)
-  #ifndef IIC_BL24CXX_EEPROM
-    #define IIC_BL24CXX_EEPROM
-  #endif
+#elif ENABLED(IIC_BL24CXX_EEPROM)
   #define IIC_EEPROM_SDA                    PB11
   #define IIC_EEPROM_SCL                    PB10
   #define EEPROM_DEVICE_ADDRESS             0xA0
   #define MARLIN_EEPROM_SIZE                0x1000                // 4KB (From Datasheet)
-  //#define EEPROM_PAGE_SIZE                  0x10                  // 16B (From Datasheet)
 #endif  
 
 //

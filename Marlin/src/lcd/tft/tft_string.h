@@ -16,18 +16,20 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
 
-#include "../../inc/MarlinConfig.h"
+#include <stdint.h>
 
-#include "fontdata/fontdata_ISO10646_1.h"
-#include "fontdata/fontdata_10x20.h"
-#include "fontdata/helvetica_12_bold.h"
-#include "fontdata/helvetica_14.h"
-#include "fontdata/helvetica_18.h"
+extern const uint8_t ISO10646_1_5x7[];
+extern const uint8_t font10x20[];
+
+extern const uint8_t Helvetica12Bold[];
+
+extern const uint8_t Helvetica14[], Helvetica14_symbols[];
+extern const uint8_t Helvetica18[], Helvetica18_symbols[];
 
 #define NO_GLYPH          0xFF
 
@@ -84,11 +86,11 @@ class TFT_String {
     static void set();
     static void add(uint8_t character) { add_character(character); eol(); }
     static void add(uint8_t *string) { while (*string) { add_character(*string++); } eol(); }
-    static void add(uint8_t *string, uint8_t index);
+    static void add(uint8_t *string, uint8_t index, uint8_t *itemString = NULL);
     static void set(uint8_t *string) { set(); add(string); };
-    static void set(uint8_t *string, uint8_t index) { set(); add(string, index); };
+    static void set(uint8_t *string, uint8_t index, const char *itemString = NULL) { set(); add(string, index, (uint8_t *)itemString); };
     static inline void set(const char *string) { set((uint8_t *)string); }
-    static inline void set(const char *string, uint8_t index) { set((uint8_t *)string, index); }
+    static inline void set(const char *string, uint8_t index, const char *itemString = NULL) { set((uint8_t *)string, index, itemString); }
     static inline void add(const char *string) { add((uint8_t *)string); }
 
     static void trim(uint8_t character = 0x20);

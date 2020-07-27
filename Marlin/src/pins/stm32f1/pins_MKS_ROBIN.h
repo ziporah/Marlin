@@ -43,7 +43,7 @@
 //
 // Enable SD EEPROM to prevent infinite boot loop
 //
-#if defined(ARDUINO_ARCH_STM32)
+#ifdef ARDUINO_ARCH_STM32
   #define FLASH_EEPROM_EMULATION
   #define EEPROM_PAGE_SIZE     (0x800U) // 2KB
   #define EEPROM_START_ADDRESS (0x8000000UL + (STM32_FLASH_SIZE) * 1024UL - (EEPROM_PAGE_SIZE) * 2UL)
@@ -144,17 +144,17 @@
    * Setting an 'LCD_RESET_PIN' may cause a flicker when entering the LCD menu
    * because Marlin uses the reset as a failsafe to revive a glitchy LCD.
    */
-  //#define LCD_RESET_PIN                     PF6
-  #define LCD_BACKLIGHT_PIN                   PG11
-  #define FSMC_CS_PIN                         PG12  // NE4
-  #define FSMC_RS_PIN                         PF0   // A0
+  //#define LCD_RESET_PIN                   PF6
+  #define LCD_BACKLIGHT_PIN                 PG11
+  #define FSMC_CS_PIN                       PG12  // NE4
+  #define FSMC_RS_PIN                       PF0   // A0
 
-  #define LCD_USE_DMA_FSMC                          // Use DMA transfers to send data to the TFT
-  #define FSMC_DMA_DEV                        DMA2
-  #define FSMC_DMA_CHANNEL                 DMA_CH5
+  #define LCD_USE_DMA_FSMC                        // Use DMA transfers to send data to the TFT
+  #define FSMC_DMA_DEV                      DMA2
+  #define FSMC_DMA_CHANNEL               DMA_CH5
 #endif
 
-#if ENABLED(TOUCH_SCREEN) || ENABLED(TOUCH_BUTTONS)
+#if EITHER(TOUCH_SCREEN, TOUCH_BUTTONS)
   #define TOUCH_CS_PIN                      PB1   // SPI2_NSS
   #define TOUCH_SCK_PIN                     PB13  // SPI2_SCK
   #define TOUCH_MISO_PIN                    PB14  // SPI2_MISO

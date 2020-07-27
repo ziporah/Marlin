@@ -13,7 +13,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 
@@ -51,7 +51,7 @@ touch_calibration_t Touch::calibration;
 #endif
 
 void Touch::init() {
-  TERN_(TOUCH_SCREEN_CALIBRATION, calibration_reset());
+  calibration_reset();
   reset();
   io.Init();
 }

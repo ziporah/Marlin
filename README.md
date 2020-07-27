@@ -22,7 +22,11 @@ Anyone can contribute to completing this project. Feedback is also welcome.
   - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
  
 ### Known bugs:
-  - Some users are reporting printing problems through SD. I have enabled issues tab. Please, try to be detailed regarding use cases and other useful information. To get help on creating an issue see [this](https://docs.github.com/en/enterprise/2.15/user/articles/creating-an-issue)
+
+I have enabled issues tab. Please, try to be detailed regarding use cases and other useful information like hardware and software context. 
+To get help on creating an issue see [this](https://docs.github.com/en/enterprise/2.15/user/articles/creating-an-issue).
+
+- Some users report printing problems through SD. Pending for more user feedback. Recommended actions include: slow format SD/change SD, try another slicer software.
 
 ## BUILD/INSTALLATION
 

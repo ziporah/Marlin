@@ -203,10 +203,10 @@ extern "C" {
   *            APB1 Prescaler                 = 4
   *            APB2 Prescaler                 = 2
   *            HSI Frequency(Hz)              = 16000000
-  *            PLL_M                          = 4
-  *            PLL_N                          = 168
+  *            PLL_M                          = 8
+  *            PLL_N                          = 336
   *            PLL_P                          = 2
-  *            PLL_Q                          = 4
+  *            PLL_Q                          = 7
   *            VDD(V)                         = 3.3
   *            Main regulator output voltage  = Scale2 mode
   *            Flash Latency(WS)              = 2
@@ -230,10 +230,10 @@ WEAK void SystemClock_Config() {
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 168;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 336;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
+  RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
     _Error_Handler(__FILE__, __LINE__);
   }

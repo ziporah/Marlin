@@ -183,21 +183,31 @@
  * Status: Working.
  */
 
-#define SDIO_SUPPORT
+//#define SDIO_SUPPORT
 
 #ifndef SDCARD_CONNECTION
   #define SDCARD_CONNECTION                 CUSTOM_CABLE
 #endif
 
 #if ENABLED(SDSUPPORT)
-  #define SDIO_D0_PIN                         PC8
-  #define SDIO_D1_PIN                         PC9
-  #define SDIO_D2_PIN                         PC10
-  #define SDIO_D3_PIN                         PC11
-  #define SDIO_CK_PIN                         PC12
-  #define SDIO_CMD_PIN                        PD2
+ 
+  #define SDIO_D0_PIN                       PC8
+  #define SDIO_D1_PIN                       PC9
+  #define SDIO_D2_PIN                       PC10
+  #define SDIO_D3_PIN                       PC11
+  #define SDIO_CK_PIN                       PC12
+  #define SDIO_CMD_PIN                      PD2
+
+  #if DISABLED(SDIO_SUPPORT)
+    #define SOFTWARE_SPI
+    #define SDSS                            SDIO_D3_PIN
+    #define SCK_PIN                         SDIO_CK_PIN
+    #define MISO_PIN                        SDIO_D0_PIN
+    #define MOSI_PIN                        SDIO_CMD_PIN
+  #endif
 
   #ifndef SD_DETECT_PIN  
-    #define SD_DETECT_PIN                       PD3
+    #define SD_DETECT_PIN                   PD3
   #endif
+
 #endif

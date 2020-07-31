@@ -26,8 +26,6 @@ Anyone can contribute to completing this project. Feedback is also welcome.
 I have enabled issues tab. Please, try to be detailed regarding use cases and other useful information like hardware and software context. 
 To get help on creating an issue see [this](https://docs.github.com/en/enterprise/2.15/user/articles/creating-an-issue).
 
-- Some users report printing problems through SD. Pending for more user feedback. Recommended actions include: slow format SD/change SD, try another slicer software.
-
 ## BUILD/INSTALLATION
 
   DISCLAIMER: Not for production use. This is an unfinished project and under development. I am not responsible for what may happen to the motherboard or printer. Use only at your own risk.

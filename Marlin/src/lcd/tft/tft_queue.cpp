@@ -218,6 +218,7 @@ void TFT_Queue::set_background(uint16_t color) {
 
   parameters->type = CANVAS_SET_BACKGROUND;
   parameters->color = littleBIG(color);
+  parameters->color = color;
 
   end_of_queue += sizeof(parametersCanvasBackground_t);
   task_parameters->count++;
@@ -233,6 +234,7 @@ void TFT_Queue::add_text(uint16_t x, uint16_t y, uint16_t color, uint8_t *string
   parameters->x = x;
   parameters->y = y;
   parameters->color = littleBIG(color);
+  parameters->color = color;
   parameters->stringLength = 0;
   parameters->maxWidth = maxWidth;
 
@@ -276,6 +278,8 @@ void TFT_Queue::add_image(int16_t x, int16_t y, MarlinImage image, uint16_t *col
   while (number_of_color--) {
     tmp = *colors++;
     *color++ = littleBIG(tmp);
+  while (number_of_color--) {
+    *color++ = *colors++;
   }
 
   end_of_queue = (uint8_t *)color;
@@ -327,6 +331,7 @@ void TFT_Queue::add_bar(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
   parameters->width = width;
   parameters->height = height;
   parameters->color = littleBIG(color);
+  parameters->color = color;
 
   end_of_queue += sizeof(parametersCanvasBar_t);
   task_parameters->count++;
@@ -342,6 +347,7 @@ void TFT_Queue::add_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t h
   parameters->width = width;
   parameters->height = height;
   parameters->color = littleBIG(color);
+  parameters->color = color;
 
   end_of_queue += sizeof(parametersCanvasRectangle_t);
   task_parameters->count++;

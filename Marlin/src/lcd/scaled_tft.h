@@ -21,18 +21,30 @@
  */
 #pragma once
 
-#if ENABLED(USE_USB_COMPOSITE)
-  //#warning "SD_CHECK_AND_RETRY isn't needed with USE_USB_COMPOSITE."
-  #undef SD_CHECK_AND_RETRY
+#include "../inc/MarlinConfig.h"
+
+#ifndef FSMC_UPSCALE
+  #define FSMC_UPSCALE 2
 #endif
 
-#if HAS_GRAPHICAL_TFT
-  #error "Sorry! TFT displays are not available for HAL/STM32F1."
+#ifndef LCD_FULL_PIXEL_WIDTH
+  #if FSMC_UPSCALE == 3
+    #define LCD_FULL_PIXEL_WIDTH 480
+  #else
+    #define LCD_FULL_PIXEL_WIDTH 320
+  #endif
+#endif
+#ifndef LCD_FULL_PIXEL_HEIGHT
+  #if FSMC_UPSCALE == 3
+    #define LCD_FULL_PIXEL_HEIGHT 320
+  #else
+    #define LCD_FULL_PIXEL_HEIGHT 240
+  #endif
 #endif
 
-// This platform has 'touch/xpt2046', not 'tft/xpt2046'
-#if ENABLED(TOUCH_SCREEN)
-  #undef TOUCH_SCREEN
-  #undef TOUCH_SCREEN_CALIBRATION
-  #define HAS_TOUCH_XPT2046 1
+#ifndef LCD_PIXEL_OFFSET_X
+  #define LCD_PIXEL_OFFSET_X 48
+#endif
+#ifndef LCD_PIXEL_OFFSET_Y
+  #define LCD_PIXEL_OFFSET_Y 48
 #endif

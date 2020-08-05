@@ -33,7 +33,7 @@
 #include "ili9341.h"
 #include "ili9488.h"
 
-#define DEBUG_GRAPHICAL_TFT
+//#define DEBUG_GRAPHICAL_TFT
 #define DEBUG_OUT ENABLED(DEBUG_GRAPHICAL_TFT)
 #include "../../core/debug_out.h"
 

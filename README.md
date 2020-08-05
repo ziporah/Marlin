@@ -11,9 +11,9 @@ Anyone can contribute to completing this project. Feedback is also welcome.
   - SD Card
   - USB comunication / pronterface
   - TFT
-  - Filament runout detector. Not tested on real case. Needs testing / feedback.
+  - Filament runout detector.
   - EEPROM
-  - PowerLoss. Not tested on real case. Needs testing / feedback. Pin identification provided by Anet.
+  - Powerloss. See issues tab. 
   
 ### On progress:
   - PC/SD firmware load/update: There is no bootloader currently. Best option would be use stock ET4 bootloader.

@@ -2209,10 +2209,10 @@
 
   #define TOUCH_SCREEN_CALIBRATION
 
-  //#define XPT2046_X_CALIBRATION -11838
-  //#define XPT2046_Y_CALIBRATION   8776
-  //#define XPT2046_X_OFFSET         333
-  //#define XPT2046_Y_OFFSET         -17
+  #define XPT2046_X_CALIBRATION -11838
+  #define XPT2046_Y_CALIBRATION   8776
+  #define XPT2046_X_OFFSET         333
+  #define XPT2046_Y_OFFSET         -17
 #endif
 
 //

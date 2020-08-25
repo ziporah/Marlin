@@ -143,7 +143,7 @@ void TFT::set_window(uint16_t Xmin, uint16_t Ymin, uint16_t Xmax, uint16_t Ymax)
       break;
     case R61505:    // R61505U    320x240
     case ILI9328:   // ILI9328    320x240
-      io.DataTransferBegin(DATASIZE_16BIT);
+      io.DataTransferBegin(DATASIZE_8BIT);
 
       // Mind the mess: with landscape screen orientation 'Horizontal' is Y and 'Vertical' is X
       io.WriteReg(ILI9328_HASTART);
@@ -184,7 +184,7 @@ void TFT::write_esc_sequence(const uint16_t *Sequence) {
     data = *Sequence++;
     if (data == 0x7FFF) return;
     if (data == 0xFFFF)
-      io.WriteData(0xFFFF);
+      io.WriteData(0xFF);
     else if (data & 0x8000)
       delay(data & 0x7FFF);
     else if ((data & 0xFF00) == 0)

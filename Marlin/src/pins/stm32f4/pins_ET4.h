@@ -25,7 +25,7 @@
 #ifndef TARGET_STM32F4
   #error "Oops! Select an STM32F4 board in 'Tools > Board.'"
 #elif HOTENDS > 1 || E_STEPPERS > 1
-  #error "ET4 supports up to 1 hotends / E-steppers."
+  #error "ET4/5 supports up to 1 hotends / E-steppers."
 #endif
 
 #define BOARD_INFO_NAME "ET4"
@@ -36,13 +36,13 @@
 #define X_STOP_PIN                          PC13 
 #define Y_STOP_PIN                          PE12
 #define Z_STOP_PIN                          PE11
-#define Z_MIN_PIN                   PC3
+#define Z_MIN_PIN                           PC3
 
 //
 // Z Probe
 //
  #ifndef Z_MIN_PROBE_PIN
-   #define Z_MIN_PROBE_PIN                   PC3
+   #define Z_MIN_PROBE_PIN                  PC3
  #endif
 
 //
@@ -153,10 +153,10 @@
  *  - FSMC/DMA and 8080-8 interface
  */
 
-#define TFT_DRIVER                         ST7789
-#define TFT_RESET_PIN                      PE6
-#define TFT_CS_PIN                         PD7
-#define TFT_RS_PIN                         PD13
+#define TFT_DRIVER                          AUTO
+#define TFT_RESET_PIN                       PE6
+#define TFT_CS_PIN                          PD7
+#define TFT_RS_PIN                          PD13
 
 //
 // Touch Screen

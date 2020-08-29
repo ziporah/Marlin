@@ -93,13 +93,13 @@ You have two options to install/update this firmware:
 - **Option B >** If you are going to use the firmware **with** bootloader:
   - You need to flash the bootloader from address **0x08000000**. This step needs to be performed just once, so, you can skip this step if you have already done. You can [download](https://github.com/davidtgbe/openblt/releases) the precompiled bootloader binary, or, you can build it yourself from source code using [STM32 Cube IDE](https://www.st.com/en/development-tools/stm32cubeide.html).
   - After flashing the BL, you can disconnect your flasher, it will not be used anymore.
-  - Now it is time to install de firmware. BL will assist us in this task, so, you must use an SD-CARD or USB-PC/microboot to flash perform this step.
+  - Now it is time to install de firmware. BL will assist us in this task, so, you must use an SD-CARD **OR** USB-PC/microboot to flash perform this step.
     - SD-CARD -> Copy file **firmware.srec** from build folder (step 1.5) in the root folder of the SD-CARD.
     - USB-PC/microboot -> 
       - Download microboot software. It is uploaded to github and you can download it from [here](https://github.com/davidtgbe/openblt/archive/master.zip).
       - Extract the .zip file you have just downloaded and browse to the folder **openblt/Host/**. You will find the **microboot.exe** executable.
       - Connect your printer via USB to your PC and get the COM port number.
-      - Open **microboot.exe** executable and configure COM port number and speed (115200) through **settings** button. Then, click **browse** and search for the file **firmware.srec**. You will find it in the output build folder (step 1.4).
+      - Open **microboot.exe** executable and configure COM port number and speed (115200) through **settings** button. Then, click **browse** and search for the file **firmware.srec**. You will find it in the output build folder (step 1.5).
   - Switch off and then switch on the printer to begin the installation/update process.
   - Screen will be white during the process, and, after 3 or 4 minutes, Marlin will appear on the screen.
 

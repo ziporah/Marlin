@@ -16,7 +16,7 @@ Anyone can contribute to completing this project. Feedback is also welcome.
   - Powerloss. See issues tab. 
   
 ### On progress:
-  - PC/SD firmware load/update: I've managed to get working OpenBLT, (PC-USB / SD / DFU) updates. Still testing and looking for a way to flash first time without flasher. Even so, a hardware flasher is very recommended for its price.
+  - PC/SD firmware load/update: I've managed to get working OpenBLT, (PC-USB / SD / DFU) updates. I'm still looking for a way to do a first time flash without flasher. Even so, a hardware flasher is very recommended for its price.
  
 ### To take a look:
   - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4/5 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
@@ -30,137 +30,199 @@ To get help on creating an issue see [this](https://docs.github.com/en/enterpris
 
   DISCLAIMER: Not for production use. This is an unfinished project and under development. I am not responsible for what may happen to the motherboard or printer. Use only at your own risk.
 
-Currently you can only flash this firmware using a flasher (stlink, jlink, bmp etc).
+Currently you can only flash this firmware using a flasher (stlink, jlink, bmp etc), **unless** you already have flashed the openblt bootloader (BL).
 
-### Before flashing this firmware (optional, but recommended):</br>
+## Before flashing this firmware (optional, but recommended):  
 
-I recommend making a backup of your firmware. At least your bootlaoder (addresses from 0x08000000 to 0x08010000). This way, you can always recover/return to stock firmware by:</br>
-  1. flashing the bootloader backup on the same addresses (0x08000000 - 0x8010000)</br>
-  2. flashing any of the available Anet firmwares from address 0x08010000.</br>
+First time, I recommend making a backup of your firmware. At least your bootlaoder (addresses from 0x08000000 to 0x08010000). This way, you can always recover/return to stock firmware by:  
+  1. flashing the bootloader backup, from address 0x08000000 to 0x8010000.  
+  2. flashing any of the available Anet firmwares from address 0x08010000 onwards.  
 
 If you don't perform this step, and, just in case of brick, there are copies of stock firmware ET4 releases and bootloader below on resources section.
 
-### Flashing this firmware:</br>
+## Considerations
 
-There are several tutorials available for [stlink](https://www.cnx-software.com/2020/02/04/how-to-recover-from-a-bad-firmware-upgrade-on-anet-et4-3d-printer/)/[j-link](https://danielabalo.wordpress.com/flasear-anet-et4/) flashers. 
+You have two options to install/update this firmware:
+- **Option A** > ***Not using a bootloader (BL)*** 
+  - Firmware (Marlin) starts directly when you switch on the printer.
+  - You need the flasher to perform firmware installation/updates.
+- **Option B** > ***Using a bootloader along with this firmware***
+  - When you switch on the printer, bootloader (BL) starts first, and, if there are not any firmware updates incomming (on SD or through PC-USB), it loads the firmware (Marlin).
+  - You need the flasher to **flash the BL** the first time. Once it is flashed, you **MUST** install/update your FW through your **BL**, either by **SD card or USB-PC**. You **MUST NOT** use the **flasher** to install/update the FW, as it will not work.
 
-This firmware lacks of bootloader, so you have to flash it from address **0x8000000**.
+## Step One: Building from sources
 
-Fast instructions are below. For more in depth instructions (spanish) click [here](/docs/Tutorials/build-es.md).
+1. Download or clone this [repo](https://github.com/davidtgbe/Marlin/archive/bugfix-2.0.x.zip).
 
-  1. Download or clone this [repo](https://github.com/davidtgbe/Marlin/archive/bugfix-2.0.x.zip).
-  2. Make sure to modify your config.h and config_adv.h according to your ET4/5 model (ET4, ET5, ET4 PRO, ET4+, ...)
-     - Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), bed and Z size, auto bed levelling sensor, etc, need to be defined.
-     - Provided config is for a regular ET4/TMC2208 model with attachable bed levelling sensor.
-     - Fine tunning could be needed (e.g. XYZE [steps](https://marlinfw.org/docs/gcode/M092.html) or offsets).
-  3. Build project with platform.io on VS code is recommended. There are also many [tutorials](https://3daddict.com/marlin-2-0-beginner-guide-for-3d-printer-firmware/). You can follow them, ADAPTING steps to build this project.
-  4. Burn firmware with your flasher (.elf or .bin starting from 0x08000000 address).
+2. Make sure to modify your config.h and config_adv.h according to your ET4/5 model (ET4, ET5, ET4 PRO, ET4+, ...)
+ - Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), TFT resolution, XYZ size and steps, homming offsets, auto bed levelling sensor, etc, need to be defined according to your model.
+ - Provided configuration.h and configuration_adv.h files correspond to a regular ET4/TMC2208 model with attachable bed levelling sensor.
+ - Fine tunning could be needed (e.g. XYZE [steps](https://marlinfw.org/docs/gcode/M092.html) or offsets).
 
-You can connect with pronterface to corresponding com port @115200bps.
+3. If you are going to take **option A** from considerations section (not using a BL), **you can skip this step**. Otherwise, you need to offset the firmware to give some room to the BL. That is achieved by uncommenting a line in **platform.ini** file. It is commented by default:
+```
+#
+# Anet ET4
+#
+[env:ET4]
+...
+...
+# Uncomment next line to build for use with bootloader. Offset depends on BL used.
+# board_build.offset  = 0x10000
+...
+...
+```
+Change "**# board_build.offset  = 0x10000**" to
+```
+board_build.offset = 0x10000
+```
+4. Build project with platform.io on VS code is recommended. There are many tutorials on the web. You can follow them, **ADAPTING** steps to build this project. This one [here](/docs/Tutorials/build-es.md) in spanish made by me, and just another one [here](https://3daddict.com/marlin-2-0-beginner-guide-for-3d-printer-firmware/).
+5. If everything went wel, you will find binary files firmware.[elf|bin|srec], generated in the build output folder:
+```
+<src_code_base_folder>\.pio\build\ET4\
+```
+
+## Step two Flashing/Installing the firmware  
+
+There are several tutorials available for [stlink](https://www.cnx-software.com/2020/02/04/how-to-recover-from-a-bad-firmware-upgrade-on-anet-et4-3d-printer/)/[j-link](https://danielabalo.wordpress.com/flasear-anet-et4/) flashers. Take a look to them.
+
+You have two options to install/update this firmware:
+- **Option A >** If you are going to use the firmware **without** bootloader:
+  -  It is assumed you have built your firmware with no offset (step 1.3 skipped) .
+  -  As the firmware has been built without offset, and lacks of a bootloader, you have to just flash your firmware binary file (step 1.5) with your preferred flasher from address **0x8000000**.
+- **Option B >** If you are going to use the firmware **with** bootloader:
+  - You need to flash the bootloader from address **0x08000000**. This step needs to be performed just once, so, you can skip this step if you have already done. You can [download](https://github.com/davidtgbe/openblt/releases) the precompiled bootloader binary, or, you can build it yourself from source code using [STM32 Cube IDE](https://www.st.com/en/development-tools/stm32cubeide.html).
+  - After flashing the BL, you can disconnect your flasher, it will not be used anymore.
+  - Now it is time to install de firmware. BL will assist us in this task, so, you must use an SD-CARD or USB-PC/microboot to flash perform this step.
+    - SD-CARD -> Copy file **firmware.srec** from build folder (step 1.5) in the root folder of the SD-CARD.
+    - USB-PC/microboot -> 
+      - Download microboot software. It is uploaded to github and you can download it from [here](https://github.com/davidtgbe/openblt/archive/master.zip).
+      - Extract the .zip file you have just downloaded and browse to the folder **openblt/Host/**. You will find the **microboot.exe** executable.
+      - Connect your printer via USB to your PC and get the COM port number.
+      - Open **microboot.exe** executable and configure COM port number and speed (115200) through **settings** button. Then, click **browse** and search for the file **firmware.srec**. You will find it in the output build folder (step 1.4).
+  - Switch off and then switch on the printer to begin the installation/update process.
+  - Screen will be white during the process, and, after 3 or 4 minutes, Marlin will appear on the screen.
+
+You can connect with pronterface to corresponding COM port @115200bps.
+
+### Flashing considerations
+
+If you use bootloader, you **must not use the flasher to install/update the FW**. The bootloader inserts a special **checksum** in the firmware during the install/update process. Bootloader **checks** for this checksum before jumping to the firmware. If you use your **flasher** to install the firmware, this **checksum is not written**, and, therefore, bootloader **will not boot** the firmware, and **your screen will be white**.  
+
+\****White screen means means, printer is on bootloader mode, waiting for incoming installation/update***.
+
+**DFU** mode (Device Firmware Upgrade) has been added to the bootloader. You can enter to it just by **pressing touchscreen while switching printer on**. By using DFU mode you can even update your bootloader without needing a hardware flasher, just using the PC-USB and the right [tool](https://www.st.com/en/development-tools/flasher-stm32.html).
+
+
+*More info:*  
+[SD-CARD update process](https://www.feaser.com/openblt/doku.php?id=manual:sdcard_demo)  
+[PC-USB update process](https://www.feaser.com/openblt/doku.php?id=manual:microboot)
+
 
 ## HARDWARE
 
-MCU: STM32F407VGT6 ARM CORTEX M4 => https://www.st.com/resource/en/datasheet/dm00037051.pdf</br>
-DRIVERS: TMC2208 (silent) / A4988 (noisy)</br>
-USB TO SERIAL CONVERTER: CH340G => https://www.mpja.com/download/35227cpdata.pdf</br>
-FLASH: WINBOND W25Q128JVSQ (128M-bit) Serial Flash memory => https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf</br>
-EEPROM: AT24C04C (ATMLH744 04CM) 4 Kb =>https://datasheet.lcsc.com/szlcsc/1809192313_Microchip-Tech-AT24C04C-SSHM-T_C6205.pdf</br>
-LCD: ST7789V | STP320240_0280E2T (40P/1,5): ST7789 (YT280S008)  => https://a.aliexpress.com/_dV4Bghv | https://www.crystalfontz.com/controllers/Sitronix/ST7789V/470/</br>
-TOUCH: XPT2046 => https://ldm-systems.ru/f/doc/catalog/HY-TFT-2,8/XPT2046.pdf</br>
-MOSFETS (BED/HOTEND): G90N04</br>
-CLK: JF8.000 (8MHZ MCU EXT CLK)</br>
-CLK: JF12.000 (12 MHZ USB-UART CLK)</br>
-SS56: SCHOTTKY DIODE</br>
-AMS1117 3.3 DN811: REGULATOR</br>
-030N06: MOSFETs</br>
-A19T: TRANSISTOR</br>
-XL2596S -5.0E1 83296: STEP DOWN DC CONVERTER 3A/150KHZ</br>
-293 STG9834 / LM293DT: 2x Voltage comparators => https://www.st.com/resource/en/datasheet/lm193.pdf</br>
+MCU: [STM32F407VGT6 ARM CORTEX M4](https://www.st.com/resource/en/datasheet/dm00037051.pdf)  
+DRIVERS: [TMC2208 (silent)](https://www.trinamic.com/fileadmin/assets/Products/ICs_Documents/TMC220x_TMC2224_datasheet_Rev1.09.pdf) / [A4988 (noisy)](https://www.pololu.com/file/0J450/a4988_DMOS_microstepping_driver_with_translator.pdf)  
+USB TO SERIAL CONVERTER: [CH340G](https://www.mpja.com/download/35227cpdata.pdf)  
+SERIAL FLASH MEMORY: [WINBOND W25Q128JVSQ (128M-bit)](https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf)  
+EEPROM: [AT24C04C (ATMLH744 04CM) 4 Kb](https://datasheet.lcsc.com/szlcsc/1809192313_Microchip-Tech-AT24C04C-SSHM-T_C6205.pdf)  
+LCD ET4: [ST7789 @ 320x240 | STP320240_0280E2T (40P/1,5): ST7789 (YT280S008)](https://a.aliexpress.com/_dV4Bghv) | [ST7789V](https://www.crystalfontz.com/controllers/Sitronix/ST7789V/470/)  
+LCD ET5: [ST7796S @ 480x320](https://www.displayfuture.com/Display/datasheet/controller/ST7796s.pdf)  
+TOUCH: [XPT2046](https://ldm-systems.ru/f/doc/catalog/HY-TFT-2,8/XPT2046.pdf)  
+MOSFETS (BED/HOTEND): [G90N04](https://datasheet.lcsc.com/szlcsc/1811281041_GOFORD-G90N04_C337510.pdf)  
+CLK: JF8.000 (8MHZ MCU EXT CLK)  
+CLK: JF12.000 (12 MHZ USB-UART CLK)  
+SCHOTTKY DIODE: [SS56](https://www.taitroncomponents.com/catalog/Datasheet/SS52.pdf)  
+REGULATOR: [AMS1117 3.3 DN811](http://www.advanced-monolithic.com/pdf/ds1117.pdf)  
+MOSFET: [030N06](https://www.alldatasheet.es/view.jsp?Searchword=030N06&sField=3)  
+MOSFET: [A19T](https://datasheetspdf.com/pdf/1401820/UMW/A19T/1)  
+STEP DOWN DC CONVERTER: [XL2596S -5.0E1 83296 ](https://datasheetspdf.com/datasheet/XL2596.html)  
+VOLTAGE COMPARATOR: [293 STG9834 / LM293DT](https://www.st.com/resource/en/datasheet/lm193.pdf)  
 
 ## PIN MAPPING
 
-E-STEP => PB9</br>
-E-DIR => PB8</br>
-E-ENABLE => PE0</br>
-</br>
-X-STEP => PB6</br>
-X-DIR => PB5</br>
-X-ENABLE => PB7</br>
-</br>
-Y-STEP => PB3</br>
-Y-DIR => PD6</br>
-Y-ENABLE => PB4</br>
-</br>
-Z-STEP => PA12</br>
-Z-DIR => PA11</br>
-Z-ENABLE => PA15</br>
-</br>
-Y-LIMIT => PE12</br>
-X-LIMIT => PC13</br>
-Z-LIMIT => PE11</br>
-</br>
-TEMP_BED => PA4</br>
-TEMP_EXB1 => PA1</br>
-</br>
-END_FAN => PE1</br>
-LAY_FAN => PE3</br>
-</br>
-END_CONTROL => PA0</br>
-BED_CONTROL => PE2</br>
-</br>
-LV_DET => PC3</br>
-MAT_DET1 => PA2</br>
-POWER_LOSS_DET => PA8 (provided by ANET)</br>
-</br>
-SDIO_D2 => PC10</br>
-SDIO_D3 => PC11</br>
-SDIO_CMD => PD2</br>
-SDIO_CLK => PC12</br>
-SDIO_D0 => PC8</br>
-SDIO_D1 => PC9</br>
-TF_DET => PD3</br>
-</br>
-USB_USART1_TX => PA9</br>
-USB_USART1_RX => PA10</br>
-</br>
-RESET_BTN => NRST (14)</br>
-LED_D2 => PD12</br>
-</br>
-WINBOND_CS => PB12</br>
-WINBOND_DO => PB14</br>
-WINBOND_DI => PB15</br>
-WINBOND_CLK => PB13</br>
-</br>
-EEPROM_A1 => GND</br>
-EEPROM_A2 => GND</br>
-EEPROM_SDA => PB11</br>
-EEPROM_SCL => PB10</br>
-</br>
-P1_1_LCD_9_CSX => PD7</br>
-P1_2_LCD_11_WRX => PD5</br>
-P1_3_TOUCH_15_/CS => PB2</br>
-P1_4_TOUCH_14_DIN => PE5</br>
-P1_5_TOUCH_12_DOUT => PE4</br>
-P1_6_TOUCH_16_DCLK => PB0</br>
-P1_7_TOUCH_11_/PENIRQ => PB1</br>
-P1_8_LCD_12_RDX => PD4</br>
-P1_9 => GND</br>
-P1_10 => 3.3V</br>
-</br>
-P2_1_LCD_15_RESX => PE6</br>
-P2_2_LCD_10_DCX => PD13</br>
-P2_3_LCD_26_DB9 => PD15</br>
-P2_4_LCD_25_DB8 => PD14</br>
-P2_5_LCD_28_DB11 => PD1</br>
-P2_6_LCD_27_DB10 => PD0</br>
-P2_7_LCD_30_DB13 => PE8</br>
-P2_8_LCD_29_DB12 => PE7</br>
-P2_9_LCD_32_DB15 => PE10</br>
-P2_10_LCD_31_DB14 => PE9</br>
+E-STEP => PB9  
+E-DIR => PB8  
+E-ENABLE => PE0  
+  
+X-STEP => PB6  
+X-DIR => PB5  
+X-ENABLE => PB7  
+  
+Y-STEP => PB3  
+Y-DIR => PD6  
+Y-ENABLE => PB4  
+  
+Z-STEP => PA12  
+Z-DIR => PA11  
+Z-ENABLE => PA15  
+  
+Y-LIMIT => PE12  
+X-LIMIT => PC13  
+Z-LIMIT => PE11  
+  
+TEMP_BED => PA4  
+TEMP_EXB1 => PA1  
+  
+END_FAN => PE1  
+LAY_FAN => PE3  
+  
+END_CONTROL => PA0  
+BED_CONTROL => PE2  
+  
+LV_DET => PC3  
+MAT_DET1 => PA2  
+POWER_LOSS_DET => PA8 (provided by ANET)  
+  
+SDIO_D2 => PC10  
+SDIO_D3 => PC11  
+SDIO_CMD => PD2  
+SDIO_CLK => PC12  
+SDIO_D0 => PC8  
+SDIO_D1 => PC9  
+TF_DET => PD3  
+  
+USB_USART1_TX => PA9  
+USB_USART1_RX => PA10  
+  
+RESET_BTN => NRST (14)  
+LED_D2 => PD12  
+  
+WINBOND_CS => PB12  
+WINBOND_DO => PB14  
+WINBOND_DI => PB15  
+WINBOND_CLK => PB13  
+  
+EEPROM_A1 => GND  
+EEPROM_A2 => GND  
+EEPROM_SDA => PB11  
+EEPROM_SCL => PB10  
+  
+P1_1_LCD_9_CSX => PD7  
+P1_2_LCD_11_WRX => PD5  
+P1_3_TOUCH_15_/CS => PB2  
+P1_4_TOUCH_14_DIN => PE5  
+P1_5_TOUCH_12_DOUT => PE4  
+P1_6_TOUCH_16_DCLK => PB0  
+P1_7_TOUCH_11_/PENIRQ => PB1  
+P1_8_LCD_12_RDX => PD4  
+P1_9 => GND  
+P1_10 => 3.3V  
+  
+P2_1_LCD_15_RESX => PE6  
+P2_2_LCD_10_DCX => PD13  
+P2_3_LCD_26_DB9 => PD15  
+P2_4_LCD_25_DB8 => PD14  
+P2_5_LCD_28_DB11 => PD1  
+P2_6_LCD_27_DB10 => PD0  
+P2_7_LCD_30_DB13 => PE8  
+P2_8_LCD_29_DB12 => PE7  
+P2_9_LCD_32_DB15 => PE10  
+P2_10_LCD_31_DB14 => PE9  
 
 ## Resources
 
-[ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)</br>
+[ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)  
 [ET4 Board and specs](https://es.aliexpress.com/item/4000571722465.html?spm=a2g0o.productlist.0.0.5c647634dDFWSV&algo_pvid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7&algo_expid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7-2&btsid=0ab6f83115911132482433653e39a1&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_)
 
 ## Acknowledgements

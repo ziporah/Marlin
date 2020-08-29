@@ -255,15 +255,15 @@ void MarlinUI::draw_status_screen() {
   // coordinates
   tft.canvas(4, 103, 312, 24);
   tft.set_background(COLOR_BACKGROUND);
-  tft.add_rectangle(0, 0, 312, 24, COLOR_AXIS_HOMED);
+  tft.add_rectangle(0, 0, 312, 24, COLOR_AXIS_FRAME);
 
   uint16_t color;
   uint16_t offset;
   bool is_homed;
 
-  tft.add_text( 10, 3, COLOR_AXIS_HOMED , "X");
-  tft.add_text(127, 3, COLOR_AXIS_HOMED , "Y");
-  tft.add_text(219, 3, COLOR_AXIS_HOMED , "Z");
+  tft.add_text( 10, 3, COLOR_AXIS_FRAME , "X");
+  tft.add_text(127, 3, COLOR_AXIS_FRAME , "Y");
+  tft.add_text(219, 3, COLOR_AXIS_FRAME , "Z");
 
   is_homed = TEST(axis_homed, X_AXIS);
   tft_string.set(blink & !is_homed ? "?" : ftostr4sign(LOGICAL_X_POSITION(current_position.x)));
@@ -336,7 +336,7 @@ void MarlinUI::draw_status_screen() {
 
   #if ENABLED(TOUCH_SCREEN)
     add_control(256, 130, menu_main, imgSettings);
-    TERN_(SDSUPPORT, add_control(0, 130, menu_media, imgSD, card.isMounted() && !printingIsActive(), COLOR_CONTROL_ENABLED, card.isMounted() && printingIsActive() ? COLOR_BUSY : COLOR_CONTROL_DISABLED));
+    TERN_(SDSUPPORT, add_control(0, 130, menu_media, imgSD, card.isMounted() && !printingIsActive(), COLOR_SD_ENABLED, card.isMounted() && printingIsActive() ? COLOR_BUSY : COLOR_SD_DISABLED));
   #endif
 }
 
@@ -346,7 +346,7 @@ void MenuItem_static::draw(const uint8_t row, PGM_P const pstr, const uint8_t st
   tft_string.set(pstr, itemIndex, itemString);
   if (valstr)
     tft_string.add(valstr);
-  tft.add_text(tft_string.center(TFT_WIDTH), MENU_TEXT_Y_OFFSET, COLOR_YELLOW, tft_string);
+  tft.add_text(tft_string.center(TFT_WIDTH), MENU_TEXT_Y_OFFSET, COLOR_WHITE, tft_string);
 }
 
 // Draw a generic menu item with pre_char (if selected) and post_char
@@ -442,9 +442,9 @@ void MenuEditItemBase::draw_edit_screen(PGM_P const pstr, const char* const valu
   }
 
   #if ENABLED(TOUCH_SCREEN)
-    add_control(32, 176, DECREASE, imgDecrease);
-    add_control(224, 176, INCREASE, imgIncrease);
-    add_control(128, 176, CLICK, imgConfirm);
+    add_control(32, 176, DECREASE, imgDecrease, true, COLOR_INCREASE);
+    add_control(224, 176, INCREASE, imgIncrease, true, COLOR_DECREASE);
+    add_control(128, 176, CLICK, imgConfirm, true, COLOR_TICK);
   #endif
 }
 

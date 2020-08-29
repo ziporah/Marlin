@@ -93,7 +93,7 @@ You have two options to install/update this firmware:
 - **Option B >** If you are going to use the firmware **with** bootloader:
   - You need to flash the bootloader from address **0x08000000**. This step needs to be performed just once, so, you can skip this step if you have already done. You can [download](https://github.com/davidtgbe/openblt/releases) the precompiled bootloader binary, or, you can build it yourself from source code using [STM32 Cube IDE](https://www.st.com/en/development-tools/stm32cubeide.html).
   - After flashing the BL, you can disconnect your flasher, it will not be used anymore.
-  - Now it is time to install de firmware. BL will assist us in this task, so, you must use an SD-CARD **OR** USB-PC/microboot to flash perform this step.
+  - Now it is time to install de firmware. BL will assist us in this task, so, you must use a SD-CARD **OR** USB-PC/microboot to flash perform this step.
     - SD-CARD -> Copy file **firmware.srec** from build folder (step 1.5) in the root folder of the SD-CARD.
     - USB-PC/microboot -> 
       - Download microboot software. It is uploaded to github and you can download it from [here](https://github.com/davidtgbe/openblt/archive/master.zip).
@@ -109,7 +109,7 @@ You can connect with pronterface to corresponding COM port @115200bps.
 
 If you use bootloader, you **must not use the flasher to install/update the FW**. The bootloader inserts a special **checksum** in the firmware during the install/update process. Bootloader **checks** for this checksum before jumping to the firmware. If you use your **flasher** to install the firmware, this **checksum is not written**, and, therefore, bootloader **will not boot** the firmware, and **your screen will be white**.  
 
-\****White screen means means, printer is on bootloader mode, waiting for incoming installation/update***.
+\****White screen ***usually*** means, printer is on bootloader mode, waiting for incoming installation/update***.
 
 **DFU** mode (Device Firmware Upgrade) has been added to the bootloader. You can enter to it just by **pressing touchscreen while switching printer on**. By using DFU mode you can even update your bootloader without needing a hardware flasher, just using the PC-USB and the right [tool](https://www.st.com/en/development-tools/flasher-stm32.html).
 

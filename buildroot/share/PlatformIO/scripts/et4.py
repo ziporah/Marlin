@@ -15,6 +15,6 @@ env.AddPostAction(
     "$BUILD_DIR/${PROGNAME}.elf",
     env.VerboseAction(" ".join([
         "$OBJCOPY", "-O", "srec", 
-        "$BUILD_DIR/${PROGNAME}.elf", "$BUILD_DIR/${PROGNAME}.srec"
+        "\"$BUILD_DIR/${PROGNAME}.elf\"", "\"$BUILD_DIR/${PROGNAME}.srec\""
     ]), "Building " + join("$BUILD_DIR","${PROGNAME}.srec"))
 )

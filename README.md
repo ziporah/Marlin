@@ -52,12 +52,12 @@ You have two options to install/update this firmware:
 
 ## Step One: Building from sources
 
-1. Download or clone this [repo](https://github.com/davidtgbe/Marlin/archive/bugfix-2.0.x.zip).
+1. Download or clone this [repo](https://github.com/davidtgbe/Marlin/archive/bugfix-2.0.x.zip). Ensure you built the firmware with **latest sources**, as firmware.srec file will not be built with older sources.
 
 2. Make sure to modify your config.h and config_adv.h according to your ET4/5 model (ET4, ET5, ET4 PRO, ET4+, ...)
- - Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), TFT resolution, XYZ size and steps, homming offsets, auto bed levelling sensor, etc, need to be defined according to your model.
+ - Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), TFT resolution, XYZ size, homming offsets, auto bed levelling sensor, etc, need to be defined according to your model.
  - Provided configuration.h and configuration_adv.h files correspond to a regular ET4/TMC2208 model with attachable bed levelling sensor.
- - Fine tunning could be needed (e.g. XYZE [steps](https://marlinfw.org/docs/gcode/M092.html) or offsets).
+ - Fine tunning could be needed (e.g. XYZE [steps](https://marlinfw.org/docs/gcode/M092.html) or offsets, Jerks, JD, LA, etc).
 
 3. If you are going to take **option A** from considerations section (not using a BL), **you can skip this step**. Otherwise, you need to offset the firmware to give some room to the BL. That is achieved by uncommenting a line in **platform.ini** file. It is commented by default:
 ```
@@ -77,7 +77,7 @@ Change "**# board_build.offset  = 0x10000**" to
 board_build.offset = 0x10000
 ```
 4. Build project with platform.io on VS code is recommended. There are many tutorials on the web. You can follow them, **ADAPTING** steps to build this project. This one [here](/docs/Tutorials/build-es.md) in spanish made by me, and just another one [here](https://3daddict.com/marlin-2-0-beginner-guide-for-3d-printer-firmware/).
-5. If everything went wel, you will find binary files firmware.[elf|bin|srec], generated in the build output folder:
+5. If everything went well, you will find binary files firmware.[elf|bin|srec], generated in the build output folder:
 ```
 <src_code_base_folder>\.pio\build\ET4\
 ```
@@ -91,7 +91,7 @@ You have two options to install/update this firmware:
   -  It is assumed you have built your firmware with no offset (step 1.3 skipped) .
   -  As the firmware has been built without offset, and lacks of a bootloader, you have to just flash your firmware binary file (step 1.5) with your preferred flasher from address **0x8000000**.
 - **Option B >** If you are going to use the firmware **with** bootloader:
-  - You need to flash the bootloader from address **0x08000000**. This step needs to be performed just once, so, you can skip this step if you have already done. You can [download](https://github.com/davidtgbe/openblt/releases) the precompiled bootloader binary, or, you can build it yourself from source code using [STM32 Cube IDE](https://www.st.com/en/development-tools/stm32cubeide.html).
+  - You need to flash the bootloader from address **0x08000000**. This step needs to be performed just once, so, you can skip this step if you have already done so. You can download the precompiled bootloader [binary](https://github.com/davidtgbe/openblt/releases), or, you can build it yourself from source code using [STM32 Cube IDE](https://www.st.com/en/development-tools/stm32cubeide.html).
   - After flashing the BL, you can disconnect your flasher, it will not be used anymore.
   - Now it is time to install de firmware. BL will assist us in this task, so, you must use a SD-CARD **OR** USB-PC/microboot to flash perform this step.
     - SD-CARD -> Copy file **firmware.srec** from build folder (step 1.5) in the root folder of the SD-CARD.

@@ -21,27 +21,37 @@
  */
 #pragma once
 
-#include <stdint.h>
+#include "../../lcd/ultralcd.h"
 
-//
-// Utility functions to create and print hex strings as nybble, byte, and word.
-//
+class Password {
+public:
+  static bool is_set, is_locked;
+  static uint32_t value, value_entry;
 
-FORCE_INLINE char hex_nybble(const uint8_t n) {
-  return (n & 0xF) + ((n & 0xF) < 10 ? '0' : 'A' - 10);
-}
-char* hex_byte(const uint8_t b);
-char* hex_word(const uint16_t w);
-char* hex_address(const void * const w);
+  Password() { is_locked = false; }
 
-void print_hex_nybble(const uint8_t n);
-void print_hex_byte(const uint8_t b);
-void print_hex_word(const uint16_t w);
-void print_hex_address(const void * const w);
-void print_hex_long(const uint32_t w, const char delimiter);
+  static void lock_machine();
 
-#ifdef CPU_32_BIT
-  typedef uint32_t ptr_int_t;
-#else
-  typedef uint16_t ptr_int_t;
-#endif
+  #if HAS_LCD_MENU
+    static void access_menu_password();
+    static void authentication_check();
+    static void authentication_done();
+    static void media_gatekeeper();
+
+    private:
+    static void authenticate_user(const screenFunc_t, const screenFunc_t);
+    static void menu_password();
+    static void menu_password_entry();
+    static void screen_password_entry();
+    static void screen_set_password();
+    static void start_over();
+
+    static void digit_entered();
+    static void set_password_done();
+    static void menu_password_report();
+
+    static void remove_password();
+  #endif
+};
+
+extern Password password;

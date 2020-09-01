@@ -2,6 +2,9 @@
  * Marlin 3D Printer Firmware
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
+ * Based on Sprinter and grbl.
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,30 +23,19 @@
 
 #include <stdint.h>
 
-// Relies on XPT2046-compatible mode of ADS7843,
-// hence no Z1 / Z2 measurements are possible.
+//
+// Utility functions to create and print hex strings as nybble, byte, and word.
+//
 
-#define XPT2046_DFR_MODE 0x00
-#define XPT2046_SER_MODE 0x04
-#define XPT2046_CONTROL  0x80
+FORCE_INLINE char hex_nybble(const uint8_t n) {
+  return (n & 0xF) + ((n & 0xF) < 10 ? '0' : 'A' - 10);
+}
+char* hex_byte(const uint8_t b);
+char* hex_word(const uint16_t w);
+char* hex_address(const void * const w);
 
-enum XPTCoordinate : uint8_t {
-  XPT2046_X  = 0x10,
-  XPT2046_Y  = 0x50,
-  XPT2046_Z1 = 0x30,
-  XPT2046_Z2 = 0x40
-};
-
-class XPT2046 {
-public:
-  static void init();
-  static uint8_t read_buttons();
-  bool getTouchPoint(uint16_t &x, uint16_t &y);
-  static bool isTouched();
-  inline void waitForRelease() { while (isTouched()) { /* nada */ } }
-  inline void waitForTouch(uint16_t &x, uint16_t &y) { while (!getTouchPoint(x, y)) { /* nada */ } }
-private:
-  static uint16_t getInTouch(const XPTCoordinate coordinate);
-};
-
-extern XPT2046 touch;
+void print_hex_nybble(const uint8_t n);
+void print_hex_byte(const uint8_t b);
+void print_hex_word(const uint16_t w);
+void print_hex_address(const void * const w);
+void print_hex_long(const uint32_t w, const char delimiter);

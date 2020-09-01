@@ -171,6 +171,7 @@
 #define BOARD_STB_11                  1508  // STB V1.1
 #define BOARD_AZTEEG_X1               1509  // Azteeg X1
 #define BOARD_ANET_10                 1510  // Anet 1.0 (Melzi clone)
+#define BOARD_ZMIB_V2                 1511  // ZoneStar ZMIB V2
 
 //
 // Other ATmega644P, ATmega644, ATmega1284P
@@ -312,7 +313,8 @@
 #define BOARD_CHITU3D_V5              4031  // Chitu3D TronXY X5SA V5 Board
 #define BOARD_CHITU3D_V6              4032  // Chitu3D TronXY X5SA V5 Board
 #define BOARD_CREALITY_V4             4033  // Creality v4.x (STM32F103RE)
-#define BOARD_TRIGORILLA_PRO          4034  // Trigorilla Pro (STM32F103ZET6)
+#define BOARD_CREALITY_V427           4034  // Creality v4.2.7 (STM32F103RE)
+#define BOARD_TRIGORILLA_PRO          4035  // Trigorilla Pro (STM32F103ZET6)
 
 //
 // ARM Cortex-M4F
@@ -339,11 +341,13 @@
 #define BOARD_BTT_BTT002_V1_0         4211  // BigTreeTech BTT002 v1.0 (STM32F407VG)
 #define BOARD_BTT_GTR_V1_0            4212  // BigTreeTech GTR v1.0 (STM32F407IGT)
 #define BOARD_LERDGE_K                4213  // Lerdge K (STM32F407ZG)
-#define BOARD_LERDGE_X                4214  // Lerdge X (STM32F407VE)
-#define BOARD_VAKE403D                4215  // VAkE 403D (STM32F446VET6)
-#define BOARD_FYSETC_S6               4216  // FYSETC S6 board
-#define BOARD_FLYF407ZG               4217  // FLYF407ZG board (STM32F407ZG)
-#define BOARD_MKS_ROBIN2              4218  // MKS_ROBIN2 (STM32F407ZE)
+#define BOARD_LERDGE_S                4214  // Lerdge S (STM32F407VE)
+#define BOARD_LERDGE_X                4215  // Lerdge X (STM32F407VE)
+#define BOARD_VAKE403D                4216  // VAkE 403D (STM32F446VET6)
+#define BOARD_FYSETC_S6               4217  // FYSETC S6 board
+#define BOARD_FYSETC_S6_V2_0          4218  // FYSETC S6 v2.0 board
+#define BOARD_FLYF407ZG               4219  // FLYF407ZG board (STM32F407ZG)
+#define BOARD_MKS_ROBIN2              4220  // MKS_ROBIN2 (STM32F407ZE)
 #define BOARD_ET4                     4300  // ET4 (STM32F407VGT6)  
 
 //

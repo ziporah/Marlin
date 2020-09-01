@@ -2,9 +2,6 @@
  * Marlin 3D Printer Firmware
  * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
- * Based on Sprinter and grbl.
- * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -19,18 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+#pragma once
 
-#include "../inc/MarlinConfigPre.h"
+#include <stdint.h>
 
-#if ENABLED(BINARY_FILE_TRANSFER)
+class TouchButtons {
+public:
+  static void init();
+  static uint8_t read_buttons();
+};
 
-#include "../sd/cardreader.h"
-#include "binary_protocol.h"
-
-char* SDFileTransferProtocol::Packet::Open::data = nullptr;
-size_t SDFileTransferProtocol::data_waiting, SDFileTransferProtocol::transfer_timeout, SDFileTransferProtocol::idle_timeout;
-bool SDFileTransferProtocol::transfer_active, SDFileTransferProtocol::dummy_transfer, SDFileTransferProtocol::compression;
-
-BinaryStream binaryStream[NUM_SERIAL];
-
-#endif // BINARY_FILE_TRANSFER
+extern TouchButtons touch;

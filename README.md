@@ -72,7 +72,7 @@ You have two options to install/update this firmware:
 ...
 ...
 ```
-Change "**# board_build.offset  = 0x10000**" to
+Change "**#board_build.offset  = 0x10000**" to
 ```
 board_build.offset = 0x10000
 ```

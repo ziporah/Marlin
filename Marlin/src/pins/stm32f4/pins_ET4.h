@@ -22,7 +22,7 @@
 
 #pragma once
 
-#ifndef TARGET_STM32F4
+#ifndef STM32F4
   #error "Oops! Select an STM32F4 board in 'Tools > Board.'"
 #elif HOTENDS > 1 || E_STEPPERS > 1
   #error "ET4/5 supports up to 1 hotends / E-steppers."

@@ -23,10 +23,11 @@ This mod requires some hardware modifications that will void your warranty. I am
 There are no free exposed pins/expansion ports in the ET4/5 motherboard, so, we have to make do with what we have.
 
 If we take a look to the Et4 interconnection board
+
 ![pins-et4](media/pins-et4.jpg)
 
-
 And to the bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf)
+
 ![bltouch-specs](media/bltouch-specs.jpg)
 
 **It is clear we are going to need:**
@@ -37,23 +38,28 @@ And to the bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr
 ## Powering Bltouch
 
 **Bltouch needs to be feed with 5V**, so we have to connect the **step-down module** to **convert the 24V available on pin 2, to 5V**. We can use a step-down converter like this one
+
 ![down-converter](media/down-converter.jpg)
 
 And connect it as below
+
 ![down-converter-schematic](media/down-converter-schematic.jpg)
 
 ## Signals
 
 We can reuse **Z-Limit (pin 11) for Z-min**, and **auto-level (pin 3) for the servo signal**. However, as pin 3 is a sensor signal, it is designed as a pull-up.
+
 ![pull-up](media/pull-up.png)
 
 Resistor normaly sets input signal to VCC, and, when the switch closes, it sets input to GND. We need to turn the input into an output, so, we need to let te signal be controlled dynamically by the MCU, avoiding to be pulled up or down by passive components.
 For this purpose, we need to **remove capacitor and resistor**, which, for the auto-level signal, are serigrafiated on the motherboard as R40 and C3.
 
 Before desoldering
+
 ![pull-up](media/mb-with-cr.jpg)
 
 After desoldering
+
 ![pull-up](media/mb-without-cr.jpg)
 
 As I dont't have a hot air gun to desolder the components, I have used two soldering irons, one on each pad of the component at the same time, trying to imitate [this](https://es.aliexpress.com/item/33050513257.html). There are other techniques and better tools which are not the target of this tutorial. 
@@ -70,6 +76,7 @@ Once we have desoldered the resitor and capacitor, we need to wire all the stuff
 - Servo/Control (Pin 3) **<=>** Bltouch Orange wire
 
 We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.html) (you can buy them or do it yourself), or employ any other solution which allows us to **share an already used pin** (like pin 2 (24V)) in the interconnection board.
+
 ![jst-splitter](media/jst-splitter.jpg)
 
 You can take 24V and GND pins from whatever JST connector in the interconnection board. I would take it from BL or FAN, given the fact that the hotend JST tends to get burned as a lot of users had reported.

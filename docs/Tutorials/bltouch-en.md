@@ -2,7 +2,7 @@
 
 # How to install bltouch on Anet ET series 3D printers
 
-This tutorial covers the basic and necessary aspects to be able to install a bltouch in the Anet ET series. Aspects such as wiring will not be covered, leaving the user the solution that he deems most appropriate.
+This tutorial covers the basic and necessary aspects to be able to install a bltouch in the Anet ET series. Aspects such as wiring routing will not be covered, leaving the user the solution that he deems most appropriate.
 
 ## Disclaimer
 Not for production use. 
@@ -52,7 +52,7 @@ We can reuse **Z-Limit (pin 11) for Z-min**, and **auto-level (pin 3) for the se
 ![pull-up](media/pull-up.png)
 
 Resistor normaly sets input signal to VCC, and, when the switch closes, it sets input to GND. We need to turn the input into an output, so, we need to let te signal be controlled dynamically by the MCU, avoiding to be pulled up or down by passive components.
-For this purpose, we need to **remove capacitor and resistor**, which, for the auto-level signal, are serigrafiated on the motherboard as R40 and C3.
+For this purpose, we need to **remove capacitor and resistor**, which, for the auto-level signal, are serigrafiated on the motherboard as **R40** and **C37**.
 
 Before desoldering
 

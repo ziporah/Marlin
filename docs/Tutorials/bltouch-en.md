@@ -41,7 +41,7 @@ And to the bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr
 
 ![down-converter](media/down-converter.jpg)
 
-And connect it as below
+and connect it as below
 
 ![down-converter-schematic](media/down-converter-schematic.jpg)
 
@@ -52,7 +52,7 @@ We can reuse **Z-Limit (pin 11) for Z-min**, and **auto-level (pin 3) for the se
 ![pull-up](media/pull-up.png)
 
 Resistor normaly sets input signal to VCC, and, when the switch closes, it sets input to GND. We need to turn the input into an output, so, we need to let te signal be controlled dynamically by the MCU, avoiding to be pulled up or down by passive components.
-For this purpose, we need to **remove capacitor and resistor**, which, for the auto-level signal, are serigrafiated on the motherboard as **R40** and **C37**.
+For this purpose, we need to **remove capacitor and resistor**, which, for the auto-level (pin 3), are serigrafiated on the motherboard as R40 and C37.
 
 Before desoldering
 
@@ -66,35 +66,36 @@ As I dont't have a hot air gun to desolder the components, I have used two solde
 
 ## Wiring
 
-Once we have desoldered the resitor and capacitor, we need to wire all the stuff.
+Once we have desoldered the resitor and capacitor, we need to wire all the things up.
 
 **Connections Summary:**
 - Power GND (Pin 4/16) **<=>** (In -) Step down converter (Out -) **<=>** Bltouch Brown wire
 - Power VCC (Pin 2) **<=>** (In +) Step down converter (5V Out +) **<=>** Bltouch Red wire
 - Zmin (Pin 11) **<=>** Bltouch White wire
-- Zmin GND *(Pin 4/16) **<=>** Bltouch Black wire
+- Zmin GND (Pin 4/16) **<=>** Bltouch Black wire
 - Servo/Control (Pin 3) **<=>** Bltouch Orange wire
 
 We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.html) (you can buy them or do it yourself), or employ any other solution which allows us to **share an already used pin** (like pin 2 (24V)) in the interconnection board.
 
 ![jst-splitter](media/jst-splitter.jpg)
 
-You can take 24V and GND pins from whatever JST connector in the interconnection board. I would take it from BL or FAN, given the fact that the hotend JST tends to get burned as a lot of users had reported.
+You can take 24V and GND pins from whatever JST connector in the interconnection board. I would take 24V from BL or FAN connectors, since the hotend JST tends burn out as many users have reported.
 
-Bltouch signal GND and power GND, can be merged/shared. If you have interferences or mal functioning, use a standalone wire for each GND. 
+Bltouch GND points for signal and power can be merged/shared. If you have interferences or mal functioning, use a standalone wire for each GND. 
 
 ### **Note**
 **This is totally optional**. Usually, a port protection network would be placed between the signal pin and the bltouch to avoid GPIO damages in case of wrong wiring. STM32F4 specs states that GPIOs can source/sink a max current of 25mA, so the min current limiting resistor value to be placed would have a value of 3.3V / 25 mA = 132 ohms. The 3.3V Zener diode clips over-voltage down to a safe 3.3V. 
 
 ![protection-network](media/protection-network.jpg)
 
-I've not used it, but, double check connections before power up the printer.
+I've not used it, but, **DOUBLE CHECK CONNECTIONS** before turning on the printer.
 
 # Software
 
 You can find **changed files in this [link](https://github.com/davidtgbe/Marlin/tree/bugfix-2.0.x/config/users%20configs/ET4/davidtgbe_bltouch)**
 
 Below are changed lines on configuration.h and pins_et4.h.
+If you want to take a look at the conversion table between the interconnection board and the MCU pin naming, take a look at pin mapping section [here](https://github.com/davidtgbe/Marlin).
 
 **configuration.h**
 ```
@@ -118,6 +119,9 @@ Below are changed lines on configuration.h and pins_et4.h.
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
 ```
+We are using:
+- Auto-level pin (pin 3 / PC3) for Bltouch servo control.
+- Z-limit pin (pin 11 / PE11) for Bltouch Z-min signal.
 
 **pins_et4.h**
 ```

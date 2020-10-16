@@ -84,18 +84,18 @@ You can take 24V and GND pins from whatever JST connector in the interconnection
 Bltouch GND points for signal and power can be merged/shared. If you have interferences or mal functioning, use a standalone wire for each GND. 
 
 ### **Note**
-**This is totally optional**. Usually, a port protection network would be placed between the signal pin and the bltouch to avoid GPIO damages in case of wrong wiring. STM32F4 specs states that GPIOs can source/sink a max current of 25mA, so the min current limiting resistor value to be placed would have a value of 3.3V / 25 mA = 132 ohms. The 3.3V Zener diode clips over-voltage down to a safe 3.3V. 
+**This is totally optional. Not tested.**. Usually, a port protection network or optocoupler would be placed between the signal pin and the controlled device (bltouch in this case) to avoid GPIO damages in case of wrong wiring. STM32F4 specs states that GPIOs can source/sink a max current of 25mA, so the min current limiting resistor value to be placed would have a value of 3.3V / 25 mA = 132 ohms (3.3V logic levels). The 3.6V Zener clips over-voltage down to a safe voltage of less than 3.6V, depending on the votage dropped on the protection network.
 
 ![protection-network](media/protection-network.jpg)
 
-I've not used it, but, **DOUBLE CHECK CONNECTIONS** before turning on the printer.
+I haven't used it because this pin is connected to a high impedance port on the bltouch, so this pin is not going to carry a lot of current. Anyway, **DOUBLE CHECK CONNECTIONS** before turning on the printer.
 
 # Software
 
 You can find **changed files in this [link](https://github.com/davidtgbe/Marlin/tree/bugfix-2.0.x/config/users%20configs/ET4/davidtgbe_bltouch)**
 
 Below are changed lines on configuration.h and pins_et4.h.
-If you want to take a look at the conversion table between the interconnection board and the MCU pin naming, take a look at pin mapping section [here](https://github.com/davidtgbe/Marlin).
+If you want to take a look at the conversion table between the interconnection board and the MCU pin naming, go to pin mapping section [here](https://github.com/davidtgbe/Marlin).
 
 **configuration.h**
 ```

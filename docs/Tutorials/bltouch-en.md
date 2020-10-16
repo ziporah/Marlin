@@ -147,7 +147,7 @@ Thanks to:
 immeasurable help and support they provide to Anet users.
 
 # More info
-https://all3dp.com/2/bltouch-sensors-guide/
-https://elinux.org/RPi_Tutorial_EGHS:GPIO_Protection_Circuits
-http://www.thebox.myzen.co.uk/Raspberry/Breakout.html
+https://all3dp.com/2/bltouch-sensors-guide/  
+https://elinux.org/RPi_Tutorial_EGHS:GPIO_Protection_Circuits  
+http://www.thebox.myzen.co.uk/Raspberry/Breakout.html  
 https://electronics.stackexchange.com/questions/296107/stm32-clamping-diodes-what-is-the-maximum-input-voltage

@@ -66,6 +66,8 @@ As I dont't have a hot air gun to desolder the components, I have used two solde
 
 ## Wiring
 
+**Note: Handle wiring with printer turned of and always **DOUBLE CHECK CONNECTIONS** before turning on the printer**
+
 Once we have desoldered the resitor and capacitor, we need to wire all the things up.
 
 **Connections Summary:**
@@ -82,13 +84,6 @@ We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.
 You can take 24V and GND pins from whatever JST connector in the interconnection board. I would take 24V from BL or FAN connectors, since the hotend JST tends burn out as many users have reported.
 
 Bltouch GND points for signal and power can be merged/shared. If you have interferences or mal functioning, use a standalone wire for each GND. 
-
-### **Note**
-**This is totally optional. Not tested.**. Usually, a port protection network or optocoupler would be placed between the signal pin and the controlled device (bltouch in this case) to avoid GPIO damages in case of wrong wiring. STM32F4 specs states that GPIOs can source/sink a max current of 25mA, so the min current limiting resistor value to be placed would have a value of 3.3V / 25 mA = 132 ohms (3.3V logic levels). The 3.6V Zener clips over-voltage down to a safe voltage of less than 3.6V, depending on the votage dropped on the protection network.
-
-![protection-network](media/protection-network.jpg)
-
-I haven't used it because this pin is connected to a high impedance port on the bltouch, so this pin is not going to carry a lot of current. Anyway, **DOUBLE CHECK CONNECTIONS** before turning on the printer.
 
 # Software
 
@@ -136,11 +131,23 @@ We are using:
 #define SERVO0_PIN                          PC3
 ```
 
+## GPIO protection
+**Not tested. Not mandatory. Implement only if you have background on electronics**
+
+Usually, a port protection network or optocoupler would be placed between the signal pin and the controlled device (bltouch in this case) to avoid GPIO damages in case of wrong wiring. There are a lot of designs. I haven't used it here because this pin is connected to a high impedance port on the bltouch, handles 3.3V logic levels and hardly any current. 
+
+STM32F4 specs states that GPIOs can source/sink a max current of 25mA, so the min current limiting resistor value to be placed would have a value of 3.3V / 25 mA = 132 ohms. The 3.3V Zener clips over-voltage down to a safe voltage of 3.3V.
+
+![protection-network](media/protection-network.jpg)
+
 # Acknolegments
 Thanks to:
 - @Egoitz89 for the ET4 interconnection board scheme.
-- Mates and, specially, admins of the ET4 spanish telegram group, for the 
+- Mates and, specially, admins of the [ET4 spanish telegram group](https://t.me/anetet4esp), for the 
 immeasurable help and support they provide to Anet users.
 
 # More info
 https://all3dp.com/2/bltouch-sensors-guide/
+https://elinux.org/RPi_Tutorial_EGHS:GPIO_Protection_Circuits
+http://www.thebox.myzen.co.uk/Raspberry/Breakout.html
+https://electronics.stackexchange.com/questions/296107/stm32-clamping-diodes-what-is-the-maximum-input-voltage

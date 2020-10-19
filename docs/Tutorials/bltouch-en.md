@@ -24,7 +24,7 @@ There are no free exposed pins/expansion ports in the ET4/5 motherboard, so, we 
 
 Let's tale a look at the existing connections:
 
-**ET4 board interconnection board**
+**ET4 board**
 ![et4board](media/et4board.jpg)
 
 **ET4 interconnection board**

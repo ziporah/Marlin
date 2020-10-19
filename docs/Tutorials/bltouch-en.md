@@ -22,11 +22,15 @@ This mod requires some hardware modifications that will void your warranty. I am
 
 There are no free exposed pins/expansion ports in the ET4/5 motherboard, so, we have to make do with what we have.
 
-If we take a look to the Et4 interconnection board
+Let's tale a look at the existing connections:
 
+**ET4 board interconnection board**
+![et4board](media/et4board.jpg)
+
+**ET4 interconnection board**
 ![pins-et4](media/pins-et4.jpg)
 
-And to the bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf)
+**Bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf)**
 
 ![bltouch-specs](media/bltouch-specs.jpg)
 
@@ -37,7 +41,7 @@ And to the bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr
 
 ## Powering Bltouch
 
-**Bltouch needs to be feed with 5V**, so we have to connect the **step-down module** to **convert the 24V available on pin 2, to 5V**. We can use a step-down converter like this one
+**Bltouch needs to be feed with 5V**, so we have to connect the **step-down module** to **convert the 24V available on pin 2/14, to 5V**. We can use a step-down converter like this one
 
 ![down-converter](media/down-converter.jpg)
 
@@ -71,13 +75,13 @@ As I dont't have a hot air gun to desolder the components, I have used two solde
 Once we have desoldered the resitor and capacitor, we need to wire all the things up.
 
 **Connections Summary:**
-- Power GND (Pin 4/16) **<=>** (In -) Step down converter (Out -) **<=>** Bltouch Brown wire
-- Power VCC (Pin 2) **<=>** (In +) Step down converter (5V Out +) **<=>** Bltouch Red wire
-- Zmin (Pin 11) **<=>** Bltouch White wire
-- Zmin GND (Pin 4/16) **<=>** Bltouch Black wire
-- Servo/Control (Pin 3) **<=>** Bltouch Orange wire
+- Power GND (Pin 4/16) **<=>** (In -) Step down converter (Out -) **<=>** Bltouch Power GND (Brown wire)
+- Power VCC (Pin 2/14) **<=>** (In +) Step down converter (5V Out +) **<=>** Bltouch VCC (Red wire)
+- Zmin (Pin 11) **<=>** Bltouch Zmin (White wire)
+- Zmin GND (Pin 4/16) **<=>** Bltouch Signal GND (Black wire)
+- Servo/Control (Pin 3) **<=>** Bltouch Control Signal (Orange wire)
 
-We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.html) (you can buy them or do it yourself), or employ any other solution which allows us to **share an already used pin** (like pin 2 (24V)) in the interconnection board.
+We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.html) (you can buy them or do it yourself), or employ any other solution which allows us to **share an already used pin** (like pin 2/14 (24V)) in the interconnection board.
 
 ![jst-splitter](media/jst-splitter.jpg)
 

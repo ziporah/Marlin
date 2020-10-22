@@ -30,6 +30,10 @@ Let's tale a look at the existing connections:
 **ET4 interconnection board**
 ![pins-et4](media/pins-et4.jpg)
 
+**Note:** 
+*Above diagram corresponds to a regular ET4 interconnection board with piezoelectric autolevel sensor.*
+*For an ET4 with inductive autolevel sensor, you will have to solder a JST header to the interconnection board (S-Z serigrafiated). Likewise, autolevel will have a 3 pin JST header in such case, instead of the two pins showed.*
+
 **Bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf)**
 
 ![bltouch-specs](media/bltouch-specs.jpg)
@@ -70,7 +74,7 @@ As I dont't have a hot air gun to desolder the components, I have used two solde
 
 ## Wiring
 
-**Note: Handle wiring with printer turned of and always **DOUBLE CHECK CONNECTIONS** before turning on the printer**
+**Note: Handle wiring with printer turned off and always **DOUBLE CHECK CONNECTIONS** before turning on the printer**
 
 Once we have desoldered the resitor and capacitor, we need to wire all the things up.
 

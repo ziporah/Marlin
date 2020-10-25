@@ -2,7 +2,7 @@
 
 # How to install bltouch on Anet ET series 3D printers
 
-This tutorial covers the basic and necessary aspects to be able to install a bltouch in the Anet ET series. Aspects such as wiring routing will not be covered, leaving the user the solution that he deems most appropriate.
+This tutorial covers the basic and necessary aspects to be able to install a bltouch in the Anet ET series (ET4/ET5). Aspects such as wiring routing will not be covered, leaving the user the solution that he deems most appropriate.
 
 ## Disclaimer
 Not for production use. 
@@ -14,7 +14,7 @@ This mod requires some hardware modifications that will void your warranty. I am
 
 2. [Bltouch Smart](https://a.aliexpress.com/_BUlp8P). There are a many versions and clones. I have bought **2020 smart version from trianglelab**.
 
-3. [Step Down Converter 24V DC to 5V DC](https://a.aliexpress.com/_BU2xKx) (at least 500mA). There are a lot of possibilities here. Bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf) states a peak current consumption of **300mA**, so I've used one module based on the LM2596 IC. It is cheap, small, and will supply the **5V DC** voltage needed to feed the bltouch. There are many other possibilities though...
+3. [Step Down Converter 24V DC to 5V DC](https://a.aliexpress.com/_BU2xKx) (at least 500mA). There are a lot of possibilities here. Bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf) states a peak current consumption of **300mA**, so I've used one module based on the MP1584 IC. It is cheap, small, and will supply the **5V DC** voltage needed to feed the bltouch. There are many other possibilities though...
    
 4. Soldering iron or hot air gun and **SMD soldering/desoldering skills**. 
 
@@ -44,11 +44,11 @@ For **ET4 models with inductive autolevel** sensor, you will have to **solder a 
 
 ![pins-et4](media/adapter-board-et5.jpg)
 
-Connection diagram for et4 inductive models
+Connection diagram for ET4 models with inductive autolevel
 
 ![pins-et4](media/pins-et4-inductivo.jpg)
 
-**Bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf)**
+### Bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf)
 
 ![bltouch-specs](media/bltouch-specs.jpg)
 
@@ -67,7 +67,7 @@ and connect it as below
 
 ![down-converter-schematic](media/down-converter-schematic.jpg)
 
-You can print any of the enclosures availables on [thingiverse](https://www.thingiverse.com/tag:lm2596).
+You can print any of the enclosures available on [thingiverse](https://www.thingiverse.com/tag:mp1584).
 
 ## Signals
 

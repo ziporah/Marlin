@@ -27,12 +27,25 @@ Let's tale a look at the existing connections:
 **ET4 board**
 ![et4board](media/et4board.jpg)
 
-**ET4 interconnection board**
+**ET4 adapter (interconnection) board**
+
+There are two PCB models for this part, whose function is to expose pins from the 20 pin IDC wire to JST headers.
+
+For the **regular ET4** with piezoelectric autolevel sensor, we have PCB shown below
+
+![pins-et4](media/adapter-board-et4.jpg)
+
+and its connection diagram
+
 ![pins-et4](media/pins-et4.jpg)
 
-**Note:** 
-*Above diagram corresponds to a regular ET4 interconnection board with piezoelectric autolevel sensor.*
-*For an ET4 with inductive autolevel sensor, you will have to solder a JST header to the interconnection board (S-Z serigrafiated). Likewise, autolevel will have a 3 pin JST header in such case, instead of the two pins showed.*
+For **ET4 models with inductive autolevel** sensor, you will have to **solder a JST header** to the interconnection board (*S-Z serigrafiated*). Likewise, autolevel will have a **3 pin JST header** in such case, instead of the 2 pins JST header of the regular ET4. 
+
+![pins-et4](media/adapter-board-et5.jpg)
+
+Connection diagram for et4 inductive models
+
+![pins-et4](media/pins-et4-inductivo.jpg)
 
 **Bltouch [specs](https://5020dafe-17d8-4c4c-bf3b-914a8fdd5140.filesusr.com/ugd/f5a1c8_d40d077cf5c24918bd25b6524f649f11.pdf)**
 
@@ -53,6 +66,8 @@ and connect it as below
 
 ![down-converter-schematic](media/down-converter-schematic.jpg)
 
+You can print any of the enclosures availables on [thingiverse](https://www.thingiverse.com/tag:lm2596).
+
 ## Signals
 
 We can reuse **Z-Limit (pin 11) for Z-min**, and **auto-level (pin 3) for the servo signal**. However, as pin 3 is a sensor signal, it is designed as a pull-up.
@@ -62,11 +77,11 @@ We can reuse **Z-Limit (pin 11) for Z-min**, and **auto-level (pin 3) for the se
 Resistor normaly sets input signal to VCC, and, when the switch closes, it sets input to GND. We need to turn the input into an output, so, we need to let te signal be controlled dynamically by the MCU, avoiding to be pulled up or down by passive components.
 For this purpose, we need to **remove capacitor and resistor**, which, for the auto-level (pin 3), are serigrafiated on the motherboard as R40 and C37.
 
-Before desoldering
+***Before desoldering***
 
 ![pull-up](media/mb-with-cr.jpg)
 
-After desoldering
+***After desoldering***
 
 ![pull-up](media/mb-without-cr.jpg)
 
@@ -85,11 +100,11 @@ Once we have desoldered the resitor and capacitor, we need to wire all the thing
 - Zmin GND (Pin 4/16) **<=>** Bltouch Signal GND (Black wire)
 - Servo/Control (Pin 3) **<=>** Bltouch Control Signal (Orange wire)
 
-We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.html) (you can buy them or do it yourself), or employ any other solution which allows us to **share an already used pin** (like pin 2/14 (24V)) in the interconnection board.
+We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.html) (you can buy them or do it yourself), or employ any other solution which allows us to **share an already used pin** (like pin 2/14 (24V)) in the interconnection board. If you have 3 pins on the autolevel JST header, you can take advantage of this extra 24V pin to feed the step down converter. 
 
 ![jst-splitter](media/jst-splitter.jpg)
 
-You can take 24V and GND pins from whatever JST connector in the interconnection board. I would take 24V from BL or FAN connectors, since the hotend JST tends burn out as many users have reported.
+You can take 24V and GND pins from whatever JST connector in the interconnection board. I would take it from BL or FAN connectors, since the hotend JST tends burn out as many users have reported.
 
 Bltouch GND points for signal and power can be merged/shared. If you have interferences or mal functioning, use a standalone wire for each GND. 
 
@@ -121,6 +136,19 @@ If you want to take a look at the conversion table between the interconnection b
 #define X_HOME_DIR -1
 #define Y_HOME_DIR -1
 #define Z_HOME_DIR -1
+...
+ /*    +-- BACK ---+
+ *     |    [+]    |
+ *   L |        1  | R <-- Example "1" (right+,  back+)
+ *   E |  2        | I <-- Example "2" ( left-,  back+)
+ *   F |[-]  N  [+]| G <-- Nozzle
+ *   T |       3   | H <-- Example "3" (right+, front-)
+ *     | 4         | T <-- Example "4" ( left-, front-)
+ *     |    [-]    |
+ *     O-- FRONT --+
+ */
+
+#define NOZZLE_TO_PROBE_OFFSET { 0, 0, 0 } // Change 0s to whatever offset you have
 ```
 We are using:
 - Auto-level pin (pin 3 / PC3) for Bltouch servo control.

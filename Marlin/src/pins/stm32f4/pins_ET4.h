@@ -153,7 +153,9 @@
  *  - FSMC/DMA and 8080-8 interface
  */
 
-#define TFT_DRIVER                          AUTO
+#ifndef TFT_DRIVER
+  #define TFT_DRIVER                        AUTO
+#endif
 #define TFT_RESET_PIN                       PE6
 #define TFT_CS_PIN                          PD7
 #define TFT_RS_PIN                          PD13

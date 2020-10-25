@@ -24,10 +24,11 @@ There are no free exposed pins/expansion ports in the ET4/5 motherboard, so, we 
 
 Let's tale a look at the existing connections:
 
-**ET4 board**
+### ET4 board
+
 ![et4board](media/et4board.jpg)
 
-**ET4 adapter (interconnection) board**
+### ET4 adapter (interconnection) board
 
 There are two PCB models for this part, whose function is to expose pins from the 20 pin IDC wire to JST headers.
 

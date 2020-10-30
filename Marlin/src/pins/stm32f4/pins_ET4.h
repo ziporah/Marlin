@@ -41,7 +41,7 @@
 // Z Probe
 //
 #if !defined Z_MIN_PROBE_PIN && !defined BLTOUCH
-  #define Z_MIN_PROBE_PIN                  PC3
+  #define Z_MIN_PROBE_PIN                   PC3
 #endif
 
 //

@@ -79,7 +79,7 @@
  * Optional:
  * - Bltouch test
  * 		
- * 		> M43 S P1
+ * 		> M43 S P0
  * 
  * Other guides:
  * https://marlinfw.org/docs/configuration/configuration.html

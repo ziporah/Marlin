@@ -19,45 +19,118 @@
 
 #pragma once
 
-/* 
- * Easy configuration settings.
- * Only mandatory parmeter is "ET_MODEL". 
- * Rest of parameters can be commented if they are the defaults for the printer model:
-	+-------------------+-------------+------------+--------------+--------------+---------+
-	|       Model       |    SIZE     | AUTOLEVEL  | HOMING Z-DIR | PHY ENDSTOPS | DRIVERS |
-	+-------------------+-------------+------------+--------------+--------------+---------+
-	| ET4               | 220X220X250 | FILM STRIP | UP           | X-L,Y-B,Z-T  | A4988   |
-	| ET4X              | 220X220X250 | NONE       | DOWN         | X-L,Y-B,Z-B  | A4988   |
-	| ET4+              | 220X220X250 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
-	| ET4 PRO / Labists | 220X220X250 | CAPACITIVE | DOWN         | X-L,Y-B      | TMC2208 |
-	| ET5               | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
-	| ET5X              | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
-	| ET5 PRO           | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | TMC2208 |
-	+-------------------+-------------+------------+--------------+--------------+---------+
-	PHY endstops legend: Axis + (Left, Right, Front, Back, Top, Bottom)
+/** 
+ * Easy configuration settings file.
+ * 
+ * File organization:
+ *  - General file information / pre-build steps (this section)
+ *  - Basic Settings
+ *  - Post-build steps
+ *  - Color theme settings
+ *  - Configuration.h parameters overwritten by EasyConfig
+ * 
+ * NOTE: This file will try to define some parameters that are already defined on configuration.h. 
+ * Take this into account and take also a look to the end of this file to see wich parameters could 
+ * be overwritten by EasyConfig.
+ * 
+ * Pre-build instructions:
+ * 
+ * 1. Uncomment line "#define ET_EASY_CONFIG" for settings on this file to take effect.
+ * 2. Only mandatory parmeter is "ET_MODEL".
+ * 3. Rest of parameters can be commented if they are the defaults for the printer model.
+ *    You can take a look of these defaults on the table below. Any modification you have
+ *    made to your specific printer model which not match the defaults showed below in the
+ *    table, must be defined uncommenting corresponding line.
+ * 4. Change platform.ini as usual to uncomment offset line if you are going to build the 
+ *    FW to use it with OpenBL.
+ * 5. Build
+ * 
+ *  ET series default specifications:
+ *	+-------------------+-------------+------------+--------------+--------------+---------+
+ *	|       Model       |    SIZE     | AUTOLEVEL  | HOMING Z-DIR | PHY ENDSTOPS | DRIVERS |
+ *	+-------------------+-------------+------------+--------------+--------------+---------+
+ *	| ET4               | 220X220X250 | FILM STRIP | UP           | X-L,Y-B,Z-T  | A4988   |
+ *	| ET4X              | 220X220X250 | NONE       | DOWN         | X-L,Y-B,Z-B  | A4988   |
+ *	| ET4+              | 220X220X250 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
+ *	| ET4 PRO / Labists | 220X220X250 | CAPACITIVE | DOWN         | X-L,Y-B      | TMC2208 |
+ *	| ET5               | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
+ *	| ET5X              | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
+ *	| ET5 PRO           | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | TMC2208 |
+ *	+-------------------+-------------+------------+--------------+--------------+---------+
+ *	PHY endstops legend: Axis + (Left, Right, Front, Back, Top, Bottom)
+ *
  */
 
 //
 // Basic settings
 //
 
-#define ET_MODEL            		ET_MODEL_ET4				// Mandatory. Available values [ET_MODEL_ET4 ,ET_MODEL_ET4_PLUS, ET_MODEL_ET4X, ET_MODEL_ET4_PRO, ET_MODEL_ET5, ET_MODEL_ET5X, ET_MODEL_ET5_PRO]
-//#define ET_BOARD            		ET_BOARD_SILENT				// Optional. Available values [ET_BOARD_SILENT, ET_BOARD_NOISY]
-#define ET_LEVELLING        		ET_LV_BLTOUCH				// Optional. Available values [ET_LV_NONE, ET_LV_BLTOUCH, ET_LV_CAPACITIVE, ET_LV_FILM_STRIP]
-#define ET_Z_HOMING_DIR	  			ET_Z_HOMING_DIR_DOWN		// Optional. Available values [ET_Z_HOMING_DIR_UP, ET_Z_HOMING_DIR_DOWN]
-//#define ET_MOD              		ET_MOD_NONE           		// Optional. Available values [ET_MOD_BMG, ET_MOD_BMG_MINI, ET_MOD_V6]. To select multiple mods use '|' to join. ex: (ET_MOD_BMG | ET_MOD_V6)
-#define ET_Z_ENDSTOP_POSTION      	ET_Z_ENDSTOP_POSTION_NONE	// Optional. Available values [ET_Z_ENDSTOP_POSTION_NONE, ET_Z_ENDSTOP_POSTION_TOP, ET_Z_ENDSTOP_POSTION_BOTTOM]
-#define ET_CUSTOM_MACHINE_NAME 		"Anet ET4 A4988 BLTOUCH" 	// Optional
+/**
+ * Parameter: ET_MODEL
+ * Description: ET base model.
+ * Type: Mandatory.
+ * Values: ET_MODEL_ET4 ,ET_MODEL_ET4_PLUS, ET_MODEL_ET4X, ET_MODEL_ET4_PRO, ET_MODEL_ET5, ET_MODEL_ET5X, ET_MODEL_ET5_PRO
+ */
 
-/*  !!! BASIC POST installation configuration steps !!!
+#define ET_MODEL            		ET_MODEL_ET4
+
+/**
+ * Parameter: ET_LEVELLING
+ * Description: Define levelling method to be used if you have changed it from factory default.
+ * Type: Optional.
+ * Values: ET_LV_NONE, ET_LV_BLTOUCH, ET_LV_CAPACITIVE, ET_LV_FILM_STRIP
+ */
+
+//#define ET_LEVELLING        		ET_LV_BLTOUCH
+
+/**
+ * Parameter: ET_Z_HOMING_DIR	
+ * Description: Define homing direction if you have changed it from factory default.
+ * Type: Optional.
+ * Values: ET_Z_HOMING_DIR_UP, ET_Z_HOMING_DIR_DOWN
+ */
+
+//#define ET_Z_HOMING_DIR	  			ET_Z_HOMING_DIR_DOWN
+
+/**
+ * Parameter: ET_MOD
+ * Description: Define custom mods you have made to your printer.
+ * Type: Optional.
+ * Values: ET_MOD_BMG, ET_MOD_BMG_MINI, ET_MOD_V6
+ * Usage: To select multiple mods use '|' to join. ex: #define ET_MOD (ET_MOD_BMG | ET_MOD_V6)
+ */
+
+//#define ET_MOD              	  ET_MOD_NONE 
+
+/**
+ * Parameter: ET_Z_ENDSTOP_POSTION 
+ * Description: Define the Z endstop postion if you have changed or removed Z endstop position from factory default.
+ * Type: Optional.
+ * Values: ET_Z_ENDSTOP_POSTION_NONE, ET_Z_ENDSTOP_POSTION_TOP, ET_Z_ENDSTOP_POSTION_BOTTOM
+ */
+
+//#define ET_Z_ENDSTOP_POSTION    ET_Z_ENDSTOP_POSTION_NONE
+
+/**
+ * Parameter: ET_CUSTOM_MACHINE_NAME
+ * Description: Define a custom machine name to display on the information screen if desired.
+ * Type: Optional 
+ */
+
+//#define ET_CUSTOM_MACHINE_NAME 	"Anet ET4 A4988 BLTOUCH" 
+
+
+/** BASIC POST installation configuration steps
  *
- * Below steps must be performed to complet Marlin configuration and set parameters which are dependant 
+ * Below steps must be performed to finish Marlin configuration and set parameters which are dependant 
  * on your current setup/printer. You can use pronterface to send gcodes.
  *
  * 1. EEPROM initialization -> https://marlinfw.org/docs/gcode/M502.html
+ * 
  * 		> M502; M500
  * 		
  * 2. Hotend PID autotune -> https://marlinfw.org/docs/gcode/M303.html ; https://marlinfw.org/docs/gcode/M301.html
+ * 
  * 		> M303 E0 S210 C3; M301 P<Presult> I<Iresult> D<Dresult>
  * 
  * 3. Bed PID autotune -> https://marlinfw.org/docs/gcode/M303.html ; https://marlinfw.org/docs/gcode/M304.html
@@ -68,7 +141,7 @@
  *
  * 		> M92 E<value> X<value> Y<value> Z<value>
  * 		
- * 4. Nozzle to probe offset in case of mounted probe autolevel feature -> https://marlinfw.org/docs/gcode/M851.html | Guide: https://www.thingiverse.com/thing:3700194
+ * 4. Nozzle to probe offset. Only in case of mounted probe autolevel feature -> https://marlinfw.org/docs/gcode/M851.html | Guide: https://www.thingiverse.com/thing:3700194
  *
  * 		> M851 X<value> Y<value> Z<value> 
  *
@@ -76,7 +149,7 @@
  *
  * 		> M500 
  *
- * Optional:
+ * Other useful commands:
  * - Bltouch test
  * 		
  * 		> M43 S P0
@@ -85,6 +158,14 @@
  * https://marlinfw.org/docs/configuration/configuration.html
  * https://teachingtechyt.github.io/calibration.html
  * 
+ * Marlin recommended:
+ * https://reprap.org/wiki/Calibration
+ * https://youtu.be/wAL9d7FgInk
+ * http://calculator.josefprusa.cz
+ * https://reprap.org/wiki/Triffid_Hunter%27s_Calibration_Guide
+ * https://www.thingiverse.com/thing:5573
+ * https://sites.google.com/site/repraplogphase/calibration-of-your-reprap
+ * https://www.thingiverse.com/thing:298812
  */
 
 //
@@ -121,3 +202,87 @@
 #define COLOR_INCREASE          COLOR_WHITE
 #define COLOR_DECREASE          COLOR_WHITE
 #define COLOR_TICK              COLOR_VIVID_GREEN
+
+//
+// Info: Configuration.h parameters overwritten by EasyConfig
+//
+
+/*
+
+-- Misc --
+CUSTOM_MACHINE_MODEL_NAME
+
+-- Levelling --
+NOZZLE_AS_PROBE
+BLTOUCH
+FIX_MOUNTED_PROBE
+Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+USE_PROBE_FOR_Z_HOMING
+Z_SAFE_HOMING
+LCD_BED_LEVELING
+G26_MESH_VALIDATION
+ENABLE_LEVELING_FADE_HEIG
+SEGMENT_LEVELED_MOVES
+LEVELED_SEGMENT_LENGTH   
+AUTO_BED_LEVELING_BILINEA
+PROBING_MARGIN
+NOZZLE_TO_PROBE_OFFSET
+PROBING_MARGIN
+
+-- Z_Homing dir --
+X_HOME_DIR
+Y_HOME_DIR
+Z_HOME_DIR
+
+-- Endstops --
+USE_XMIN_PLUG
+USE_YMIN_PLUG
+USE_ZMIN_PLUG
+USE_XMAX_PLUG
+USE_YMAX_PLUG
+USE_ZMAX_PLUG
+
+-- Temp sensors --
+TEMP_SENSOR_0
+
+-- Drivers --
+X_DRIVER_TYPE
+Y_DRIVER_TYPE
+Z_DRIVER_TYPE
+E0_DRIVER_TYPE
+
+-- Steps / Extruder dir --
+INVERT_E0_DIR
+DEFAULT_AXIS_STEPS_PER_UNIT
+
+-- Size and endstop offsets --
+X_BED_SIZE
+Y_BED_SIZE
+X_MIN_POS
+Y_MIN_POS
+Z_MIN_POS
+X_MAX_POS
+Y_MAX_POS
+Z_MAX_POS
+BED_CENTER_AT_150_150
+BED_CENTER_AT_110_110
+
+-- TFT -- 
+TFT_GENERIC
+TFT_DRIVER
+TFT_INTERFACE_FSMC
+TFT_COLOR_UI
+TFT_RES_480x320
+TFT_RES_320x240
+TFT_ROTATION
+
+-- Touch --
+TOUCH_SCREEN
+TOUCH_SCREEN_CALIBRATION
+XPT2046_X_CALIBRATION
+XPT2046_Y_CALIBRATION
+XPT2046_X_OFFSET
+XPT2046_Y_OFFSET
+XPT2046_ORIENTATION
+
+*/

@@ -189,7 +189,7 @@
 #endif
 
 //
-// Mods
+// Temp sensors
 //
 
 // Undefine to overwrite
@@ -228,7 +228,7 @@
 #endif
 
 //
-// Steps
+// Steps / Extruder dir
 //
 
 // Undefine to overwrite

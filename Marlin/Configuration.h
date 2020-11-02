@@ -37,6 +37,9 @@
  */
 #define CONFIGURATION_H_VERSION 020008
 
+// Use EasyConfig.h file for an easy configuration of Anet ET series models
+#define ET_EASY_CONFIG
+
 //===========================================================================
 //============================= Getting Started =============================
 //===========================================================================
@@ -70,9 +73,8 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(davidtgbe, ET4 TMC2208)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "(davidtgbe, ET4)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
-#define ET_EASY_CONFIG
 
 /**
  * *** VENDORS PLEASE READ ***

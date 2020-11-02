@@ -25,10 +25,10 @@
 
 /** 
  * File organization:
- *  - 1. General file information / pre-build steps (this section)
- *  - 2. Basic Settings
- *  - 3. Post-build steps
- *  - 4. Configuration.h parameters overwritten by EasyConfig
+ *  1. General file information / pre-build steps (this section)
+ *  2. Basic Settings
+ *  3. Post-build steps
+ *  4. Configuration.h parameters overwritten by EasyConfig
  * 
  * NOTE: This file will try to define some parameters that are already defined on configuration.h. 
  * Take this into account and take also a look to the end of this file to see wich parameters could 
@@ -36,7 +36,7 @@
  * 
  * Pre-build instructions:
  * 
- * 1. Uncomment line "#define ET_EASY_CONFIG" for settings on this file to take effect.
+ * 1. Uncomment line "#define ET_EASY_CONFIG" in configuration.h for this file to take effect.
  * 2. Only mandatory parmeter is "ET_MODEL".
  * 3. Rest of parameters can be commented if they are the defaults for the printer model.
  *    You can take a look of these defaults on the table below. Any modification you have

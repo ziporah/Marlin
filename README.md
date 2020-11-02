@@ -14,6 +14,7 @@ Anyone can contribute to completing this project. Feedback is also welcome.
   - Filament runout detector.
   - EEPROM
   - Powerloss. See issues tab. 
+  - [Bltouch](https://github.com/davidtgbe/Marlin/blob/bugfix-2.0.x/docs/Tutorials/bltouch-en.md)
   
 ### On progress:
   - PC/SD firmware load/update: I've managed to get working OpenBLT, (PC-USB / SD / DFU) updates. I'm still looking for a way to do a first time flash without flasher. Even so, a hardware flasher is very recommended for its price.
@@ -34,11 +35,11 @@ Currently you can only flash this firmware using a flasher (stlink, jlink, bmp e
 
 ## Before flashing this firmware (optional, but recommended):  
 
-First time, I recommend making a backup of your firmware. At least your bootlaoder (addresses from 0x08000000 to 0x08010000). This way, you can always recover/return to stock firmware by:  
+First time, I recommend making a backup of your firmware. At least your bootloader (addresses from 0x08000000 to 0x08010000). This way, you can always recover/return to stock firmware by:  
   1. flashing the bootloader backup, from address 0x08000000 to 0x8010000.  
   2. flashing any of the available Anet firmwares from address 0x08010000 onwards.  
 
-If you don't perform this step, and, just in case of brick, there are copies of stock firmware ET4 releases and bootloader below on resources section.
+If you don't perform this step, and, just in case of brick, there are copies of stock firmware ET4 releases and bootloader below on [resources](https://github.com/davidtgbe/Marlin#resources) section.
 
 ## Considerations
 
@@ -54,10 +55,10 @@ You have two options to install/update this firmware:
 
 1. Download or clone this [repo](https://github.com/davidtgbe/Marlin/archive/bugfix-2.0.x.zip). Ensure you build the firmware with **latest sources**, as firmware.srec file will not be built with older sources.
 
-2. Make sure to modify your config.h and config_adv.h according to your ET4/5 model (ET4, ET5, ET4 PRO, ET4+, ...)
- - Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), TFT resolution, XYZ size, homming offsets, auto bed levelling sensor, etc, need to be defined according to your model.
- - Provided configuration.h and configuration_adv.h files correspond to a regular ET4/TMC2208 model with attachable bed levelling sensor.
- - Fine tunning could be needed (e.g. XYZE [steps](https://marlinfw.org/docs/gcode/M092.html) or offsets, Jerks, JD, LA, etc).
+2. Make sure to modify your config.h and config_adv.h according to your ET4/5 model (ET4, ET5, ET4 PRO, ET4+, ...) or you can also use [EasyConfig](https://github.com/davidtgbe/Marlin/blob/bugfix-2.0.x/Marlin/EasyConfig.h) for a simple configuration experience.
+    - Settings as driver model (A4988/TMC2208), Z endstop position (UP/DOWN), TFT resolution, XYZ size, homming offsets, auto bed levelling sensor, etc, need to be defined according to your model.
+    - Provided configuration.h and configuration_adv.h files correspond to a regular ET4/TMC2208 model with attachable bed levelling sensor.
+    - Fine tunning could be needed (e.g. XYZE [steps](https://marlinfw.org/docs/gcode/M092.html) or offsets, Jerks, JD, LA, etc).
 
 3. If you are going to take **option A** from considerations section (not using a BL), **you can skip this step**. Otherwise, you need to offset the firmware to give some room to the BL. That is achieved by uncommenting a line in **platform.ini** file. It is commented by default:
 ```
@@ -68,7 +69,7 @@ You have two options to install/update this firmware:
 ...
 ...
 # Uncomment next line to build for use with bootloader. Offset depends on BL used.
-# board_build.offset  = 0x10000
+#board_build.offset  = 0x10000
 ...
 ...
 ```
@@ -77,7 +78,7 @@ Change "**#board_build.offset  = 0x10000**" to
 board_build.offset = 0x10000
 ```
 4. Build project with platform.io on VS code is recommended. There are many tutorials on the web. You can follow them, **ADAPTING** steps to build this project. This one [here](/docs/Tutorials/build-es.md) in spanish made by me, and just another one [here](https://3daddict.com/marlin-2-0-beginner-guide-for-3d-printer-firmware/).
-5. If everything went well, you will find binary files firmware.[elf|bin|srec], generated in the build output folder:
+5. If everything went well, you will find marlin binary files with extension **.[elf|bin|srec]**, generated in the build output folder:
 ```
 <src_code_base_folder>\.pio\build\ET4\
 ```
@@ -101,15 +102,13 @@ You have two options to install/update this firmware:
       - Connect your printer via USB to your PC and get the COM port number.
       - Open **microboot.exe** executable and configure COM port number and speed (115200) through **settings** button. Then, click **browse** and search for the file **firmware.srec**. You will find it in the output build folder (step 1.5).
   - Switch off and then switch on the printer to begin the installation/update process.
-  - Screen will be white during the process, and, after 3 or 4 minutes, Marlin will appear on the screen.
+  - ~~Screen will be white during the process, and, after 3 or 4 minutes, Marlin will appear on the screen.~~ If you have latest OpenBLT release, you will see the update process on screen and Marlin will start after flashing process.
 
 You can connect with pronterface to corresponding COM port @115200bps.
 
 ### Flashing considerations
 
-If you use bootloader, you **must not use the flasher to install/update the FW**. The bootloader inserts a special **checksum** in the firmware during the install/update process. Bootloader **checks** for this checksum before jumping to the firmware. If you use your **flasher** to install the firmware, this **checksum is not written**, and, therefore, bootloader **will not boot** the firmware, and **your screen will be white**.  
-
-\****White screen ***usually*** means, printer is on bootloader mode, waiting for incoming installation/update***.
+If you use bootloader, you **must not use the flasher to install/update the FW**. The bootloader inserts a special **checksum** in the firmware during the install/update process. Bootloader **checks** for this checksum before jumping to the firmware. If you use your **flasher** to install the firmware, this **checksum is not written**, and, therefore, bootloader **will not boot** the firmware ~~, and **your screen will be white**.~~ and OpenBLT will ask you to flash a firmware.
 
 **DFU** mode (Device Firmware Upgrade) has been added to the bootloader. You can enter to it just by **pressing touchscreen while switching printer on**. By using DFU mode you can even update your bootloader without needing a hardware flasher, just using the PC-USB and the right [tool](https://www.st.com/en/development-tools/flasher-stm32.html).
 
@@ -117,9 +116,11 @@ If you use bootloader, you **must not use the flasher to install/update the FW**
 *More info:*  
 [SD-CARD update process](https://www.feaser.com/openblt/doku.php?id=manual:sdcard_demo)  
 [PC-USB update process](https://www.feaser.com/openblt/doku.php?id=manual:microboot)
-
+[OpenBLT project](https://github.com/davidtgbe/openblt)
 
 ## HARDWARE
+
+![Board](docs/Tutorials/media/et4board.jpg)
 
 MCU: [STM32F407VGT6 ARM CORTEX M4](https://www.st.com/resource/en/datasheet/dm00037051.pdf)  
 DRIVERS: [TMC2208 (silent)](https://www.trinamic.com/fileadmin/assets/Products/ICs_Documents/TMC220x_TMC2224_datasheet_Rev1.09.pdf) / [A4988 (noisy)](https://www.pololu.com/file/0J450/a4988_DMOS_microstepping_driver_with_translator.pdf)  

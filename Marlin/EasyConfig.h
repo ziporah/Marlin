@@ -76,6 +76,16 @@
 #define ET_MODEL            		ET_MODEL_ET4
 
 /**
+ * Parameter: ET_BOARD
+ * Description: ET board/drivers to be used if you have changed it from factory default.
+ * Type: Optional.
+ * Values: ET_BOARD_SILENT, ET_BOARD_NOISY
+ */
+
+//#define ET_BOARD            	  ET_BOARD_SILENT
+
+
+/**
  * Parameter: ET_LEVELLING
  * Description: Define levelling method to be used if you have changed it from factory default.
  * Type: Optional.
@@ -101,7 +111,7 @@
  * Usage: To select multiple mods use '|' to join. ex: #define ET_MOD (ET_MOD_BMG | ET_MOD_V6)
  */
 
-//#define ET_MOD              	  ET_MOD_NONE 
+//#define ET_MOD              	  ET_MOD_NONE
 
 /**
  * Parameter: ET_Z_ENDSTOP_POSTION 
@@ -171,9 +181,9 @@
  * https://www.thingiverse.com/thing:298812
  */
 
-// ----------------------------------------------------------
+// -------------------------------------------------------------
 // 4. Info: Configuration.h parameters overwritten by EasyConfig
-// ----------------------------------------------------------
+// -------------------------------------------------------------
 
 /*
 

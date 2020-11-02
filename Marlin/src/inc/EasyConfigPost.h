@@ -263,6 +263,12 @@
 #undef BED_CENTER_AT_150_150
 #undef BED_CENTER_AT_110_110
 
+#if(ET_MOD & ET_MOD_V6)
+	#define ET_Z_MAX_POS_EXTRA	3
+#else
+	#define ET_Z_MAX_POS_EXTRA	0
+#endif
+
 // Redefine
 #if (ET_MODEL & ET_SERIES_5)
 	#define X_BED_SIZE 300
@@ -273,7 +279,7 @@
 	#define Z_MIN_POS 0
 	#define X_MAX_POS X_BED_SIZE
 	#define Y_MAX_POS Y_BED_SIZE
-	#define Z_MAX_POS 400
+	#define Z_MAX_POS (400 + ET_Z_MAX_POS_EXTRA)
 	
 	#define BED_CENTER_AT_150_150
 #elif (ET_MODEL & ET_SERIES_4)
@@ -285,7 +291,7 @@
 	#define Z_MIN_POS 0
 	#define X_MAX_POS X_BED_SIZE
 	#define Y_MAX_POS Y_BED_SIZE
-	#define Z_MAX_POS 250
+	#define Z_MAX_POS (250 + ET_Z_MAX_POS_EXTRA)
 	
 	#define BED_CENTER_AT_110_110
 #endif
@@ -351,3 +357,4 @@
   #define XPT2046_Y_OFFSET         -17
   #define XPT2046_ORIENTATION TOUCH_PORTRAIT
 #endif
+

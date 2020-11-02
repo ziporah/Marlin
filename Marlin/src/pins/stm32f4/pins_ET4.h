@@ -36,14 +36,13 @@
 #define X_STOP_PIN                          PC13 
 #define Y_STOP_PIN                          PE12
 #define Z_STOP_PIN                          PE11
-#define Z_MIN_PIN                           PC3
 
 //
 // Z Probe
 //
- #ifndef Z_MIN_PROBE_PIN
-   #define Z_MIN_PROBE_PIN                  PC3
- #endif
+#if !defined Z_MIN_PROBE_PIN && !defined BLTOUCH
+  #define Z_MIN_PROBE_PIN                   PC3
+#endif
 
 //
 // Filament Runout Sensor
@@ -111,6 +110,14 @@
 
 #ifndef E0_AUTO_FAN_PIN
   #define E0_AUTO_FAN_PIN                   FAN1_PIN
+#endif
+
+//
+// Servos
+//
+
+#ifdef BLTOUCH
+  #define SERVO0_PIN                        PC3
 #endif
 
 //

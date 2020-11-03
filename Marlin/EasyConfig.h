@@ -1,6 +1,6 @@
 /**
- * Author: David Terán Garrido
- * e-mail: davidtgbe@hotmail.com
+ * Author: David Terán
+ * telegram: @davidtgbe
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,11 +144,11 @@
  * 		
  * 2. Hotend PID autotune -> https://marlinfw.org/docs/gcode/M303.html ; https://marlinfw.org/docs/gcode/M301.html
  * 
- * 		> M303 E0 S210 C3; M301 P<Presult> I<Iresult> D<Dresult>
+ * 		> M303 E0 S200 C3 U
  * 
  * 3. Bed PID autotune -> https://marlinfw.org/docs/gcode/M303.html ; https://marlinfw.org/docs/gcode/M304.html
  *
- * 		> M303 E1 S60 C3; M304 P<Presult> I<Iresult> D<Dresult> 
+ * 		> M303 E-1 S60 C3 U 
  * 		
  * 4. Calibrate motors steps -> https://marlinfw.org/docs/gcode/M092.html | Guide: https://www.instructables.com/Calibrating-your-3D-printer-using-minimal-filament/
  *

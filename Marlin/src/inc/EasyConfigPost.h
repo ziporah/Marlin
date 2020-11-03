@@ -1,6 +1,6 @@
 /**
- * Author: David Terán Garrido
- * e-mail: davidtgbe@hotmail.com
+ * Author: David Terán
+ * telegram: @davidtgbe
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

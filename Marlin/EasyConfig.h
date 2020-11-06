@@ -140,8 +140,9 @@
  *
  * 1. EEPROM initialization -> https://marlinfw.org/docs/gcode/M502.html
  * 
- * 		> M502; M500
- * 		
+ * 		> M502
+ * 		> M500
+ *
  * 2. Hotend PID autotune -> https://marlinfw.org/docs/gcode/M303.html ; https://marlinfw.org/docs/gcode/M301.html
  * 
  * 		> M303 E0 S200 C3 U
@@ -164,9 +165,9 @@
  *
  * Other useful commands:
  * - Bltouch test
- * 		
+ *
  * 		> M43 S P0
- * 
+ *
  * Other guides:
  * https://marlinfw.org/docs/configuration/configuration.html
  * https://teachingtechyt.github.io/calibration.html

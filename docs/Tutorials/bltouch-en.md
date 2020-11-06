@@ -101,7 +101,7 @@ Once we have desoldered the resitor and capacitor, we need to wire all the thing
 - Zmin GND (Pin 4/16) **<=>** Bltouch Signal GND (Black wire)
 - Servo/Control (Pin 3) **<=>** Bltouch Control Signal (Orange wire)
 
-We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.html) (you can buy them or do it yourself), or employ any other solution which allows us to **share an already used pin** (like pin 2/14 (24V)) in the interconnection board. If you have 3 pins on the autolevel JST header, you can take advantage of this extra 24V pin to feed the step down converter. 
+We are going to need [JST splitters](https://es.aliexpress.com/item/32807855922.html). You can buy them or do it yourself using a [crimping plier](https://a.aliexpress.com/_mMSfo53) (SN-2549 model in this case) and [JST XH](https://a.aliexpress.com/_mr4Uu0h) aerial connectors. You can also employ any other solution which allows us to **share an already used pin** (like pin 2/14 (24V)) in the interconnection board. If you have 3 pins on the autolevel JST header, you can take advantage of this extra 24V pin to feed the step down converter. 
 
 ![jst-splitter](media/jst-splitter.jpg)
 
@@ -111,7 +111,11 @@ Bltouch GND points for signal and power can be merged/shared. If you have interf
 
 # Software
 
-You can find **changed files in this [link](https://github.com/davidtgbe/Marlin/tree/bugfix-2.0.x/config/users%20configs/ET4/davidtgbe_bltouch)**
+If you are using [EasyConfig](../../Marlin/EasyConfig.h), you just need to define BLTouch levelling method:
+```
+#define ET_LEVELLING        		ET_LV_BLTOUCH
+```
+If you are confuguring Marlin from scratch, you can find **changed files in this [link](https://github.com/davidtgbe/Marlin/tree/bugfix-2.0.x/config/users%20configs/ET4/davidtgbe_bltouch)** just to compare. Remember that Marlin config files are version dependant, so, copying and pasting full content won't likely work.
 
 Below are changed lines on configuration.h and pins_et4.h.
 If you want to take a look at the conversion table between the interconnection board and the MCU pin naming, go to pin mapping section [here](https://github.com/davidtgbe/Marlin).

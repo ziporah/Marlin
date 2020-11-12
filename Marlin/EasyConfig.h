@@ -39,11 +39,11 @@
  * 1. Uncomment line "#define ET_EASY_CONFIG" in configuration.h for this file to take effect.
  * 2. Only mandatory parmeter is "ET_MODEL".
  * 3. Rest of parameters can be commented if they are the defaults for the printer model.
- *    You can take a look of these defaults on the table below. Any modification you have
- *    made to your specific printer model which not match the defaults showed below in the
+ *    You can refer to these defaults on the table below. Any modifications you have
+ *    made to your specific printer model which doesn't match the defaults showed below in the
  *    table, must be defined uncommenting corresponding line.
  * 4. Change platform.ini as usual to uncomment offset line if you are going to build the 
- *    FW to use it with OpenBL.
+ *    FW to use it with OpenBLT bootloader.
  * 5. Build
  * 
  *  ET series default specifications:
@@ -186,7 +186,23 @@
 // 4. Info: Configuration.h parameters overwritten by EasyConfig
 // -------------------------------------------------------------
 
-/*
+/* 
+
+These parameters below are overwritten by easyconfig.h. This means
+that any change to any of these parameters on configuration.h
+file won't be effective. 
+
+If you need to change these parameters, you have two options:
+  1. Disable easyconfig and use only configuration.h
+  2. Undefine the parameter and redefining it (if it needs to be defined
+     with an specific value) at the end of this file. 
+     
+     Example:
+       #undefine PROBING_MARGIN
+       #define   PROBING_MARGIN  10
+
+
+List of overwritten parameters:
 
 -- Misc --
 CUSTOM_MACHINE_MODEL_NAME

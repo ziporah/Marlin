@@ -155,11 +155,11 @@
  *
  * 		> M92 E<value> X<value> Y<value> Z<value>
  * 		
- * 4. Nozzle to probe offset. Only in case of mounted probe autolevel feature -> https://marlinfw.org/docs/gcode/M851.html | Guide: https://www.thingiverse.com/thing:3700194
+ * 5. Nozzle to probe offset. Only in case of mounted probe autolevel feature -> https://marlinfw.org/docs/gcode/M851.html | Guide: https://www.thingiverse.com/thing:3700194
  *
  * 		> M851 X<value> Y<value> Z<value> 
  *
- * 5. Save EEPROM -> https://marlinfw.org/docs/gcode/M500.html 
+ * 6. Save EEPROM -> https://marlinfw.org/docs/gcode/M500.html 
  *
  * 		> M500 
  *

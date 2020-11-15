@@ -192,16 +192,6 @@ These parameters below are overwritten by easyconfig.h. This means
 that any change to any of these parameters on configuration.h
 file won't be effective. 
 
-If you need to change these parameters, you have two options:
-  1. Disable easyconfig and use only configuration.h
-  2. Undefine the parameter and redefining it (if it needs to be defined
-     with an specific value) at the end of this file. 
-     
-     Example:
-       #undefine PROBING_MARGIN
-       #define   PROBING_MARGIN  10
-
-
 List of overwritten parameters:
 
 -- Misc --

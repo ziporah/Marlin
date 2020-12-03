@@ -240,7 +240,7 @@
 	#define INVERT_E0_DIR true
 	#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 415 }
 #elif (ET_MOD & ET_MOD_BMG_MINI)
-	#define INVERT_E0_DIR true
+	#define INVERT_E0_DIR false
 	#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 140 }
 #else
 	#define INVERT_E0_DIR false

@@ -56,8 +56,17 @@
 // Power Loss Detection
 //
 
+/**
+ *  Status: Working. Specially thanks to Zhiniukas and SidDrP for their contributions.
+ *  Hardware: Two pins needed. One for powerloss detection and another to enable aux power from supercap.
+ */
+
 #ifndef POWER_LOSS_PIN
-  #define POWER_LOSS_PIN                    PA8
+  #define POWER_LOSS_PIN                    PA8   // Power loss detect PIN
+#endif
+
+#ifndef POWER_LOSS_PIN_2
+  #define POWER_LOSS_PIN_2                  PA3   // Switch to HIGH state to enable SuperCapacitor and supply backup energy. (Zhiniukas & SidDrP)
 #endif
 
 //
@@ -126,7 +135,7 @@
 //
 
 /**
- *  Status: Working.
+ *  Status: Working (FLASH EEPROM EMULATION).
  *  Hardware: AT24C04C (ATMLH744 04CM) 4 Kb => http://ww1.microchip.com/downloads/en/DeviceDoc/AT24C04C-AT24C08C-I2C-Compatible-%20Two-Wire-Serial-EEPROM-4-Kbit-8-Kbit-20006127A.pdf
  */
 
@@ -139,13 +148,13 @@
 
 #if ENABLED(FLASH_EEPROM_EMULATION)
   // Decrease delays and flash wear by spreading writes across the
-  // 128 kB sector allocated for EEPROM emulation.
+  // 128 KB sector allocated for EEPROM emulation.
   #define FLASH_EEPROM_LEVELING
 #elif ENABLED(IIC_BL24CXX_EEPROM)
   #define IIC_EEPROM_SDA                    PB11
   #define IIC_EEPROM_SCL                    PB10
-  #define EEPROM_DEVICE_ADDRESS             0xA0
-  #define MARLIN_EEPROM_SIZE                0x1000                // 4KB (From Datasheet)
+  #define EEPROM_DEVICE_ADDRESS             0x50
+  #define MARLIN_EEPROM_SIZE                0x200                // 4Kb (From Datasheet)
 #endif  
 
 //

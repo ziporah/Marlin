@@ -120,6 +120,8 @@ void PrintJobRecovery::check() {
  * Delete the recovery file and clear the recovery data
  */
 void PrintJobRecovery::purge() {
+  card.release();                        // File access bug fix
+  card.mount();                          // File access bug fix
   init();
   card.removeJobRecoveryFile();
 }
@@ -275,6 +277,11 @@ void PrintJobRecovery::save(const bool force/*=false*/, const float zraise/*=0*/
    *  - Go to the KILL screen
    */
   void PrintJobRecovery::_outage() {
+    
+   #ifdef POWER_LOSS_PIN_2
+    OUT_WRITE(POWER_LOSS_PIN_2, HIGH); //Turn on backup super capacitor
+   #endif
+    
     #if ENABLED(BACKUP_POWER_SUPPLY)
       static bool lock = false;
       if (lock) return; // No re-entrance from idle() during retract_and_lift()
@@ -300,6 +307,10 @@ void PrintJobRecovery::save(const bool force/*=false*/, const float zraise/*=0*/
       // With backup power a retract and raise can be done now
       retract_and_lift(zraise);
     #endif
+    
+   #ifdef POWER_LOSS_PIN_2 
+    OUT_WRITE(POWER_LOSS_PIN_2, LOW);  //Turn off backup super capacitor
+   #endif
 
     kill(GET_TEXT(MSG_OUTAGE_RECOVERY));
   }
@@ -324,6 +335,9 @@ void PrintJobRecovery::write() {
  * Resume the saved print job
  */
 void PrintJobRecovery::resume() {
+  
+  card.release();                        // File access bug fix
+  card.mount();                          // File access bug fix
 
   char cmd[MAX_CMD_SIZE+16], str_1[16], str_2[16];
 

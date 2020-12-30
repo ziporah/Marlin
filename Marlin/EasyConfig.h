@@ -53,7 +53,7 @@
  *	| ET4               | 220X220X250 | FILM STRIP | UP           | X-L,Y-B,Z-T  | A4988   |
  *	| ET4X              | 220X220X250 | NONE       | DOWN         | X-L,Y-B,Z-B  | A4988   |
  *	| ET4+              | 220X220X250 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
- *	| ET4 PRO / Labists | 220X220X250 | CAPACITIVE | DOWN         | X-L,Y-B      | TMC2208 |
+ *	| ET4 PRO           | 220X220X250 | CAPACITIVE | DOWN         | X-L,Y-B      | TMC2208 |
  *	| ET5               | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
  *	| ET5X              | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | A4988   |
  *	| ET5 PRO           | 300X300X400 | CAPACITIVE | DOWN         | X-L,Y-B      | TMC2208 |

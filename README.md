@@ -3,6 +3,18 @@
 This project is an effort to try to adapt the Anet ET4/ET5 motherboard and display for use with Marlin.
 Anyone can contribute to completing this project. Feedback is also welcome.
 
+# Context
+
+As I don't have a blog, I would like to leave a personal opinion [here] related with this project experience. To whom it may concern.
+
+I started this project as a hobby, on the one hand in response to the demand from the Anet ET series user community (including myself) for a quality and versatile firmware for their printers, and on the other hand, of Anet's refusal to provide solutions to problems and shortcomings of the stock firmware. A [change.org](https://www.change.org/p/anet-open-firmware-for-the-anet-et4) was even launched.
+
+Without much knowledge of either Marlin or the closed ET hardware, and with help from the community, we have Marlin in the ET series from some time now. It is hard to believe that a company that claims to be a leader in the 3D printing industry will not be able to employ some engeneering resources to port Marlin. Or even to improve its own firmware, which most remarkable miletone on recent released V3.0.0 (jump from V1.x), is to support some new languages... 
+
+It was also a surprise (or not so much seeing it in perspective) that, in a very timely manner, Anet contacted me to get on the open source bandwagon and offer me a paid collaboration, which, although it never took place, they rushed to make it public along with an open source campaign, providing Anet a kind of reconciliation with the comunity appearing to be involved in this project, and selling more printers. Objective accomplished.
+
+In summary, after some time dealing with Anet, my personal experience has been regrettable. The lack of seriousness shown by the company (even the CEO) is hardly to believe. The only concern in this whole project has been from the marketing and sales point of view, never from their users needings, as they want to do see. Anet's style is more in line with the "let them solve it themselves and we will take advantage of it" of a mediocre company of the heap than with the innovative company, concerned about the user experience that they want to pretend to be (or show).
+
 ## Current status
 
 ### Working:
@@ -12,12 +24,13 @@ Anyone can contribute to completing this project. Feedback is also welcome.
   - USB comunication / pronterface
   - TFT
   - Filament runout detector.
-  - EEPROM
-  - Powerloss. See issues tab. 
+  - EEPROM (Flash emulation)
+  - Powerloss.
   - [Bltouch](https://github.com/davidtgbe/Marlin/blob/bugfix-2.0.x/docs/Tutorials/bltouch-en.md)
   
 ### On progress:
-  - PC/SD firmware load/update: I've managed to get working OpenBLT, (PC-USB / SD / DFU) updates. I'm still looking for a way to do a first time flash without flasher. Even so, a hardware flasher is very recommended for its price.
+  - PC/SD firmware load/update: I've managed to get working OpenBLT, (PC-USB / SD / DFU) updates. ~~I'm still looking for a way to do a first time flash without flasher~~. Even so, a hardware flasher is very recommended for its price.
+  - Take advantage of onboard EEPROM I2C instead of emulated flash.
  
 ### To take a look:
   - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4/5 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
@@ -173,7 +186,8 @@ BED_CONTROL => PE2
   
 LV_DET => PC3  
 MAT_DET1 => PA2  
-POWER_LOSS_DET => PA8 (provided by ANET)  
+POWER_LOSS_DET => PA8 (PANET)
+POWER_LOSS_SUPERCAP_SWITCH => PA3 (Zhiniukas & SidDrP)
   
 SDIO_D2 => PC10  
 SDIO_D3 => PC11  

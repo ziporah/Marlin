@@ -89,7 +89,7 @@
  * Parameter: ET_LEVELLING
  * Description: Define levelling method to be used if you have changed it from factory default.
  * Type: Optional.
- * Values: ET_LV_NONE, ET_LV_BLTOUCH, ET_LV_CAPACITIVE, ET_LV_FILM_STRIP
+ * Values: ET_LV_NONE, ET_LV_BLTOUCH, ET_LV_MOUNTED_PROBE, ET_LV_FILM_STRIP
  */
 
 //#define ET_LEVELLING        		ET_LV_BLTOUCH

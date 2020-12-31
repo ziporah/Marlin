@@ -20,6 +20,9 @@
 
 #pragma once
 
+#include "EasyConfigPre.h";
+#include "../../EasyConfig.h";
+
 #ifndef ET_MODEL
     #error "You must define an ET_MODEL value among [ET_MODEL_ET4 ,ET_MODEL_ET4_PLUS, ET_MODEL_ET4X, ET_MODEL_ET4_PRO, ET_MODEL_ET5, ET_MODEL_ET5X, ET_MODEL_ET5_PRO]."
 #endif

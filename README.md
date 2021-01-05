@@ -23,18 +23,15 @@ In summary, after some time dealing with Anet, my personal experience has been r
   - SD Card
   - USB comunication / pronterface
   - TFT
-  - Filament runout detector.
+  - Filament runout detector
   - EEPROM (Flash emulation)
-  - Powerloss.
+  - Powerloss (Thanks to Zhiniukas & SidDrP)
   - [Bltouch](https://github.com/davidtgbe/Marlin/blob/bugfix-2.0.x/docs/Tutorials/bltouch-en.md)
   
 ### On progress:
   - PC/SD firmware load/update: I've managed to get working OpenBLT, (PC-USB / SD / DFU) updates. ~~I'm still looking for a way to do a first time flash without flasher~~. Even so, a hardware flasher is very recommended for its price.
-  - Take advantage of onboard EEPROM I2C instead of emulated flash.
- 
-### To take a look:
-  - All files on path "Marlin\buildroot\share\PlatformIO\variants\ET4\" should be adapted to ET4/5 Board. Specially peripheralPins.c, variant.cpp, variant.h etc..
- 
+  - Take advantage of onboard EEPROM I2C instead of emulated flash and Serial FLASH chip.
+  
 ### Known bugs:
 
 I have enabled issues tab. Please, try to be detailed regarding use cases and other useful information like hardware and software context. 
@@ -76,7 +73,9 @@ You have two options to install/update this firmware:
 3. If you are going to take **option A** from considerations section (not using a BL), **you can skip this step**. Otherwise, you need to offset the firmware to give some room to the BL. That is achieved by uncommenting a line in **platform.ini** file. It is commented by default:
 ```
 #
-# Anet ET4
+# Anet ET4-MB_V1.x/ET4P-MB_V1.x (STM32F407VGT6 ARM Cortex-M4)
+# For use without OpenBLT/flashing directly to 0x08000000. 
+# Uncomment board_build.offset = 0x10000 if you plan to use it with with davidtgbe's OpenBLT bootloader https://github.com/davidtgbe/openblt/releases
 #
 [env:ET4]
 ...
@@ -113,11 +112,11 @@ You have two options to install/update this firmware:
       - Download microboot software. It is uploaded to github and you can download it from [here](https://github.com/davidtgbe/openblt/archive/master.zip).
       - Extract the .zip file you have just downloaded and browse to the folder **openblt/Host/**. You will find the **microboot.exe** executable.
       - Connect your printer via USB to your PC and get the COM port number.
-      - Open **microboot.exe** executable and configure COM port number and speed (115200) through **settings** button. Then, click **browse** and search for the file **firmware.srec**. You will find it in the output build folder (step 1.5).
+      - Open **microboot.exe** executable and configure COM port number and speed (250000) through **settings** button. Then, click **browse** and search for the file **firmware.srec**. You will find it in the output build folder (step 1.5).
   - Switch off and then switch on the printer to begin the installation/update process.
   - ~~Screen will be white during the process, and, after 3 or 4 minutes, Marlin will appear on the screen.~~ If you have latest OpenBLT release, you will see the update process on screen and Marlin will start after flashing process.
 
-You can connect with pronterface to corresponding COM port @115200bps.
+You can connect with pronterface to corresponding COM port @250000bps.
 
 ### Flashing considerations
 
@@ -357,7 +356,12 @@ Proposed patches should be submitted as a Pull Request against the ([bugfix-2.0.
 
 - This branch is for fixing bugs and integrating any new features for the duration of the Marlin 2.0.x life-cycle.
 - Follow the [Coding Standards](https://marlinfw.org/docs/development/coding_standards.html) to gain points with the maintainers.
-- Please submit your questions and concerns to the [Issue Queue](https://github.com/MarlinFirmware/Marlin/issues).
+- Please submit Feature Requests and Bug Reports to the [Issue Queue](https://github.com/MarlinFirmware/Marlin/issues/new/choose). Support resources are also listed there.
+- Whenever you add new features, be sure to add tests to `buildroot/tests` and then run your tests locally, if possible.
+  - It's optional: Running all the tests on Windows might take a long time, and they will run anyway on GitHub.
+  - If you're running the tests on Linux (or on WSL with the code on a Linux volume) the speed is much faster.
+  - You can use `make tests-all-local` or `make tests-single-local TEST_TARGET=...`.
+  - If you prefer Docker you can use `make tests-all-local-docker` or `make tests-all-local-docker TEST_TARGET=...`.
 
 ### [RepRap.org Wiki Page](https://reprap.org/wiki/Marlin)
 

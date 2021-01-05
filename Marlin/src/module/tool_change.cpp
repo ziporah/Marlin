@@ -73,10 +73,6 @@
   #include "../feature/solenoid.h"
 #endif
 
-#if ENABLED(MK2_MULTIPLEXER)
-  #include "../feature/snmm.h"
-#endif
-
 #if ENABLED(MIXING_EXTRUDER)
   #include "../feature/mixing.h"
 #endif
@@ -89,8 +85,10 @@
   #include "../feature/fanmux.h"
 #endif
 
-#if ENABLED(PRUSA_MMU2)
-  #include "../feature/mmu2/mmu2.h"
+#if HAS_PRUSA_MMU1
+  #include "../feature/mmu/mmu.h"
+#elif HAS_PRUSA_MMU2
+  #include "../feature/mmu/mmu2.h"
 #endif
 
 #if HAS_LCD_MENU
@@ -123,7 +121,7 @@
       if (e < EXTRUDERS - 1)
     #endif
     {
-      MOVE_SERVO(_SERVO_NR(e), servo_angles[_SERVO_NR(e)][e]);
+      MOVE_SERVO(_SERVO_NR(e), servo_angles[_SERVO_NR(e)][e & 1]);
       safe_delay(500);
     }
   }
@@ -279,6 +277,28 @@ inline void fast_line_to_current(const AxisEnum fr_axis) { _line_to_current(fr_a
     #endif
   }
 
+  bool extruder_parked = true, do_solenoid_activation = true;
+
+  // Modifies tool_change() behavior based on homing side
+  bool parking_extruder_unpark_after_homing(const uint8_t final_tool, bool homed_towards_final_tool) {
+    do_solenoid_activation = false; // Tell parking_extruder_tool_change to skip solenoid activation
+
+    if (!extruder_parked) return false; // nothing to do
+
+    if (homed_towards_final_tool) {
+      pe_deactivate_solenoid(1 - final_tool);
+      DEBUG_ECHOLNPAIR("Disengage magnet", (int)(1 - final_tool));
+      pe_activate_solenoid(final_tool);
+      DEBUG_ECHOLNPAIR("Engage magnet", (int)final_tool);
+      extruder_parked = false;
+      return false;
+    }
+
+    return true;
+  }
+
+  void parking_extruder_set_parked() { extruder_parked = true; }
+
   inline void parking_extruder_tool_change(const uint8_t new_tool, bool no_move) {
     if (!no_move) {
 
@@ -306,27 +326,30 @@ inline void fast_line_to_current(const AxisEnum fr_axis) { _line_to_current(fr_a
 
       DEBUG_POS("Start PE Tool-Change", current_position);
 
-      current_position.x = parkingposx[active_extruder] + x_offset;
+      // Don't park the active_extruder unless unparked
+      if (!extruder_parked) {
+        current_position.x = parkingposx[active_extruder] + x_offset;
 
-      DEBUG_ECHOLNPAIR("(1) Park extruder ", int(active_extruder));
-      DEBUG_POS("Moving ParkPos", current_position);
+        DEBUG_ECHOLNPAIR("(1) Park extruder ", int(active_extruder));
+        DEBUG_POS("Moving ParkPos", current_position);
 
-      fast_line_to_current(X_AXIS);
+        fast_line_to_current(X_AXIS);
 
-      // STEP 2
+        // STEP 2
 
-      planner.synchronize();
-      DEBUG_ECHOLNPGM("(2) Disengage magnet");
-      pe_deactivate_solenoid(active_extruder);
+        planner.synchronize();
+        DEBUG_ECHOLNPGM("(2) Disengage magnet");
+        pe_deactivate_solenoid(active_extruder);
 
-      // STEP 3
+        // STEP 3
 
-      current_position.x += active_extruder ? -10 : 10; // move 10mm away from parked extruder
+        current_position.x += active_extruder ? -10 : 10; // move 10mm away from parked extruder
 
-      DEBUG_ECHOLNPGM("(3) Move near new extruder");
-      DEBUG_POS("Move away from parked extruder", current_position);
+        DEBUG_ECHOLNPGM("(3) Move near new extruder");
+        DEBUG_POS("Move away from parked extruder", current_position);
 
-      fast_line_to_current(X_AXIS);
+        fast_line_to_current(X_AXIS);
+      }
 
       // STEP 4
 
@@ -360,13 +383,16 @@ inline void fast_line_to_current(const AxisEnum fr_axis) { _line_to_current(fr_a
       planner.synchronize(); // Always sync the final move
 
       DEBUG_POS("PE Tool-Change done.", current_position);
+      extruder_parked = false;
     }
-    else { // nomove == true
+    else if (do_solenoid_activation) { // && nomove == true
+      // Deactivate old extruder solenoid
+      TERN(PARKING_EXTRUDER_SOLENOIDS_INVERT, pe_activate_solenoid, pe_deactivate_solenoid)(active_extruder);
       // Only engage magnetic field for new extruder
-      pe_activate_solenoid(new_tool);
-      // Just save power for inverted magnets
-      TERN_(PARKING_EXTRUDER_SOLENOIDS_INVERT, pe_activate_solenoid(active_extruder));
+      TERN(PARKING_EXTRUDER_SOLENOIDS_INVERT, pe_deactivate_solenoid, pe_activate_solenoid)(new_tool);
     }
+
+    do_solenoid_activation = true; // Activate solenoid for subsequent tool_change()
   }
 
 #endif // PARKING_EXTRUDER
@@ -799,8 +825,8 @@ void tool_change_prime() {
     // Park
     #if ENABLED(TOOLCHANGE_PARK)
       if (ok) {
-        TERN(TOOLCHANGE_PARK_Y_ONLY,,current_position.x = toolchange_settings.change_point.x);
-        TERN(TOOLCHANGE_PARK_X_ONLY,,current_position.y = toolchange_settings.change_point.y);
+        IF_DISABLED(TOOLCHANGE_PARK_Y_ONLY, current_position.x = toolchange_settings.change_point.x);
+        IF_DISABLED(TOOLCHANGE_PARK_X_ONLY, current_position.y = toolchange_settings.change_point.y);
         planner.buffer_line(current_position, MMM_TO_MMS(TOOLCHANGE_PARK_XY_FEEDRATE), active_extruder);
         planner.synchronize();
       }
@@ -863,7 +889,7 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
       mixer.T(new_tool);
     #endif
 
-  #elif ENABLED(PRUSA_MMU2)
+  #elif HAS_PRUSA_MMU2
 
     UNUSED(no_move);
 
@@ -924,7 +950,7 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
       }
     #endif
 
-    if (new_tool != old_tool) {
+    if (new_tool != old_tool || TERN0(PARKING_EXTRUDER, extruder_parked)) { // PARKING_EXTRUDER may need to attach old_tool when homing
       destination = current_position;
 
       #if BOTH(TOOLCHANGE_FILAMENT_SWAP, HAS_FAN) && TOOLCHANGE_FS_FAN >= 0
@@ -998,8 +1024,8 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
       // Toolchange park
       #if ENABLED(TOOLCHANGE_PARK) && DISABLED(SWITCHING_NOZZLE)
         if (can_move_away && toolchange_settings.enable_park) {
-          TERN(TOOLCHANGE_PARK_Y_ONLY,,current_position.x = toolchange_settings.change_point.x);
-          TERN(TOOLCHANGE_PARK_X_ONLY,,current_position.y = toolchange_settings.change_point.y);
+          IF_DISABLED(TOOLCHANGE_PARK_Y_ONLY, current_position.x = toolchange_settings.change_point.x);
+          IF_DISABLED(TOOLCHANGE_PARK_X_ONLY, current_position.y = toolchange_settings.change_point.y);
           planner.buffer_line(current_position, MMM_TO_MMS(TOOLCHANGE_PARK_XY_FEEDRATE), old_tool);
           planner.synchronize();
         }
@@ -1171,8 +1197,6 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
           do_blocking_move_to_z(destination.z, planner.settings.max_feedrate_mm_s[Z_AXIS]);
       #endif
 
-      TERN_(PRUSA_MMU2, mmu2.tool_change(new_tool));
-
       TERN_(SWITCHING_NOZZLE_TWO_SERVOS, lower_nozzle(new_tool));
 
     } // (new_tool != old_tool)
@@ -1184,7 +1208,7 @@ void tool_change(const uint8_t new_tool, bool no_move/*=false*/) {
       enable_solenoid_on_active_extruder();
     #endif
 
-    #if ENABLED(MK2_MULTIPLEXER)
+    #if HAS_PRUSA_MMU1
       if (new_tool >= E_STEPPERS) return invalid_extruder_error(new_tool);
       select_multiplexed_stepper(new_tool);
     #endif

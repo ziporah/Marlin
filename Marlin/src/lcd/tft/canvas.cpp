@@ -26,8 +26,6 @@
 
 #include "canvas.h"
 
-#define littleBIG(color) ((color >> 8) | (color << 8))
-
 uint16_t CANVAS::width, CANVAS::height;
 uint16_t CANVAS::startLine, CANVAS::endLine;
 uint16_t *CANVAS::buffer = TFT::buffer;
@@ -97,7 +95,7 @@ void CANVAS::AddImage(int16_t x, int16_t y, MarlinImage image, uint16_t *colors)
     if (line >= startLine && line < endLine) {
       uint16_t *pixel = buffer + x + (line - startLine) * width;
       for (int16_t j = 0; j < image_width; j++) {
-        if ((x + j >= 0) && (x + j < width)) *pixel = littleBIG(*data);
+        if ((x + j >= 0) && (x + j < width)) *pixel = ENDIAN_COLOR(*data);
         pixel++;
         data++;
       }

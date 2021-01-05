@@ -37,7 +37,7 @@ In summary, after some time dealing with Anet, my personal experience has been r
 I have enabled issues tab. Please, try to be detailed regarding use cases and other useful information like hardware and software context. 
 To get help on creating an issue see [this](https://docs.github.com/en/enterprise/2.15/user/articles/creating-an-issue).
 
-## BUILD/INSTALLATION
+## Build/Installation
 
   DISCLAIMER: Not for production use. This is an unfinished project and under development. I am not responsible for what may happen to the motherboard or printer. Use only at your own risk.
 
@@ -49,7 +49,7 @@ First time, I recommend making a backup of your firmware. At least your bootload
   1. flashing the bootloader backup, from address 0x08000000 to 0x8010000.  
   2. flashing any of the available Anet firmwares from address 0x08010000 onwards.  
 
-If you don't perform this step, and, just in case of brick, there are copies of stock firmware ET4 releases and bootloader below on [resources](https://github.com/davidtgbe/Marlin#resources) section.
+If you don't perform this step, and, just in case of brick, there are copies of stock firmware ET4 releases and bootloader below on [resources](#resources) section.
 
 ## Considerations
 
@@ -130,7 +130,7 @@ If you use bootloader, you **must not use the flasher to install/update the FW**
 [PC-USB update process](https://www.feaser.com/openblt/doku.php?id=manual:microboot)
 [OpenBLT project](https://github.com/davidtgbe/openblt)
 
-## HARDWARE
+## Hardware
 
 ![Board](docs/Tutorials/media/et4board.jpg)
 
@@ -152,7 +152,7 @@ MOSFET: [A19T](https://datasheetspdf.com/pdf/1401820/UMW/A19T/1)
 STEP DOWN DC CONVERTER: [XL2596S -5.0E1 83296 ](https://datasheetspdf.com/datasheet/XL2596.html)  
 VOLTAGE COMPARATOR: [293 STG9834 / LM293DT](https://www.st.com/resource/en/datasheet/lm193.pdf)  
 
-## PIN MAPPING
+## Pin mapping
 
 E-STEP => PB9  
 E-DIR => PB8  
@@ -236,8 +236,13 @@ P2_10_LCD_31_DB14 => PE9
 
 ## Resources
 
-[ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)  
-[ET4 Board and specs](https://es.aliexpress.com/item/4000571722465.html?spm=a2g0o.productlist.0.0.5c647634dDFWSV&algo_pvid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7&algo_expid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7-2&btsid=0ab6f83115911132482433653e39a1&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_)
+- [ET4 Telegram Spanish Group Resources](https://drive.google.com/drive/folders/1bVusF9dMh1H7c2JM5ZWlbn2tWRGKsHre)  
+- [ET4 Board and specs](https://es.aliexpress.com/item/4000571722465.html?spm=a2g0o.productlist.0.0.5c647634dDFWSV&algo_pvid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7&algo_expid=9a06cdcd-c1f2-45a0-adcf-36da50fefff7-2&btsid=0ab6f83115911132482433653e39a1&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_)
+- [Bltouch installation](/docs/Tutorials/bltouch-en.md)
+- [Change boot image](/docs/Tutorials/change-marlin-imgs-en.md)
+- [Build Marlin (ES)](/docs/Tutorials/build-es.md)
+- [EasyConfig.h](/Marlin/EasyConfig.h)
+- [OpenBLT project](https://github.com/davidtgbe/openblt)
 
 ## Acknowledgements
 

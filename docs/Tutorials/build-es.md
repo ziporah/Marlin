@@ -60,6 +60,8 @@ Para ajustar Marlin a las especificaciones de su impresora 3D, deberá editar
 el archivo Configuration.h y, si necesita una configuración avanzada, el archivo
 Configuration_adv.h. 
 
+También puede usar el archivo [EasyConfig.h](../../Marlin/EasyConfig.h), que simplifica mucho el proceso. Siga las instrucciones que se detallan el los comentarios de este archivo.
+
 Como se dice en las instrucciones principales, la configuración por defecto está en español y es para ua ET4 con placa silenciosa sin ninguna modificación adicional.
 
 En estos archivos podemos encontrar todos los parámetros necesarios para ajustar Marlin a nuestro hardware. Por ejemplo, tipo de drivers, volumen de impresión, ajustes de la sonda de autonivelado, idioma, etc.

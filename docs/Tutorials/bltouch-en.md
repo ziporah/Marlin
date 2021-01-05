@@ -111,11 +111,11 @@ Bltouch GND points for signal and power can be merged/shared. If you have interf
 
 # Software
 
-If you are using [EasyConfig](../../Marlin/EasyConfig.h), you just need to define BLTouch levelling method:
+If you are using [EasyConfig.h](../../Marlin/EasyConfig.h) (recommended), you just need to define BLTouch levelling method:
 ```
 #define ET_LEVELLING        		ET_LV_BLTOUCH
 ```
-If you are confuguring Marlin from scratch, you can find **changed files in this [link](https://github.com/davidtgbe/Marlin/tree/bugfix-2.0.x/config/users%20configs/ET4/davidtgbe_bltouch)** just to compare. Remember that Marlin config files are version dependant, so, copying and pasting full content won't likely work.
+If you are configuring Marlin from scratch, you can find **changed files in this [link](https://github.com/davidtgbe/Marlin/tree/bugfix-2.0.x/config/users%20configs/ET4/davidtgbe_bltouch) just to take a look**. These files will not be updated with future changes, so, remember that Marlin config files are version dependant and copying and pasting the full content won't likely work. 
 
 Below are changed lines on configuration.h and pins_et4.h.
 If you want to take a look at the conversion table between the interconnection board and the MCU pin naming, go to pin mapping section [here](https://github.com/davidtgbe/Marlin).
@@ -171,6 +171,10 @@ We are using:
 ...
 #define SERVO0_PIN                          PC3
 ```
+
+**UPDATE**
+- **pins_et4.h** has been replaced by **pins_anet_et4.h**
+- [EasyConfig.h](../../Marlin/EasyConfig.h) is the recommended method for non advanced users.
 
 ## GPIO protection
 **Not tested. Not mandatory. Implement only if you have background on electronics**

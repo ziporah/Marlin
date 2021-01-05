@@ -28,8 +28,6 @@
 #include "tft.h"
 #include "tft_image.h"
 
-#define littleBIG(color) ((color >> 8) | (color << 8))
-
 uint8_t TFT_Queue::queue[];
 uint8_t *TFT_Queue::end_of_queue = queue;
 uint8_t *TFT_Queue::current_task = nullptr;

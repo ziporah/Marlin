@@ -311,7 +311,7 @@
 #undef TFT_RES_320x240
 #undef TFT_ROTATION
 #undef ANET_ET4_TFT28
-#undef ANET_ET4_TFT35
+#undef ANET_ET5_TFT35
 
 // Redefine
 #define TFT_COLOR_UI

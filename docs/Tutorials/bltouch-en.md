@@ -40,11 +40,11 @@ and its connection diagram
 
 ![pins-et4](media/pins-et4.jpg)
 
-For **ET4 models with inductive autolevel** sensor, you will have to **solder a JST header** to the interconnection board (*S-Z serigrafiated*). Likewise, autolevel will have a **3 pin JST header** in such case, instead of the 2 pins JST header of the regular ET4. 
+For **ET4 models with capacitive autolevel** sensor, you will have to **solder a JST header** to the interconnection board (*S-Z serigrafiated*). Likewise, autolevel will have a **3 pin JST header** in such case, instead of the 2 pins JST header of the regular ET4. 
 
 ![pins-et4](media/adapter-board-et5.jpg)
 
-Connection diagram for ET4 models with inductive autolevel
+Connection diagram for ET4 models with capacitive autolevel
 
 ![pins-et4](media/pins-et4-inductivo.jpg)
 

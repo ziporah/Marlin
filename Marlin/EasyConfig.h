@@ -191,6 +191,9 @@
 These parameters below are overwritten by easyconfig.h. This means
 that any change to any of these parameters on configuration.h
 file won't be effective. 
+If you need to modify these parameters, you can configure Marlin 
+from scratch (not using EasyConfig) or editing this file:
+"<RepoBasePath>/Marlin/src/inc/EasyConfigPost.h"
 
 List of overwritten parameters:
 
@@ -209,8 +212,7 @@ G26_MESH_VALIDATION
 ENABLE_LEVELING_FADE_HEIG
 SEGMENT_LEVELED_MOVES
 LEVELED_SEGMENT_LENGTH   
-AUTO_BED_LEVELING_BILINEA
-PROBING_MARGIN
+AUTO_BED_LEVELING_BILINEAR
 NOZZLE_TO_PROBE_OFFSET
 PROBING_MARGIN
 
@@ -249,8 +251,6 @@ Z_MIN_POS
 X_MAX_POS
 Y_MAX_POS
 Z_MAX_POS
-BED_CENTER_AT_150_150
-BED_CENTER_AT_110_110
 
 -- TFT -- 
 TFT_GENERIC

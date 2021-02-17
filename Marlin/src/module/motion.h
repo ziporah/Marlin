@@ -212,6 +212,8 @@ void report_current_position_projected();
 void get_cartesian_from_steppers();
 void set_current_from_steppers_for_axis(const AxisEnum axis);
 
+void quickstop_stepper();
+
 /**
  * sync_plan_position
  *
@@ -448,7 +450,7 @@ FORCE_INLINE void set_all_unhomed()                       { axis_homed = axis_tr
     FORCE_INLINE void set_duplication_enabled(const bool dupe) { extruder_duplication_enabled = dupe; }
   #endif
 
-  FORCE_INLINE int x_home_dir(const uint8_t) { return home_dir(X_AXIS); }
+  FORCE_INLINE int x_home_dir(const uint8_t) { return X_HOME_DIR; }
 
 #endif
 

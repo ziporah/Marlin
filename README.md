@@ -27,11 +27,14 @@ In summary, after some time dealing with Anet, my personal experience has been r
   - EEPROM (Flash emulation)
   - Powerloss (Thanks to Zhiniukas & SidDrP)
   - [Bltouch](https://github.com/davidtgbe/Marlin/blob/bugfix-2.0.x/docs/Tutorials/bltouch-en.md)
-  
+  - PC/SD firmware load/update
+    - I've managed to get working OpenBLT, (PC-USB / SD / DFU) updates. ~~I'm still looking for a way to do a first time flash without flasher~~. A hardware flasher is very recommended for its price.
+  - Onboard EEPROM I2C (4Kb/512B)
+    - Adapted and working, but not usable. Onboard EEPROM IC is too small to store marlin config, so, expect EEPROM errors if used. Use FLASH_EEPROM_EMULATION instead or solder another 24CXX EEPROM IC (24C32 or above recommended).
+  - Onboard FLASH (128Mb/16MB) 
+    - Ready. Tested LVGL from MKS (ET5 TFT). Not used, as not dedicated or universal LVGL UI has been designed AFAIK.
 ### On progress:
-  - PC/SD firmware load/update: I've managed to get working OpenBLT, (PC-USB / SD / DFU) updates. ~~I'm still looking for a way to do a first time flash without flasher~~. Even so, a hardware flasher is very recommended for its price.
-  - Take advantage of onboard EEPROM I2C instead of emulated flash and Serial FLASH chip.
-  
+  - No work in progress
 ### Known bugs:
 
 I have enabled issues tab. Please, try to be detailed regarding use cases and other useful information like hardware and software context. 

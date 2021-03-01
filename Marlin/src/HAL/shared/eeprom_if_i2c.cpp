@@ -32,8 +32,6 @@
 #include "eeprom_if.h"
 #include <Wire.h>
 
-void eeprom_init() { Wire.begin(); }
-
 #if ENABLED(USE_SHARED_EEPROM)
 
 #ifndef EEPROM_WRITE_DELAY
@@ -42,6 +40,15 @@ void eeprom_init() { Wire.begin(); }
 #ifndef EEPROM_DEVICE_ADDRESS
   #define EEPROM_DEVICE_ADDRESS  0x50
 #endif
+#ifndef MARLIN_EEPROM_SIZE
+  #define MARLIN_EEPROM_SIZE    0x1000 // 4KB
+#endif
+#if MARLIN_EEPROM_SIZE > 0x800 // 2KB
+  // if 24Cxx is greater than 24C16 (16Kb/2KB), 16 bit word addressing is used.
+  // if not, patch device address to include MSB address into A0, A1, A2
+  #define EEPROM_WORD_ADDRESS_16BIT
+#endif
+
 
 static constexpr uint8_t eeprom_device_address = I2C_ADDRESS(EEPROM_DEVICE_ADDRESS);
 
@@ -49,11 +56,26 @@ static constexpr uint8_t eeprom_device_address = I2C_ADDRESS(EEPROM_DEVICE_ADDRE
 // Public functions
 // ------------------------
 
+void eeprom_init() {
+  Wire.begin(
+    #if PINS_EXIST(I2C_SCL, I2C_SDA)
+      uint8_t(I2C_SDA_PIN), uint8_t(I2C_SCL_PIN)
+    #endif
+  );
+}
+
 void eeprom_write_byte(uint8_t *pos, unsigned char value) {
   const unsigned eeprom_address = (unsigned)pos;
 
-  Wire.beginTransmission(eeprom_device_address);
-  Wire.write(int(eeprom_address >> 8));   // MSB
+  #ifndef EEPROM_WORD_ADDRESS_16BIT
+    // patch high bits of EEPROM address into EEPROM_DEVICE_ADDRESS (A0, A1, A2)
+    uint8_t patched_eeprom_device_address = eeprom_device_address | ((eeprom_address >> 8) & 0x07);
+    Wire.beginTransmission(patched_eeprom_device_address);
+  #else
+    Wire.beginTransmission(eeprom_device_address);
+    Wire.write(int(eeprom_address >> 8));   // MSB
+  #endif
+
   Wire.write(int(eeprom_address & 0xFF)); // LSB
   Wire.write(value);
   Wire.endTransmission();
@@ -66,11 +88,18 @@ void eeprom_write_byte(uint8_t *pos, unsigned char value) {
 uint8_t eeprom_read_byte(uint8_t *pos) {
   const unsigned eeprom_address = (unsigned)pos;
 
-  Wire.beginTransmission(eeprom_device_address);
-  Wire.write(int(eeprom_address >> 8));   // MSB
+  #ifndef EEPROM_WORD_ADDRESS_16BIT
+    // patch high bits of EEPROM address into EEPROM_DEVICE_ADDRESS (A0, A1, A2)
+    uint8_t patched_eeprom_device_address = eeprom_device_address | ((eeprom_address >> 8) & 0x07);
+    Wire.beginTransmission(patched_eeprom_device_address);
+  #else
+    Wire.beginTransmission(eeprom_device_address);
+    Wire.write(int(eeprom_address >> 8));   // MSB
+  #endif
+
   Wire.write(int(eeprom_address & 0xFF)); // LSB
-  Wire.endTransmission();
-  Wire.requestFrom(eeprom_device_address, (byte)1);
+  Wire.endTransmission(false);
+  Wire.requestFrom(patched_eeprom_device_address, (byte)1);
   return Wire.available() ? Wire.read() : 0xFF;
 }
 

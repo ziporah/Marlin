@@ -42,21 +42,25 @@
  */
 
 // Use one of these or SDCard-based Emulation will be used
+// FLASH_EEPROM_EMULATION is the recommended and working option.
 #if NO_EEPROM_SELECTED
   //#define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
-  #define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation
-  //#define IIC_BL24CXX_EEPROM                    // Use I2C EEPROM onboard IC (AT24C04C, Size 4KB, PageSize 16B)
+  #define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation                
+  //#define I2C_EEPROM                            // Use I2C EEPROM onboard IC
 #endif
 
 #if ENABLED(FLASH_EEPROM_EMULATION)
   // Decrease delays and flash wear by spreading writes across the
   // 128 kB sector allocated for EEPROM emulation.
   #define FLASH_EEPROM_LEVELING
-#elif ENABLED(IIC_BL24CXX_EEPROM)
-  #define IIC_EEPROM_SDA                    PB11
-  #define IIC_EEPROM_SCL                    PB10
+#elif ENABLED(I2C_EEPROM)
+  // AT24C04C, Size 4Kb/512B, PageSize 16B
+  // Not working. 512 Bytes are not enough to store all config settings.
+  #define I2C_SDA_PIN                       PB11
+  #define I2C_SCL_PIN                       PB10
   #define EEPROM_DEVICE_ADDRESS             0x50
   #define MARLIN_EEPROM_SIZE                0x200                // 4Kb (From Datasheet)
+  #define EEPROM_WRITE_DELAY                5
 #endif  
 
 //
@@ -254,3 +258,24 @@
   #endif
 
 #endif
+
+//
+// SPI Flash
+//
+
+/**
+ * Status: Working. Tested with MKS LVGL (needs 480x320 ET5 TFT). Not used.
+ * Hardware: https://www.winbond.com/resource-files/w25q128jv%20revf%2003272018%20plus.pdf
+ */
+
+// SPI Flash
+#define HAS_SPI_FLASH                          1
+#if HAS_SPI_FLASH
+  #define SPI_FLASH_SIZE               0x1000000  // 16MB
+#endif
+
+// SPI 2
+#define W25QXX_CS_PIN                       PB12
+#define W25QXX_MOSI_PIN                     PB15
+#define W25QXX_MISO_PIN                     PB14
+#define W25QXX_SCK_PIN                      PB13

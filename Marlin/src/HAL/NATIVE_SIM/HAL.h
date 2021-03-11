@@ -65,18 +65,18 @@ extern MSerialT serial_stream_1;
 extern MSerialT serial_stream_2;
 extern MSerialT serial_stream_3;
 
-#define _NATIVE_SERIALPORT(port) serial_stream_##port
-#define NATIVE_SERIALPORT(port) _NATIVE_SERIALPORT(port)
+#define _MSERIAL(X) serial_stream_##X
+#define MSERIAL(X) _MSERIAL(X)
 
 #if WITHIN(SERIAL_PORT, 0, 3)
-  #define MYSERIAL0 NATIVE_SERIALPORT(SERIAL_PORT)
+  #define MYSERIAL1 MSERIAL(SERIAL_PORT)
 #else
   #error "SERIAL_PORT must be from 0 to 3. Please update your configuration."
 #endif
 
 #ifdef SERIAL_PORT_2
   #if WITHIN(SERIAL_PORT_2, 0, 3)
-    #define MYSERIAL1 NATIVE_SERIALPORT(SERIAL_PORT_2)
+    #define MYSERIAL2 MSERIAL(SERIAL_PORT_2)
   #else
     #error "SERIAL_PORT_2 must be from 0 to 3. Please update your configuration."
   #endif
@@ -84,7 +84,7 @@ extern MSerialT serial_stream_3;
 
 #ifdef MMU2_SERIAL_PORT
   #if WITHIN(MMU2_SERIAL_PORT, 0, 3)
-    #define MMU2_SERIAL NATIVE_SERIALPORT(MMU2_SERIAL_PORT)
+    #define MMU2_SERIAL MSERIAL(MMU2_SERIAL_PORT)
   #else
     #error "MMU2_SERIAL_PORT must be from 0 to 3. Please update your configuration."
   #endif
@@ -92,7 +92,7 @@ extern MSerialT serial_stream_3;
 
 #ifdef LCD_SERIAL_PORT
   #if WITHIN(LCD_SERIAL_PORT, 0, 3)
-    #define LCD_SERIAL NATIVE_SERIALPORT(LCD_SERIAL_PORT)
+    #define LCD_SERIAL MSERIAL(LCD_SERIAL_PORT)
   #else
     #error "LCD_SERIAL_PORT must be from 0 to 3. Please update your configuration."
   #endif

@@ -130,6 +130,7 @@
 	#endif
 #elif (ET_LEVELLING & (ET_LV_BLTOUCH | ET_LV_MOUNTED_PROBE))
 	#define Z_SAFE_HOMING
+	#define Z_MIN_PROBE_REPEATABILITY_TEST
 	#if (ET_LEVELLING & ET_LV_BLTOUCH)
 		#define BLTOUCH
 		#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
@@ -284,7 +285,7 @@
 	#define X_MIN_POS 0
 	#define Y_MIN_POS -15
 	#define Z_MIN_POS 0
-	#define X_MAX_POS X_BED_SIZE
+	#define X_MAX_POS (X_BED_SIZE + 50)
 	#define Y_MAX_POS Y_BED_SIZE
 	#define Z_MAX_POS (400 + ET_Z_MAX_POS_EXTRA)
 #elif (ET_MODEL & ET_SERIES_4)
@@ -293,7 +294,7 @@
 	#define X_MIN_POS -1
 	#define Y_MIN_POS -11
 	#define Z_MIN_POS 0
-	#define X_MAX_POS X_BED_SIZE
+	#define X_MAX_POS (X_BED_SIZE + 50)
 	#define Y_MAX_POS Y_BED_SIZE
 	#define Z_MAX_POS (250 + ET_Z_MAX_POS_EXTRA)
 #endif

@@ -232,20 +232,33 @@
  * Status: SPI Working. Reported random problems with SDIO.
  */
 
-//#define SDIO_SUPPORT
+#define SDIO_SUPPORT
 
 #ifndef SDCARD_CONNECTION
   #define SDCARD_CONNECTION         CUSTOM_CABLE
 #endif
 
 #if ENABLED(SDSUPPORT)
+  #ifndef SDIO_D0_PIN
+    #define SDIO_D0_PIN                       PC8
+  #endif
+  #ifndef SDIO_D1_PIN
+    #define SDIO_D1_PIN                       PC9
+  #endif
+  #ifndef SDIO_D2_PIN
+    #define SDIO_D2_PIN                       PC10
+  #endif
+  #ifndef SDIO_D3_PIN
+    #define SDIO_D3_PIN                       PC11
+  #endif
+  #ifndef SDIO_CK_PIN
+    #define SDIO_CK_PIN                       PC12
+  #endif
+  #ifndef SDIO_CMD_PIN
+    #define SDIO_CMD_PIN                      PD2
+  #endif
 
-  #define SDIO_D0_PIN                       PC8
-  #define SDIO_D1_PIN                       PC9
-  #define SDIO_D2_PIN                       PC10
-  #define SDIO_D3_PIN                       PC11
-  #define SDIO_CK_PIN                       PC12
-  #define SDIO_CMD_PIN                      PD2
+  #define SDIO_CLOCK                          24000000 // 24 MHz
 
   #if DISABLED(SDIO_SUPPORT)
     #define SOFTWARE_SPI

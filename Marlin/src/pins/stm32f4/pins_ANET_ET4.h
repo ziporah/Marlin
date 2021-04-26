@@ -229,10 +229,11 @@
 //
 
 /**
- * Status: SPI Working. Reported random problems with SDIO.
+ * Status: SPI Working. Reported random problems with SDIO. 
+ * Need SDIO testing after some recevntly SDIO rework
  */
 
-#define SDIO_SUPPORT
+//define SDIO_SUPPORT
 
 #ifndef SDCARD_CONNECTION
   #define SDCARD_CONNECTION         CUSTOM_CABLE

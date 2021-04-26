@@ -260,8 +260,6 @@ static void _lcd_level_bed_corners_get_next_position() {
     return (probe_triggered);
   }
 
-  #pragma GCC push_options
-  #pragma GCC optimize ("-O0")
   void _lcd_test_corners() {
     bed_corner = TERN(LEVEL_CENTER_TOO, center_index, 0);
     last_z = LEVEL_CORNERS_HEIGHT;
@@ -307,7 +305,6 @@ static void _lcd_level_bed_corners_get_next_position() {
     ui.goto_screen(_lcd_draw_level_prompt); // prompt for bed leveling
     ui.set_selection(true);
   }
-#pragma GCC pop_options
 
 #else // !LEVEL_CORNERS_USE_PROBE
 

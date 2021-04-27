@@ -74,7 +74,7 @@ You have two options to install/update this firmware:
     - Provided configuration.h and configuration_adv.h files correspond to a regular ET4/TMC2208 model with attachable bed levelling sensor.
     - Fine tunning could be needed (e.g. XYZE [steps](https://marlinfw.org/docs/gcode/M092.html) or offsets, Jerks, JD, LA, etc).
 
-3. If you are going to take **option A** from considerations section (not using a BL), **you can skip this step**. Otherwise, you need to offset the firmware to give some room to the BL. That is achieved by uncommenting a line in **platform.ini** file. It is commented by default:
+3. If you are going to take **option A** from considerations section (not using a BL), **you can skip this step**. Otherwise, you need to offset the firmware to give some room to the BL. That is achieved by uncommenting a line in [<ProjectFolder>\ini\stm32f4.ini](https://github.com/davidtgbe/Marlin/blob/bugfix-2.0.x/ini/stm32f4.ini) file. It is commented by default:
 ```
 #
 # Anet ET4-MB_V1.x/ET4P-MB_V1.x (STM32F407VGT6 ARM Cortex-M4)

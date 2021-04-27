@@ -42,7 +42,7 @@
  *    You can refer to these defaults on the table below. Any modifications you have
  *    made to your specific printer model which doesn't match the defaults showed below in the
  *    table, must be defined uncommenting corresponding line.
- * 4. Change platform.ini as usual to uncomment offset line if you are going to build the 
+ * 4. Change <ProjectFolder>\ini\stm32f4.ini to uncomment offset line if you are going to build the 
  *    FW to use it with OpenBLT bootloader.
  * 5. Build
  * 

@@ -241,6 +241,9 @@ void MarlinUI::draw_status_screen() {
       #ifdef ITEM_CHAMBER
         case ITEM_CHAMBER: draw_heater_status(x, y, H_CHAMBER); break;
       #endif
+      #ifdef ITEM_COOLER
+        case ITEM_COOLER: draw_heater_status(x, y, H_COOLER); break;
+      #endif
       #ifdef ITEM_FAN
         case ITEM_FAN: draw_fan_status(x, y, blink); break;
       #endif
@@ -355,16 +358,16 @@ void MenuEditItemBase::draw_edit_screen(PGM_P const pstr, const char * const val
       menu_line(line - 1);
 
       tft_string.set(X_LBL);
-      tft.add_text(52, MENU_TEXT_Y_OFFSET, COLOR_MENU_TEXT, tft_string);
+      tft.add_text(TFT_WIDTH / 2 - 120, MENU_TEXT_Y_OFFSET, COLOR_MENU_TEXT, tft_string);
       tft_string.set(ftostr52(LOGICAL_X_POSITION(current_position.x)));
       tft_string.trim();
-      tft.add_text(144 - tft_string.width(), MENU_TEXT_Y_OFFSET, COLOR_MENU_VALUE, tft_string);
+      tft.add_text(TFT_WIDTH / 2 - 16 - tft_string.width(), MENU_TEXT_Y_OFFSET, COLOR_MENU_VALUE, tft_string);
 
       tft_string.set(Y_LBL);
-      tft.add_text(176, MENU_TEXT_Y_OFFSET, COLOR_MENU_TEXT, tft_string);
+      tft.add_text(TFT_WIDTH / 2 + 16, MENU_TEXT_Y_OFFSET, COLOR_MENU_TEXT, tft_string);
       tft_string.set(ftostr52(LOGICAL_X_POSITION(current_position.y)));
       tft_string.trim();
-      tft.add_text(268 - tft_string.width(), MENU_TEXT_Y_OFFSET, COLOR_MENU_VALUE, tft_string);
+      tft.add_text(TFT_WIDTH / 2 + 120 - tft_string.width(), MENU_TEXT_Y_OFFSET, COLOR_MENU_VALUE, tft_string);
     }
   #endif
 
@@ -394,9 +397,9 @@ void MenuEditItemBase::draw_edit_screen(PGM_P const pstr, const char * const val
 
 void TFT::draw_edit_screen_buttons() {
   #if ENABLED(TOUCH_SCREEN)
-    add_control(32, 176, DECREASE, imgDecrease, true, COLOR_DECREASE);
-    add_control(224, 176, INCREASE, imgIncrease, true, COLOR_INCREASE);
-    add_control(128, 176, CLICK, imgConfirm, true, COLOR_TICK);
+    add_control(32, TFT_HEIGHT - 64, DECREASE, imgDecrease, true, COLOR_DECREASE);
+    add_control(224, TFT_HEIGHT - 64, INCREASE, imgIncrease, true, COLOR_INCREASE);
+    add_control(128, TFT_HEIGHT - 64, CLICK, imgConfirm, true, COLOR_TICK);
   #endif
 }
 
@@ -425,8 +428,8 @@ void MenuItem_confirm::draw_select_screen(PGM_P const yes, PGM_P const no, const
     tft.add_text(tft_string.center(TFT_WIDTH), MENU_TEXT_Y_OFFSET, COLOR_MENU_TEXT, tft_string);
   }
   #if ENABLED(TOUCH_SCREEN)
-    add_control(48, 176, CANCEL, imgCancel, true, yesno ? HALF(COLOR_CONTROL_CANCEL) : COLOR_CONTROL_CANCEL);
-    add_control(208, 176, CONFIRM, imgConfirm, true, yesno ? COLOR_CONTROL_CONFIRM : HALF(COLOR_CONTROL_CONFIRM));
+    add_control(48, TFT_HEIGHT - 64, CANCEL, imgCancel, true, yesno ? HALF(COLOR_CONTROL_CANCEL) : COLOR_CONTROL_CANCEL);
+    add_control(208, TFT_HEIGHT - 64, CONFIRM, imgConfirm, true, yesno ? COLOR_CONTROL_CONFIRM : HALF(COLOR_CONTROL_CONFIRM));
   #endif
 }
 
@@ -436,7 +439,7 @@ void MenuItem_confirm::draw_select_screen(PGM_P const yes, PGM_P const no, const
     #if ENABLED(TOUCH_SCREEN)
       touch.clear();
       draw_menu_navigation = false;
-      touch.add_control(RESUME_CONTINUE , 0, 0, 320, 240);
+      touch.add_control(RESUME_CONTINUE , 0, 0, TFT_WIDTH, TFT_HEIGHT);
     #endif
 
     menu_line(row);
@@ -478,7 +481,7 @@ void MenuItem_confirm::draw_select_screen(PGM_P const yes, PGM_P const no, const
     const xy_pos_t pos = { ubl.mesh_index_to_xpos(x_plot), ubl.mesh_index_to_ypos(y_plot) },
                    lpos = pos.asLogical();
 
-    tft.canvas(216, GRID_OFFSET_Y + (GRID_HEIGHT - 32) / 2 - 32, 96, 32);
+    tft.canvas(216, GRID_OFFSET_Y + (GRID_HEIGHT - MENU_ITEM_HEIGHT) / 2 - MENU_ITEM_HEIGHT, 96, MENU_ITEM_HEIGHT);
     tft.set_background(COLOR_BACKGROUND);
     tft_string.set(X_LBL);
     tft.add_text(0, MENU_TEXT_Y_OFFSET, COLOR_MENU_TEXT, tft_string);
@@ -486,7 +489,7 @@ void MenuItem_confirm::draw_select_screen(PGM_P const yes, PGM_P const no, const
     tft_string.trim();
     tft.add_text(96 - tft_string.width(), MENU_TEXT_Y_OFFSET, COLOR_MENU_VALUE, tft_string);
 
-    tft.canvas(216, GRID_OFFSET_Y + (GRID_HEIGHT - 32) / 2, 96, 32);
+    tft.canvas(216, GRID_OFFSET_Y + (GRID_HEIGHT - MENU_ITEM_HEIGHT) / 2, 96, MENU_ITEM_HEIGHT);
     tft.set_background(COLOR_BACKGROUND);
     tft_string.set(Y_LBL);
     tft.add_text(0, MENU_TEXT_Y_OFFSET, COLOR_MENU_TEXT, tft_string);
@@ -494,7 +497,7 @@ void MenuItem_confirm::draw_select_screen(PGM_P const yes, PGM_P const no, const
     tft_string.trim();
     tft.add_text(96 - tft_string.width(), MENU_TEXT_Y_OFFSET, COLOR_MENU_VALUE, tft_string);
 
-    tft.canvas(216, GRID_OFFSET_Y + (GRID_HEIGHT - 32) / 2 + 32, 96, 32);
+    tft.canvas(216, GRID_OFFSET_Y + (GRID_HEIGHT - MENU_ITEM_HEIGHT) / 2 + MENU_ITEM_HEIGHT, 96, MENU_ITEM_HEIGHT);
     tft.set_background(COLOR_BACKGROUND);
     tft_string.set(Z_LBL);
     tft.add_text(0, MENU_TEXT_Y_OFFSET, COLOR_MENU_TEXT, tft_string);
@@ -503,13 +506,13 @@ void MenuItem_confirm::draw_select_screen(PGM_P const yes, PGM_P const no, const
     tft.add_text(96 - tft_string.width(), MENU_TEXT_Y_OFFSET, COLOR_MENU_VALUE, tft_string);
 
     constexpr uint8_t w = (TFT_WIDTH) / 10;
-    tft.canvas(GRID_OFFSET_X + (GRID_WIDTH - w) / 2, GRID_OFFSET_Y + GRID_HEIGHT + CONTROL_OFFSET - 1, w, 32);
+    tft.canvas(GRID_OFFSET_X + (GRID_WIDTH - w) / 2, GRID_OFFSET_Y + GRID_HEIGHT + CONTROL_OFFSET - 1, w, MENU_ITEM_HEIGHT);
     tft.set_background(COLOR_BACKGROUND);
     tft_string.set(ui8tostr3rj(x_plot));
     tft_string.trim();
     tft.add_text(tft_string.center(w), MENU_TEXT_Y_OFFSET, COLOR_MENU_VALUE, tft_string);
 
-    tft.canvas(GRID_OFFSET_X + GRID_WIDTH + CONTROL_OFFSET, GRID_OFFSET_Y + (GRID_HEIGHT - 27) / 2, w, 32);
+    tft.canvas(GRID_OFFSET_X + GRID_WIDTH + CONTROL_OFFSET, GRID_OFFSET_Y + (GRID_HEIGHT - 27) / 2, w, MENU_ITEM_HEIGHT);
     tft.set_background(COLOR_BACKGROUND);
     tft_string.set(ui8tostr3rj(y_plot));
     tft_string.trim();
@@ -544,7 +547,6 @@ struct MotionAxisState {
   float currentStepSize = 10.0;
   int z_selection = Z_SELECTION_Z;
   uint8_t e_selection = 0;
-  bool homming = false;
   bool blocked = false;
   char message[32];
 };
@@ -613,16 +615,11 @@ static void drawMessage(const char *msg) {
   tft.add_text(0, 0, COLOR_YELLOW, msg);
 }
 
-static void drawAxisValue(AxisEnum axis) {
-  const float value =
-    #if HAS_BED_PROBE
-      axis == Z_AXIS && motionAxisState.z_selection == Z_SELECTION_Z_PROBE ?
-      probe.offset.z :
-    #endif
-    NATIVE_TO_LOGICAL(
-      ui.manual_move.processing ? destination[axis] : current_position[axis] + TERN0(IS_KINEMATIC, ui.manual_move.offset),
-      axis
-    );
+static void drawAxisValue(const AxisEnum axis) {
+  const float value = (
+    TERN_(HAS_BED_PROBE, axis == Z_AXIS && motionAxisState.z_selection == Z_SELECTION_Z_PROBE ? probe.offset.z :)
+    ui.manual_move.axis_value(axis)
+  );
   xy_int_t pos;
   uint16_t color;
   switch (axis) {
@@ -638,10 +635,10 @@ static void drawAxisValue(AxisEnum axis) {
   tft.add_text(0, 0, color, tft_string);
 }
 
-static void moveAxis(AxisEnum axis, const int8_t direction) {
+static void moveAxis(const AxisEnum axis, const int8_t direction) {
   quick_feedback();
 
-  if (axis == E_AXIS && thermalManager.temp_hotend[motionAxisState.e_selection].celsius < EXTRUDE_MINTEMP) {
+  if (axis == E_AXIS && thermalManager.tooColdToExtrude(motionAxisState.e_selection)) {
     drawMessage("Too cold");
     return;
   }
@@ -704,23 +701,11 @@ static void moveAxis(AxisEnum axis, const int8_t direction) {
     #endif
 
     // Get the new position
+    const bool limited = ui.manual_move.apply_diff(axis, diff, min, max);
     #if IS_KINEMATIC
-      ui.manual_move.offset += diff;
-      if (direction < 0)
-        NOLESS(ui.manual_move.offset, min - current_position[axis]);
-      else
-        NOMORE(ui.manual_move.offset, max - current_position[axis]);
+      UNUSED(limited);
     #else
-      current_position[axis] += diff;
-      const char *msg = NUL_STR; // clear the error
-      if (direction < 0 && current_position[axis] < min) {
-        current_position[axis] = min;
-        msg = GET_TEXT(MSG_LCD_SOFT_ENDSTOPS);
-      }
-      else if (direction > 0 && current_position[axis] > max) {
-        current_position[axis] = max;
-        msg = GET_TEXT(MSG_LCD_SOFT_ENDSTOPS);
-      }
+      PGM_P const msg = limited ? GET_TEXT(MSG_LCD_SOFT_ENDSTOPS) : NUL_STR;
       drawMessage(msg);
     #endif
 

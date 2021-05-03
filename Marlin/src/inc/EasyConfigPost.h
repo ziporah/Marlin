@@ -152,6 +152,7 @@
     #undef AUTO_BED_LEVELING_BILINEAR
 	#undef PROBING_MARGIN
     #undef NOZZLE_TO_PROBE_OFFSET
+	#undef BABYSTEP_ZPROBE_OFFSET
 #else
 	#error "You must define an ET_LEVELLING value among [ET_LV_NONE, ET_LV_BLTOUCH, ET_LV_MOUNTED_PROBE, ET_LV_FILM_STRIP]."
 #endif

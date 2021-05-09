@@ -35,7 +35,7 @@
     #if ET_MODEL & (ET_MODEL_ET4_PRO | ET_MODEL_ET5_PRO)
         #define ET_BOARD    ET_BOARD_SILENT
     #else
-        #define ET_BOARD	ET_BOARD_NOISY
+        #define ET_BOARD    ET_BOARD_NOISY
     #endif
 #endif    
 
@@ -43,8 +43,8 @@
     #if (ET_MODEL & ET_MODEL_ET4)
         #define ET_LEVELLING    ET_LV_FILM_STRIP
     #elif (ET_MODEL & ET_MODEL_ET4X)
-		#define ET_LEVELLING    ET_LV_NONE
-	#else
+        #define ET_LEVELLING    ET_LV_NONE
+    #else
         #define ET_LEVELLING    ET_LV_MOUNTED_PROBE
     #endif
 #endif
@@ -54,55 +54,55 @@
 #endif
 
 #ifndef ET_Z_HOMING_DIR
-	#if (ET_MODEL & ET_MODEL_ET4) && !(ET_LEVELLING & ET_LV_BLTOUCH)
-		#define ET_Z_HOMING_DIR	ET_Z_HOMING_DIR_UP
-	#else
-		#define ET_Z_HOMING_DIR	ET_Z_HOMING_DIR_DOWN
-	#endif
+    #if (ET_MODEL & ET_MODEL_ET4) && !(ET_LEVELLING & ET_LV_BLTOUCH)
+        #define ET_Z_HOMING_DIR    ET_Z_HOMING_DIR_UP
+    #else
+        #define ET_Z_HOMING_DIR    ET_Z_HOMING_DIR_DOWN
+    #endif
 #endif
 
 #ifndef ET_Z_ENDSTOP_POSTION
-	#if (ET_MODEL & ET_MODEL_ET4) && !(ET_LEVELLING & ET_LV_BLTOUCH)
-		#define ET_Z_ENDSTOP_POSTION ET_Z_ENDSTOP_POSTION_TOP
-	#elif (ET_MODEL & ET_MODEL_ET4X) && !(ET_LEVELLING & ET_LV_BLTOUCH)
-		#define ET_Z_ENDSTOP_POSTION ET_Z_ENDSTOP_POSTION_BOTTOM
-	#else
-		#define ET_Z_ENDSTOP_POSTION ET_Z_ENDSTOP_POSTION_NONE
-	#endif
+    #if (ET_MODEL & ET_MODEL_ET4) && !(ET_LEVELLING & ET_LV_BLTOUCH)
+        #define ET_Z_ENDSTOP_POSTION ET_Z_ENDSTOP_POSTION_TOP
+    #elif (ET_MODEL & ET_MODEL_ET4X) && !(ET_LEVELLING & ET_LV_BLTOUCH)
+        #define ET_Z_ENDSTOP_POSTION ET_Z_ENDSTOP_POSTION_BOTTOM
+    #else
+        #define ET_Z_ENDSTOP_POSTION ET_Z_ENDSTOP_POSTION_NONE
+    #endif
 #endif
 
 #ifdef ET_CUSTOM_MACHINE_NAME
-	#undef CUSTOM_MACHINE_NAME
-	#define CUSTOM_MACHINE_NAME ET_CUSTOM_MACHINE_NAME
+    #undef CUSTOM_MACHINE_NAME
+    #define CUSTOM_MACHINE_NAME ET_CUSTOM_MACHINE_NAME
 #endif
 #if (ET_MODEL & ET_MODEL_ET4)
-	#ifndef CUSTOM_MACHINE_NAME
+    #ifndef CUSTOM_MACHINE_NAME
         #define CUSTOM_MACHINE_MODEL_NAME   "4"
-	#endif
+    #endif
 #elif (ET_MODEL & ET_MODEL_ET4X)
-	#ifndef CUSTOM_MACHINE_NAME
+    #ifndef CUSTOM_MACHINE_NAME
         #define CUSTOM_MACHINE_MODEL_NAME   "4X"
-	#endif
+    #endif
 #elif (ET_MODEL & ET_MODEL_ET4_PLUS)
-	#ifndef CUSTOM_MACHINE_NAME
+    #ifndef CUSTOM_MACHINE_NAME
         #define CUSTOM_MACHINE_MODEL_NAME   "4+"
-	#endif
+    #endif
 #elif (ET_MODEL & ET_MODEL_ET4_PRO)
-	#ifndef CUSTOM_MACHINE_NAME
+    #ifndef CUSTOM_MACHINE_NAME
         #define CUSTOM_MACHINE_MODEL_NAME   "4 PRO"
-	#endif
+    #endif
 #elif (ET_MODEL & ET_MODEL_ET5)
-	#ifndef CUSTOM_MACHINE_NAME
+    #ifndef CUSTOM_MACHINE_NAME
         #define CUSTOM_MACHINE_MODEL_NAME   "5"
-	#endif
+    #endif
 #elif (ET_MODEL & ET_MODEL_ET5X)
-	#ifndef CUSTOM_MACHINE_NAME
+    #ifndef CUSTOM_MACHINE_NAME
         #define CUSTOM_MACHINE_MODEL_NAME   "5X"
-	#endif
+    #endif
 #elif (ET_MODEL & ET_MODEL_ET5_PRO)
-	#ifndef CUSTOM_MACHINE_NAME
+    #ifndef CUSTOM_MACHINE_NAME
         #define CUSTOM_MACHINE_MODEL_NAME   "5 PRO"
-	#endif
+    #endif
 #endif
 
 #ifdef CUSTOM_MACHINE_MODEL_NAME
@@ -124,37 +124,37 @@
 
 // Redefine
 #if (ET_LEVELLING & ET_LV_FILM_STRIP)
-	#define NOZZLE_AS_PROBE
-	#ifndef PROBING_MARGIN
-		#define PROBING_MARGIN 10
-	#endif
-#elif (ET_LEVELLING & (ET_LV_BLTOUCH | ET_LV_MOUNTED_PROBE))
-	#define Z_SAFE_HOMING
-	#define Z_MIN_PROBE_REPEATABILITY_TEST
-	#if (ET_LEVELLING & ET_LV_BLTOUCH)
-		#define BLTOUCH
-		#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
-	#elif (ET_LEVELLING & ET_LV_MOUNTED_PROBE)
-		#define FIX_MOUNTED_PROBE
-		#if (ET_Z_ENDSTOP_POSTION & ET_Z_ENDSTOP_POSTION_NONE)
-			#define USE_PROBE_FOR_Z_HOMING
-		#endif
-	#endif
+    #define NOZZLE_AS_PROBE
     #ifndef PROBING_MARGIN
-		#define PROBING_MARGIN 25
-	#endif
+        #define PROBING_MARGIN 10
+    #endif
+#elif (ET_LEVELLING & (ET_LV_BLTOUCH | ET_LV_MOUNTED_PROBE))
+    #define Z_SAFE_HOMING
+    #define Z_MIN_PROBE_REPEATABILITY_TEST
+    #define BABYSTEP_ZPROBE_OFFSET
+    #if (ET_LEVELLING & ET_LV_BLTOUCH)
+        #define BLTOUCH
+        #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+    #elif (ET_LEVELLING & ET_LV_MOUNTED_PROBE)
+        #define FIX_MOUNTED_PROBE
+        #if (ET_Z_ENDSTOP_POSTION & ET_Z_ENDSTOP_POSTION_NONE)
+            #define USE_PROBE_FOR_Z_HOMING
+        #endif
+    #endif
+    #ifndef PROBING_MARGIN
+        #define PROBING_MARGIN 25
+    #endif
 #elif (ET_LEVELLING & ET_LV_NONE)
-	#undef LCD_BED_LEVELING
+    #undef LCD_BED_LEVELING
     #undef G26_MESH_VALIDATION
     #undef ENABLE_LEVELING_FADE_HEIGHT
     #undef SEGMENT_LEVELED_MOVES
     #undef LEVELED_SEGMENT_LENGTH     
     #undef AUTO_BED_LEVELING_BILINEAR
-	#undef PROBING_MARGIN
+    #undef PROBING_MARGIN
     #undef NOZZLE_TO_PROBE_OFFSET
-	#undef BABYSTEP_ZPROBE_OFFSET
 #else
-	#error "You must define an ET_LEVELLING value among [ET_LV_NONE, ET_LV_BLTOUCH, ET_LV_MOUNTED_PROBE, ET_LV_FILM_STRIP]."
+    #error "You must define an ET_LEVELLING value among [ET_LV_NONE, ET_LV_BLTOUCH, ET_LV_MOUNTED_PROBE, ET_LV_FILM_STRIP]."
 #endif
 
 //
@@ -171,9 +171,9 @@
 #define Y_HOME_DIR -1
 
 #if (ET_Z_HOMING_DIR & ET_Z_HOMING_DIR_UP)
-	#define Z_HOME_DIR  1
+    #define Z_HOME_DIR  1
 #else
-	#define Z_HOME_DIR -1
+    #define Z_HOME_DIR -1
 #endif
 
 //
@@ -194,7 +194,7 @@
 #define USE_ZMIN_PLUG
 
 #if (ET_Z_ENDSTOP_POSTION & ET_Z_ENDSTOP_POSTION_TOP)
-	#define USE_ZMAX_PLUG
+    #define USE_ZMAX_PLUG
 #endif
 
 //
@@ -206,9 +206,9 @@
 
 // Redefine
 #if (ET_MOD & ET_MOD_V6)
-	#define TEMP_SENSOR_0 5
+    #define TEMP_SENSOR_0 5
 #else 
-	#define TEMP_SENSOR_0 1
+    #define TEMP_SENSOR_0 1
 #endif
 
 //
@@ -224,19 +224,19 @@
 
 // Redefine
 #if (ET_BOARD & ET_BOARD_SILENT)
-  	#define MOTHERBOARD BOARD_ANET_ET4P
-	#define X_DRIVER_TYPE TMC2208_STANDALONE
-	#define Y_DRIVER_TYPE TMC2208_STANDALONE
-	#define Z_DRIVER_TYPE TMC2208_STANDALONE
-	#define E0_DRIVER_TYPE TMC2208_STANDALONE
+      #define MOTHERBOARD BOARD_ANET_ET4P
+    #define X_DRIVER_TYPE TMC2208_STANDALONE
+    #define Y_DRIVER_TYPE TMC2208_STANDALONE
+    #define Z_DRIVER_TYPE TMC2208_STANDALONE
+    #define E0_DRIVER_TYPE TMC2208_STANDALONE
 #elif (ET_BOARD & ET_BOARD_NOISY)
-	#define MOTHERBOARD BOARD_ANET_ET4
-	#define X_DRIVER_TYPE A4988
-	#define Y_DRIVER_TYPE A4988
-	#define Z_DRIVER_TYPE A4988
-	#define E0_DRIVER_TYPE A4988
+    #define MOTHERBOARD BOARD_ANET_ET4
+    #define X_DRIVER_TYPE A4988
+    #define Y_DRIVER_TYPE A4988
+    #define Z_DRIVER_TYPE A4988
+    #define E0_DRIVER_TYPE A4988
 #else
-	#error "You must define an ET_BOARD value among [ET_BOARD_NOISY, ET_BOARD_SILENT]."
+    #error "You must define an ET_BOARD value among [ET_BOARD_NOISY, ET_BOARD_SILENT]."
 #endif
 
 //
@@ -249,14 +249,14 @@
 
 // Redefine
 #if (ET_MOD & ET_MOD_BMG)
-	#define INVERT_E0_DIR true
-	#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 415 }
+    #define INVERT_E0_DIR true
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 415 }
 #elif (ET_MOD & ET_MOD_BMG_MINI)
-	#define INVERT_E0_DIR false
-	#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 140 }
+    #define INVERT_E0_DIR false
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 140 }
 #else
-	#define INVERT_E0_DIR false
-	#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 100 }
+    #define INVERT_E0_DIR false
+    #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 100 }
 #endif
 
 //
@@ -274,30 +274,30 @@
 #undef Z_MAX_POS
 
 #if(ET_MOD & ET_MOD_V6)
-	#define ET_Z_MAX_POS_EXTRA	3
+    #define ET_Z_MAX_POS_EXTRA    3
 #else
-	#define ET_Z_MAX_POS_EXTRA	0
+    #define ET_Z_MAX_POS_EXTRA    0
 #endif
 
 // Redefine
 #if (ET_MODEL & ET_SERIES_5)
-	#define X_BED_SIZE 300
-	#define Y_BED_SIZE 300
-	#define X_MIN_POS 0
-	#define Y_MIN_POS -15
-	#define Z_MIN_POS 0
-	#define X_MAX_POS (X_BED_SIZE + 50)
-	#define Y_MAX_POS Y_BED_SIZE
-	#define Z_MAX_POS (400 + ET_Z_MAX_POS_EXTRA)
+    #define X_BED_SIZE 300
+    #define Y_BED_SIZE 300
+    #define X_MIN_POS 0
+    #define Y_MIN_POS -15
+    #define Z_MIN_POS 0
+    #define X_MAX_POS (X_BED_SIZE + 50)
+    #define Y_MAX_POS Y_BED_SIZE
+    #define Z_MAX_POS (400 + ET_Z_MAX_POS_EXTRA)
 #elif (ET_MODEL & ET_SERIES_4)
-	#define X_BED_SIZE 220
-	#define Y_BED_SIZE 220	
-	#define X_MIN_POS -1
-	#define Y_MIN_POS -11
-	#define Z_MIN_POS 0
-	#define X_MAX_POS (X_BED_SIZE + 50)
-	#define Y_MAX_POS Y_BED_SIZE
-	#define Z_MAX_POS (250 + ET_Z_MAX_POS_EXTRA)
+    #define X_BED_SIZE 220
+    #define Y_BED_SIZE 220
+    #define X_MIN_POS -1
+    #define Y_MIN_POS -11
+    #define Z_MIN_POS 0
+    #define X_MAX_POS (X_BED_SIZE + 50)
+    #define Y_MAX_POS Y_BED_SIZE
+    #define Z_MAX_POS (250 + ET_Z_MAX_POS_EXTRA)
 #endif
 
 //
@@ -319,9 +319,9 @@
 #define TFT_COLOR_UI
 
 #if (ET_MODEL & ET_SERIES_5)
-	#define ANET_ET5_TFT35
+    #define ANET_ET5_TFT35
 #elif (ET_MODEL & ET_SERIES_4)
-	#define ANET_ET4_TFT28
+    #define ANET_ET4_TFT28
 #endif
 
 //
@@ -338,11 +338,11 @@
 // Redefine
 
 #ifndef TOUCH_SCREEN
-	#define TOUCH_SCREEN
+    #define TOUCH_SCREEN
 #endif
 
 #ifndef TOUCH_SCREEN_CALIBRATION
-	#define TOUCH_SCREEN_CALIBRATION
+    #define TOUCH_SCREEN_CALIBRATION
 #endif
 
 #if (ET_MODEL & ET_SERIES_5)

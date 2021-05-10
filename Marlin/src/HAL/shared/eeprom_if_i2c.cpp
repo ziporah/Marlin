@@ -57,10 +57,8 @@ void eeprom_init() {
 
 // if 24Cxx is equal or greater than 24C32 (32Kb/4KB), 16 bit word addressing has to be used.
 // if not, patch device address to include MSB address into A0, A1, A2
-#if MARLIN_EEPROM_SIZE >= 0x1000 // 4KB
-  #ifndef EEPROM_WORD_ADDRESS_16BIT
-    #define EEPROM_WORD_ADDRESS_16BIT
-  #endif
+#if MARLIN_EEPROM_SIZE >= 0x1000 && !defined EEPROM_WORD_ADDRESS_16BIT // 4KB
+  #define EEPROM_WORD_ADDRESS_16BIT
 #endif
 
 static constexpr uint8_t eeprom_device_address = I2C_ADDRESS(EEPROM_DEVICE_ADDRESS);
@@ -84,7 +82,7 @@ static uint8_t _eeprom_begin(uint8_t * const pos) {
 
   Wire.write(int(eeprom_address & 0xFF)); // LSB
 
-  return patched_eeprom_device_address == 0 ? eeprom_address : patched_eeprom_device_address;
+  return patched_eeprom_device_address == 0 ? eeprom_device_address : patched_eeprom_device_address;
 }
 
 void eeprom_write_byte(uint8_t *pos, unsigned char value) {

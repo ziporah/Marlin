@@ -70,8 +70,8 @@ You have two options to install/update this firmware:
 1. Download or clone this [repo](https://github.com/davidtgbe/Marlin/archive/bugfix-2.0.x.zip). Ensure you build the firmware with **latest sources**, as firmware.srec file will not be built with older sources.
 
 2. You have two options to configure your own Marlin build:
-  a) **Recommended**. Use [EasyConfig](https://github.com/davidtgbe/Marlin/blob/bugfix-2.0.x/Marlin/EasyConfig.h) for a simple configuration experience. Make sure you read the whole EasyConfig.h file carefully. It contains instructions to configure it.
-  b) Configure your build from scratch.
+- a) **Recommended**. Use [EasyConfig](https://github.com/davidtgbe/Marlin/blob/bugfix-2.0.x/Marlin/EasyConfig.h) for a simple configuration experience. Make sure you read the whole EasyConfig.h file carefully. It contains instructions to configure it.
+- b) Configure your build from scratch.
     - [User configurations](https://github.com/davidtgbe/Marlin/tree/bugfix-2.0.x/config) **are neither updated nor maintaned**. Please, read the readme.md inside the config folder. **Don't copy paste these files.**
     - Provided configuration.h and configuration_adv.h files in this repo correspond to a regular ET4/TMC2208 model with attachable bed levelling sensor.
     - Make sure to modify your config.h and config_adv.h according to your ET4/5 model (ET4, ET5, ET4 PRO, ET4+, ...)

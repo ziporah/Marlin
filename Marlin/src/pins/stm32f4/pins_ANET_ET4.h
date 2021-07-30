@@ -47,8 +47,8 @@
 // FLASH_EEPROM_EMULATION is the recommended and working option.
 #if NO_EEPROM_SELECTED
   //#define SRAM_EEPROM_EMULATION                 // Use BackSRAM-based EEPROM emulation
-  //#define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation                
-  #define I2C_EEPROM                            // Use I2C EEPROM onboard IC
+  #define FLASH_EEPROM_EMULATION                  // Use Flash-based EEPROM emulation                
+  //#define I2C_EEPROM                            // Use I2C EEPROM onboard IC
 #endif
 
 #if ENABLED(FLASH_EEPROM_EMULATION)

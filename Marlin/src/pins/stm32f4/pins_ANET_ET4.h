@@ -62,7 +62,7 @@
   #define I2C_SCL_PIN                       PB10
   #define EEPROM_DEVICE_ADDRESS             0x50
   #define MARLIN_EEPROM_SIZE                0x200                // 4Kb (From Datasheet)
-#endif  
+#endif
 
 //
 // Limit Switches
@@ -163,14 +163,18 @@
  *  - FSMC/DMA and 8080-8 interface
  */
 
-#define TFT_RESET_PIN                       PE6
-#define TFT_CS_PIN                          PD7
-#define TFT_RS_PIN                          PD13
-#define TFT_INTERFACE_FSMC_8BIT
+#if HAS_SPI_TFT || HAS_FSMC_TFT
+  #define TFT_RESET_PIN                     PE6
+  #define TFT_CS_PIN                        PD7
+  #define TFT_RS_PIN                        PD13
 
-#define LCD_USE_DMA_FSMC                          // Use DMA transfers to send data to the TFT
-#define FSMC_CS_PIN                   TFT_CS_PIN
-#define FSMC_RS_PIN                   TFT_RS_PIN
+  #if HAS_FSMC_TFT
+    #define LCD_USE_DMA_FSMC                      // Use DMA transfers to send data to the TFT
+    #define FSMC_CS_PIN               TFT_CS_PIN
+    #define FSMC_RS_PIN               TFT_RS_PIN
+    #define TFT_INTERFACE_FSMC_8BIT
+  #endif
+#endif
 
 //
 // Touch Screen

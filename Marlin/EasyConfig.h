@@ -111,7 +111,7 @@
  * Usage: To select multiple mods use '|' to join. ex: #define ET_MOD (ET_MOD_BMG | ET_MOD_V6)
  */
 
-//#define ET_MOD                    ET_MOD_NONE
+//#define ET_MOD                    ET_MOD_BMG
 
 /**
  * Parameter: ET_Z_ENDSTOP_POSTION 
@@ -128,7 +128,7 @@
  * Type: Optional 
  */
 
-//#define ET_CUSTOM_MACHINE_NAME     "Anet ET4 A4988 BLTOUCH" 
+#define ET_CUSTOM_MACHINE_NAME     "Anet ET4" 
 
 // ----------------------------------------------
 // 3. Basic Post-installation configuration steps
@@ -215,6 +215,7 @@ LEVELED_SEGMENT_LENGTH
 AUTO_BED_LEVELING_BILINEAR
 Z_MIN_PROBE_REPEATABILITY_TEST
 BABYSTEP_ZPROBE_OFFSET
+Z_MIN_PROBE_ENDSTOP_INVERTING
 
 -- Z_Homing dir --
 X_HOME_DIR
@@ -228,6 +229,12 @@ USE_ZMIN_PLUG
 USE_XMAX_PLUG
 USE_YMAX_PLUG
 USE_ZMAX_PLUG
+
+X_MIN_ENDSTOP_INVERTING
+Y_MIN_ENDSTOP_INVERTING
+Z_MIN_ENDSTOP_INVERTING
+Z_MAX_ENDSTOP_INVERTING
+Z_MIN_PROBE_ENDSTOP_INVERTING
 
 -- Temp sensors --
 TEMP_SENSOR_0

@@ -111,6 +111,39 @@
 #endif
 
 //
+// Endstops
+//
+
+// Undefine to overwrite
+#undef USE_XMIN_PLUG
+#undef USE_YMIN_PLUG
+#undef USE_ZMIN_PLUG
+#undef USE_XMAX_PLUG
+#undef USE_YMAX_PLUG
+#undef USE_ZMAX_PLUG 
+
+#undef X_MIN_ENDSTOP_INVERTING
+#undef Y_MIN_ENDSTOP_INVERTING
+#undef Z_MIN_ENDSTOP_INVERTING
+#undef Z_MAX_ENDSTOP_INVERTING
+#undef Z_MIN_PROBE_ENDSTOP_INVERTING
+
+// Redefine
+#define USE_XMIN_PLUG
+#define USE_YMIN_PLUG
+#define USE_ZMIN_PLUG
+
+#define X_MIN_ENDSTOP_INVERTING true
+#define Y_MIN_ENDSTOP_INVERTING true
+#define Z_MIN_ENDSTOP_INVERTING true
+#define Z_MAX_ENDSTOP_INVERTING true
+#define Z_MIN_PROBE_ENDSTOP_INVERTING true
+
+#if (ET_Z_ENDSTOP_POSTION & ET_Z_ENDSTOP_POSTION_TOP)
+    #define USE_ZMAX_PLUG
+#endif
+
+//
 // Levelling
 //
 
@@ -119,35 +152,38 @@
 #undef BLTOUCH
 #undef FIX_MOUNTED_PROBE
 #undef Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
-#undef Z_MIN_ENDSTOP_INVERTING
-#undef Z_MIN_PROBE_ENDSTOP_INVERTING
 #undef USE_PROBE_FOR_Z_HOMING
 #undef Z_SAFE_HOMING
+#undef Z_MIN_PROBE_REPEATABILITY_TEST
+#undef BABYSTEP_ZPROBE_OFFSET
 
 // Redefine
 #if (ET_LEVELLING & ET_LV_FILM_STRIP)
     #define NOZZLE_AS_PROBE
     #ifndef PROBING_MARGIN
         #define PROBING_MARGIN 10
-    #endif
+    #endif    
 #elif (ET_LEVELLING & (ET_LV_BLTOUCH | ET_LV_MOUNTED_PROBE))
     #define Z_SAFE_HOMING
     #define Z_MIN_PROBE_REPEATABILITY_TEST
     #define BABYSTEP_ZPROBE_OFFSET
     #if (ET_LEVELLING & ET_LV_BLTOUCH)
         #define BLTOUCH
-        #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
-        #define Z_MIN_ENDSTOP_INVERTING             false
-        #define Z_MIN_PROBE_ENDSTOP_INVERTING       false
+        #define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN        
+        
+        #undef Z_MIN_ENDSTOP_INVERTING
+        #undef Z_MIN_PROBE_ENDSTOP_INVERTING        
+        #define Z_MIN_ENDSTOP_INVERTING                 false
+        #define Z_MIN_PROBE_ENDSTOP_INVERTING           false
     #elif (ET_LEVELLING & ET_LV_MOUNTED_PROBE)
         #define FIX_MOUNTED_PROBE
-        #if (ET_Z_ENDSTOP_POSTION & ET_Z_ENDSTOP_POSTION_NONE)
-            #define USE_PROBE_FOR_Z_HOMING
-        #endif
+    #endif
+    #if (ET_Z_ENDSTOP_POSTION & ET_Z_ENDSTOP_POSTION_NONE)
+        #define USE_PROBE_FOR_Z_HOMING
     #endif
     #ifndef PROBING_MARGIN
         #define PROBING_MARGIN 25
-    #endif
+    #endif    
 #elif (ET_LEVELLING & ET_LV_NONE)
     #undef LCD_BED_LEVELING
     #undef G26_MESH_VALIDATION
@@ -178,27 +214,6 @@
     #define Z_HOME_DIR  1
 #else
     #define Z_HOME_DIR -1
-#endif
-
-//
-// Endstops
-//
-
-// Undefine to overwrite
-#undef USE_XMIN_PLUG
-#undef USE_YMIN_PLUG
-#undef USE_ZMIN_PLUG
-#undef USE_XMAX_PLUG
-#undef USE_YMAX_PLUG
-#undef USE_ZMAX_PLUG 
-
-// Redefine
-#define USE_XMIN_PLUG
-#define USE_YMIN_PLUG
-#define USE_ZMIN_PLUG
-
-#if (ET_Z_ENDSTOP_POSTION & ET_Z_ENDSTOP_POSTION_TOP)
-    #define USE_ZMAX_PLUG
 #endif
 
 //

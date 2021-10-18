@@ -156,6 +156,7 @@
 #undef Z_SAFE_HOMING
 #undef Z_MIN_PROBE_REPEATABILITY_TEST
 #undef BABYSTEP_ZPROBE_OFFSET
+#undef LEVEL_CORNERS_USE_PROBE
 
 // Redefine
 #if (ET_LEVELLING & ET_LV_FILM_STRIP)
@@ -183,7 +184,10 @@
     #endif
     #ifndef PROBING_MARGIN
         #define PROBING_MARGIN 25
-    #endif    
+    #endif
+    #if ENABLED(LEVEL_BED_CORNERS)
+        #define LEVEL_CORNERS_USE_PROBE
+    #endif
 #elif (ET_LEVELLING & ET_LV_NONE)
     #undef LCD_BED_LEVELING
     #undef G26_MESH_VALIDATION

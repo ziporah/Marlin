@@ -38,7 +38,7 @@
 #define CONFIGURATION_H_VERSION 020008
 
 // Uncomment next line and use EasyConfig.h file for an easy configuration of Anet ET series models
-//#define ET_EASY_CONFIG
+#define ET_EASY_CONFIG
 
 //===========================================================================
 //============================= Getting Started =============================
@@ -72,7 +72,7 @@
 // @section info
 
 // Author info of this build printed to the host during boot and M115
-#define STRING_CONFIG_H_AUTHOR "(davidtgbe, ET4)" // Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "(ziporah, ET4Pro)" // Who made the changes.
 //#define CUSTOM_VERSION_FILE Version.h // Path from the root directory (no quotes)
 
 /**
@@ -141,7 +141,7 @@
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
-#define CUSTOM_MACHINE_NAME "Anet ET4"
+#define CUSTOM_MACHINE_NAME "Anet ET4 PRO ziporah"
 
 // Printer's unique ID, used by some programs to differentiate between machines.
 // Choose your own or use a service like https://www.uuidgenerator.net/version4
@@ -522,9 +522,12 @@
   #else
 
   // ET4 Autotune PID results
-    #define DEFAULT_Kp 30.11
-    #define DEFAULT_Ki 2.63
-    #define DEFAULT_Kd 86.12
+    #define DEFAULT_Kp 48.50
+    #define DEFAULT_Ki 9.26
+    #define DEFAULT_Kd 63.53
+    //#define DEFAULT_Kp 30.11
+    //#define DEFAULT_Ki 2.63
+    //#define DEFAULT_Kd 86.12
   #endif
 #endif // PIDTEMP
 
@@ -563,10 +566,12 @@
 
   // 120V 250W silicone heater into 4mm borosilicate (MendelMax 1.5+)
   // from FOPDT model - kp=.39 Tp=405 Tdead=66, Tc set to 79.2, aggressive factor of .15 (vs .1, 1, 10)
-  #define DEFAULT_bedKp 102.91
-  #define DEFAULT_bedKi 20.42
-  #define DEFAULT_bedKd 345.78
-
+  //#define DEFAULT_bedKp 102.91
+  //#define DEFAULT_bedKi 20.42
+  //#define DEFAULT_bedKd 345.78
+  #define DEFAULT_bedKp 54.87
+  #define DEFAULT_bedKi 8.85
+  #define DEFAULT_bedKd 226.80
   // FIND YOUR OWN: "M303 E-1 C8 S90" to run autotune on the bed at 90 degreesC for 8 cycles.
 #endif // PIDTEMPBED
 
@@ -1197,7 +1202,9 @@
 // Invert the stepper direction. Change (or reverse the motor connector) if an axis goes the wrong way.
 #define INVERT_X_DIR true
 #define INVERT_Y_DIR false
-#define INVERT_Z_DIR true
+// ziporah - changed from original 
+//#define INVERT_Z_DIR false
+#define INVERT_Z_DIR false
 
 // @section extruder
 
@@ -1512,7 +1519,7 @@
   //===========================================================================
 
   #define MESH_INSET 10          // Set Mesh bounds as an inset region of the bed
-  #define GRID_MAX_POINTS_X 3    // Don't use more than 7 points per axis, implementation limited.
+  #define GRID_MAX_POINTS_X 5    // Don't use more than 7 points per axis, implementation limited.
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   //#define MESH_G28_REST_ORIGIN // After homing all axes ('G28' or 'G28 XYZ') rest Z at Z_MIN_POS
@@ -1902,7 +1909,7 @@
  *
  * :{ 'en':'English', 'an':'Aragonese', 'bg':'Bulgarian', 'ca':'Catalan', 'cz':'Czech', 'da':'Danish', 'de':'German', 'el':'Greek', 'el_gr':'Greek (Greece)', 'es':'Spanish', 'eu':'Basque-Euskera', 'fi':'Finnish', 'fr':'French', 'gl':'Galician', 'hr':'Croatian', 'hu':'Hungarian', 'it':'Italian', 'jp_kana':'Japanese', 'ko_KR':'Korean (South Korea)', 'nl':'Dutch', 'pl':'Polish', 'pt':'Portuguese', 'pt_br':'Portuguese (Brazilian)', 'ro':'Romanian', 'ru':'Russian', 'sk':'Slovak', 'sv':'Swedish', 'tr':'Turkish', 'uk':'Ukrainian', 'vi':'Vietnamese', 'zh_CN':'Chinese (Simplified)', 'zh_TW':'Chinese (Traditional)' }
  */
-#define LCD_LANGUAGE es
+#define LCD_LANGUAGE en
 
 /**
  * LCD Character Set

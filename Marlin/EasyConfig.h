@@ -73,7 +73,7 @@
  * Values: ET_MODEL_ET4 ,ET_MODEL_ET4_PLUS, ET_MODEL_ET4X, ET_MODEL_ET4_PRO, ET_MODEL_ET5, ET_MODEL_ET5X, ET_MODEL_ET5_PRO
  */
 
-#define ET_MODEL                    ET_MODEL_ET4
+#define ET_MODEL                    ET_MODEL_ET4_PRO
 
 /**
  * Parameter: ET_BOARD
